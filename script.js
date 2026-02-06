@@ -66,26 +66,32 @@ function positionTimelineEventsAndDrawLine(){
 
   events.forEach((event,index)=>{
     const x = (index/(total-1)) * svgRect.width;
-    const y = 20; 
-    const dotY = y + event.offsetHeight + 10; 
+    const y = 20; // top of box
+    const dot = event.querySelector(".dot");
+    const dotY = y + event.offsetHeight + 10 + dot.offsetHeight/2; // center of dot
+
     points.push({x, y:dotY});
+
     event.style.left = x+'px';
     event.style.top = y+'px';
     setTimeout(()=>{ event.classList.add("pop"); }, index*300);
   });
 
+  // Build curved path connecting dot centers
   let d = `M ${points[0].x} ${points[0].y}`;
   for(let i=1;i<points.length;i++){
     const cpX = (points[i-1].x + points[i].x)/2;
     const cpY = points[i-1].y;
     d += ` Q ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
   }
+
   path.setAttribute("d", d);
   const pathLength = path.getTotalLength();
   path.style.strokeDasharray = pathLength;
   path.style.strokeDashoffset = pathLength;
   setTimeout(()=>{ path.style.strokeDashoffset = 0; },100);
 }
+
 
 // MODAL
 const modal=document.getElementById("eventModal");
