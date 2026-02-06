@@ -155,20 +155,22 @@ h1#forVernice {
 #timeline {
   width: 100%;
   height: 4px;
-  background: transparent;
+  background: #ffb6c1;
   margin-bottom: 40px;
   position: relative;
 }
 
+/* Timeline events wrapper */
 .timeline-events {
   position: relative;
   width: 100%;
-  height: 220px; /* enough for top/bottom events */
+  height: 220px;
 }
 
+/* Timeline event boxes */
 .timeline-events .event {
   position: absolute;
-  left: 0; /* JS updates left % */
+  left: 0; /* JS will update left % */
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   background: #fff0f5;
@@ -185,8 +187,17 @@ h1#forVernice {
 .timeline-events .event.top { top: 20%; }
 .timeline-events .event.bottom { top: 80%; }
 
+/* Pop animation */
 .timeline-events .event.pop {
   transform: translate(-50%, -50%) scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+/* Branch lines */
+.timeline-branch {
+  stroke: #ff1a75;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 /* ---------------- MODAL ---------------- */
@@ -223,25 +234,9 @@ h1#forVernice {
   animation: popIn 0.5s forwards;
 }
 
-.modal-content h2 {
-  color: #ff1a75;
-  margin-bottom: 1rem;
-}
-
-.modal-content p {
-  color: #ff4d88;
-  font-size: 1rem;
-  line-height: 1.4;
-}
-
-#closeModal {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #ff1a75;
-}
+.modal-content h2 { color: #ff1a75; margin-bottom: 1rem; }
+.modal-content p { color: #ff4d88; font-size: 1rem; line-height: 1.4; }
+#closeModal { position: absolute; top: 12px; right: 16px; font-size: 1.5rem; cursor: pointer; color: #ff1a75; }
 
 @keyframes popIn {
   0% { transform: scale(0.5); opacity: 0; }
@@ -255,16 +250,6 @@ h1#forVernice {
     padding: 4px 8px;
   }
 
-  #panel4 .timeline-text {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-
-  #timeline {
-    height: 2px;
-  }
-
-  .timeline-events {
-    height: 180px;
-  }
+  #panel4 .timeline-text { font-size: 1rem; margin-bottom: 20px; }
+  .timeline-events { height: 180px; }
 }
