@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Vernice</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Panels -->
+<div id="panel1" class="panel">
+  <h1 id="forVernice">FOR VERNICE 💖</h1>
+</div>
+
+<div id="panel2" class="panel hidden">
+  <div class="counter-wrap">
+    <div id="number"></div>
+    <div>days since we met 💕</div>
+  </div>
+  <div class="subtext">and our love keeps growing 💌</div>
+</div>
+
+<div id="panel3" class="panel hidden">
+  <div class="counter-wrap">
+    <div id="msg-number"></div>
+    <div>messages shared 💌</div>
+  </div>
+  <div class="subtext">let’s reach 100k together soon 😘</div>
+</div>
+
+<!-- Floating hearts container -->
+<div class="hearts-container"></div>
+
+<!-- Navigation Arrows -->
+<div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
+<div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
+
+<!-- Credit -->
+<div class="credit">made by zino</div>
+
+<!-- Background music -->
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Fallback play button -->
+<button id="play-music">▶ Play Music</button>
+
+<script src="script.js"></script>
+</body>
+</html>
