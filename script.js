@@ -21,7 +21,7 @@ function showPanel(i){
 
   if(current===1&&!countdownStarted) startCountdown();
   if(current===2&&!messageCountStarted) startMessageCounter();
-  if(current===3){ positionTimelineEvents(); createTimelineBranches(); }
+  if(current===3){ positionTimelineEvents(); drawTimelineCurve(); }
 }
 
 // ---------------- NAVIGATION ----------------
@@ -58,29 +58,45 @@ setInterval(createHeart,500);
 // ---------------- TIMELINE EVENTS ----------------
 function positionTimelineEvents(){
   const events=document.querySelectorAll(".timeline-events .event");
+  const svg=document.querySelector(".timeline-graph");
+  const svgRect=svg.getBoundingClientRect();
   const total=events.length;
   events.forEach((event,index)=>{
-    const percent=(index/(total-1))*100;
-    event.style.left=percent+"%";
+    const x=(index/(total-1))*100;
+    const y=50 + Math.sin(index/(total-1)*Math.PI)*-40;
+    event.style.left=x+'%';
+    event.style.top=y+'%';
     setTimeout(()=>{ event.classList.add("pop"); },index*300);
   });
 }
 
-// ---------------- RANDOM TIMELINE BRANCHES ----------------
-function createTimelineBranches(){
-  const svg=document.querySelector("#panel4 .timeline-branches");
-  svg.innerHTML="";
-  for(let i=0;i<3;i++){
-    const yPercent=20 + Math.random()*60;
-    const line=document.createElementNS("http://www.w3.org/2000/svg","line");
-    line.setAttribute("x1","0%"); line.setAttribute("y1",yPercent+"%"); line.setAttribute("x2","100%"); line.setAttribute("y2",yPercent+"%");
-    line.classList.add("timeline-branch");
-    svg.appendChild(line);
-    line.style.strokeDasharray="100%";
-    line.style.strokeDashoffset="100%";
-    line.style.transition="stroke-dashoffset 1.2s ease";
-    setTimeout(()=>{ line.style.strokeDashoffset="0"; },i*200);
+// ---------------- DRAW CURVED TIMELINE ----------------
+function drawTimelineCurve(){
+  const path=document.querySelector(".timeline-line");
+  const events=document.querySelectorAll(".timeline-events .event");
+  const svg=document.querySelector(".timeline-graph");
+  const svgWidth=svg.getBoundingClientRect().width;
+  const svgHeight=svg.getBoundingClientRect().height;
+
+  const points=[];
+  events.forEach(event=>{
+    const rect=event.getBoundingClientRect();
+    const x=(rect.left + rect.width/2) - svg.getBoundingClientRect().left;
+    const y=(rect.top + rect.height/2) - svg.getBoundingClientRect().top;
+    points.push({x,y});
+  });
+
+  let d=`M ${points[0].x} ${points[0].y}`;
+  for(let i=1;i<points.length;i++){
+    const cpX=(points[i-1].x + points[i].x)/2;
+    const cpY=points[i-1].y;
+    d+=` Q ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
   }
+
+  path.setAttribute("d",d);
+  path.style.strokeDashoffset = path.getTotalLength();
+  path.style.strokeDasharray = path.getTotalLength();
+  setTimeout(()=>{ path.style.strokeDashoffset=0; },100);
 }
 
 // ---------------- MODAL ----------------
