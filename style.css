@@ -139,8 +139,6 @@ h1 {
 }
 
 /* ---------------- TIMELINE PANEL ---------------- */
-
-/* Timeline text above the line */
 .timeline-text {
   font-size: clamp(1rem, 2vw, 1.5rem);
   color: #fff;
@@ -150,7 +148,6 @@ h1 {
   line-height: 1.4;
 }
 
-/* Timeline SVG container */
 #timeline {
   width: 90%;
   max-width: 900px;
@@ -159,7 +156,6 @@ h1 {
   display: block;
 }
 
-/* Timeline events container */
 .timeline-events {
   position: relative;
   width: 90%;
@@ -168,22 +164,22 @@ h1 {
   margin: 0 auto;
 }
 
-/* Events styling */
 .timeline-events .event {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%) scale(0);
   text-align: center;
-  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
   color: #fff;
   background: rgba(255, 26, 117, 0.2);
-  padding: 5px 8px;
+  padding: clamp(4px, 0.5vw, 6px) clamp(6px, 1vw, 10px);
   border-radius: 8px;
   opacity: 0;
   white-space: nowrap;
+  max-width: 120px;
 }
 
-/* Connector circle for branches */
+/* Connector circle */
 .timeline-events .event::after {
   content: '';
   position: absolute;
@@ -208,9 +204,9 @@ h1 {
   animation: popIn 0.5s forwards;
 }
 
-/* Responsive adjustments for small screens */
+/* Responsive adjustments */
 @media (max-width: 600px) {
   #timeline, .timeline-events { height: 250px; }
   .timeline-text { margin-bottom: 4rem; font-size: 1rem; }
-  .timeline-events .event { font-size: 0.8rem; padding: 4px 6px; }
+  .timeline-events .event { font-size: 0.8rem; padding: 4px 6px; max-width: 90px; }
 }
