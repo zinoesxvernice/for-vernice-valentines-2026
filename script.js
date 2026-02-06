@@ -117,34 +117,56 @@ function createHeart(){
 setInterval(createHeart,500);
 
 // ---------------- TIMELINE ANIMATION ----------------
-function animateTimeline(){
-  const svg=document.getElementById("timeline");
-  svg.innerHTML="";
-  const width=svg.clientWidth;
-  const height=svg.clientHeight/2;
+function animateTimeline() {
+  const svg = document.getElementById("timeline");
+  svg.innerHTML = "";
+  const width = svg.clientWidth;
+  const height = svg.clientHeight / 2;
 
-  // Draw the main line
-  const line=document.createElementNS("http://www.w3.org/2000/svg","line");
-  line.setAttribute("x1","0");
-  line.setAttribute("y1",height);
-  line.setAttribute("x2","0");
-  line.setAttribute("y2",height);
-  line.setAttribute("stroke","#ff1a75");
-  line.setAttribute("stroke-width","4");
-  svg.appendChild(line);
+  // Main horizontal line
+  const mainLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  mainLine.setAttribute("x1", 0);
+  mainLine.setAttribute("y1", height);
+  mainLine.setAttribute("x2", 0);
+  mainLine.setAttribute("y2", height);
+  mainLine.setAttribute("stroke", "#ff1a75");
+  mainLine.setAttribute("stroke-width", 4);
+  svg.appendChild(mainLine);
 
-  let progress=0;
-  const interval=setInterval(()=>{
-    progress+=2; // speed of line draw
-    if(progress>width) progress=width;
-    line.setAttribute("x2",progress);
-    if(progress===width) clearInterval(interval);
+  const events = document.querySelectorAll(".timeline-events .event");
+  const branchLength = 40; // branch height
+  let progress = 0;
 
-    // Animate events
-    const events=document.querySelectorAll(".timeline-events .event");
-    events.forEach(ev=>{
-      const pos=parseFloat(ev.style.left);
-      if(progress>=pos/100*width) ev.style.opacity=1;
+  const interval = setInterval(() => {
+    progress += 2; // main line draw speed
+    if (progress > width) progress = width;
+
+    mainLine.setAttribute("x2", progress);
+
+    events.forEach((ev) => {
+      const pos = parseFloat(ev.style.left); // percent
+      const eventX = (pos / 100) * width;
+      const branchY = ev.classList.contains("top") ? height - branchLength : height + branchLength;
+
+      if (progress >= eventX && !ev.dataset.branchCreated) {
+        // Create branch
+        const branch = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        branch.setAttribute("x1", eventX);
+        branch.setAttribute("y1", height);
+        branch.setAttribute("x2", eventX);
+        branch.setAttribute("y2", branchY);
+        branch.setAttribute("stroke", "#ff1a75");
+        branch.setAttribute("stroke-width", 2);
+        svg.appendChild(branch);
+
+        // Animate event pop
+        ev.classList.add("pop");
+
+        ev.dataset.branchCreated = "true"; // prevent duplicate branch
+      }
     });
-  },16); // ~60fps
+
+    if (progress === width) clearInterval(interval);
+  }, 16); // ~60fps
 }
+
