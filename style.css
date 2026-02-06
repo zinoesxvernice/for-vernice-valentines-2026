@@ -88,6 +88,88 @@ h1 {
 /* ---------------- CREDIT ---------------- */
 .credit { position:fixed; bottom:12px; right:16px; opacity:0.6; font-size:.8rem; color:#ff1a75; }
 
+/* timeline */
+/* ---------------- LOVE TIMELINE ---------------- */
+.timeline-title{
+  font-size:2rem;
+  margin-bottom:25px;
+  color:#ff1a75;
+}
+
+.timeline{
+  position:relative;
+  width:90%;
+  margin:auto;
+  padding:40px 0;
+}
+
+.timeline-line{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:4px;
+  height:0;
+  background:#ff4d88;
+  transform:translateX(-50%);
+  animation: drawLine 2s forwards;
+}
+
+.timeline-item{
+  position:relative;
+  width:50%;
+  padding:20px;
+  opacity:0;
+}
+
+.timeline-item.left{ left:0; text-align:right; }
+.timeline-item.right{ left:50%; text-align:left; }
+
+.timeline-item::after{
+  content:"";
+  position:absolute;
+  top:30px;
+  width:16px;
+  height:16px;
+  background:#ff1a75;
+  border-radius:50%;
+  animation: popDot .5s forwards;
+}
+
+.timeline-item.left::after{ right:-8px; }
+.timeline-item.right::after{ left:-8px; }
+
+.timeline-item .content{
+  background:rgba(255,255,255,0.15);
+  padding:12px 18px;
+  border-radius:14px;
+  backdrop-filter:blur(10px);
+}
+
+#panel4:not(.hidden) .timeline-item{
+  animation: fadeSlide .8s forwards;
+}
+
+#panel4:not(.hidden) .timeline-item:nth-child(2){animation-delay:.4s;}
+#panel4:not(.hidden) .timeline-item:nth-child(3){animation-delay:.8s;}
+#panel4:not(.hidden) .timeline-item:nth-child(4){animation-delay:1.2s;}
+#panel4:not(.hidden) .timeline-item:nth-child(5){animation-delay:1.6s;}
+
+@keyframes drawLine{
+  from{height:0;}
+  to{height:100%;}
+}
+
+@keyframes fadeSlide{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes popDot{
+  from{transform:scale(0);}
+  to{transform:scale(1);}
+}
+
+
 /* ---------------- PANEL FLOAT ---------------- */
 @keyframes floatPanel {
   0%{transform:translateY(0);}
