@@ -36,7 +36,7 @@ h1#forVernice { font-size:clamp(2rem,6vw,4rem); font-weight:900; color:#ff1a75; 
 #timeline{width:100%;height:4px;background:#ffb6c1;margin-bottom:40px;position:relative;}
 .timeline-events{position:relative;width:100%;height:220px;}
 .timeline-events .event{
-  position:absolute; top:0; transform:translate(-50%,-50%) scale(1); opacity:0;
+  position:absolute; transform:translate(-50%,-50%) scale(1); opacity:0;
   background:#111; color:#ff4d88; padding:8px 14px; border-radius:14px; font-size:0.95rem; font-weight:600;
   box-shadow:0 4px 15px rgba(0,0,0,0.4),0 0 10px rgba(255,77,136,0.3); cursor:pointer; z-index:2;
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
@@ -45,9 +45,8 @@ h1#forVernice { font-size:clamp(2rem,6vw,4rem); font-weight:900; color:#ff1a75; 
 .timeline-events .event.bottom{top:80%;}
 .timeline-events .event.pop{opacity:1;transform:translate(-50%,-50%) scale(1.1);}
 .timeline-events .event:hover{animation:floatHover 1.2s ease-in-out infinite; box-shadow:0 6px 20px rgba(0,0,0,0.5),0 0 15px rgba(255,77,136,0.6);}
-.timeline-events .event:hover ~ svg line{filter:drop-shadow(0 0 6px #ff4d88);}
 @keyframes floatHover{0%,100%{transform:translate(-50%,-50%) translateY(0) scale(1.05);}50%{transform:translate(-50%,-50%) translateY(-8px) scale(1.05);}}
-.timeline-branch{stroke:#ff1a75;stroke-width:2;stroke-linecap:round;transition:filter 0.3s ease;}
+.timeline-branch{stroke:#ff1a75;stroke-width:2;stroke-linecap:round;filter: drop-shadow(0 0 6px #ff4d88);}
 
 /* ---------------- MODAL ---------------- */
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,192,203,0.4);display:flex;justify-content:center;align-items:center;z-index:5;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}
