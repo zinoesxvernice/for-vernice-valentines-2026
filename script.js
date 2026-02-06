@@ -1,17 +1,17 @@
-// ---------------- PANELS ----------------
+// PANELS
 const panels=[document.getElementById("panel1"),document.getElementById("panel2"),document.getElementById("panel3"),document.getElementById("panel4")];
 let current=0;
 const navLeft=document.querySelector(".arrow-left");
 const navRight=document.querySelector(".arrow-right");
 
-// ---------------- COUNTERS ----------------
+// COUNTERS
 let countdownStarted=false;
 let messageCountStarted=false;
 
-// ---------------- MUSIC ----------------
+// MUSIC
 const music=document.getElementById("music");
 
-// ---------------- SHOW PANEL ----------------
+// SHOW PANEL
 function showPanel(i){
   panels[current].classList.add("hidden");
   current=i;
@@ -21,17 +21,17 @@ function showPanel(i){
 
   if(current===1&&!countdownStarted) startCountdown();
   if(current===2&&!messageCountStarted) startMessageCounter();
-  if(current===3){ positionTimelineEvents(); drawTimelineCurve(); }
+  if(current===3){ positionTimelineEventsAndDrawLine(); }
 }
 
-// ---------------- NAVIGATION ----------------
+// NAVIGATION
 function nextPanel(){ if(current<panels.length-1) showPanel(current+1); }
 function prevPanel(){ if(current>0) showPanel(current-1); }
 
-// ---------------- DAYS SINCE ----------------
+// DAYS SINCE
 function daysSinceDate(){ const start=new Date("2024-12-30"); const today=new Date(); return Math.floor((today-start)/(1000*60*60*24)); }
 
-// ---------------- CLOCK-TICK ANIMATION ----------------
+// CLOCK-TICK
 function animateClockNumber(finalNumber,containerId,suffix=""){
   const container=document.getElementById(containerId); container.innerHTML="";
   [...finalNumber.toString()].forEach((num,i)=>{
@@ -43,63 +43,50 @@ function animateClockNumber(finalNumber,containerId,suffix=""){
   if(suffix){ setTimeout(()=>{ const suffixSpan=document.createElement("span"); suffixSpan.textContent=suffix; suffixSpan.style.marginLeft="4px"; suffixSpan.style.color="#ff3b3b"; suffixSpan.style.fontWeight="800"; container.appendChild(suffixSpan); },800+finalNumber.toString().length*400); }
 }
 
-// ---------------- START COUNTERS ----------------
+// COUNTERS
 function startCountdown(){ countdownStarted=true; setTimeout(()=>{ animateClockNumber(daysSinceDate(),"number"); },300); }
 function startMessageCounter(){ messageCountStarted=true; setTimeout(()=>{ animateClockNumber(64725,"msg-number","k+"); },300); }
 
-// ---------------- FOR VERNICE CLICK ----------------
+// FOR VERNICE
 document.getElementById("forVernice").addEventListener("click",()=>{ showPanel(1); music.play().catch(()=>{}); });
 
-// ---------------- FLOATING HEARTS ----------------
+// FLOATING HEARTS
 const heartsContainer=document.querySelector(".hearts-container");
 function createHeart(){ const heart=document.createElement("div"); heart.classList.add("heart"); heart.style.left=Math.random()*100+"%"; heart.style.fontSize=12+Math.random()*16+"px"; heart.textContent="❤️"; heartsContainer.appendChild(heart); setTimeout(()=>{ heart.remove(); },8000); }
 setInterval(createHeart,500);
 
-// ---------------- TIMELINE EVENTS ----------------
-function positionTimelineEvents(){
-  const events=document.querySelectorAll(".timeline-events .event");
-  const svg=document.querySelector(".timeline-graph");
-  const svgRect=svg.getBoundingClientRect();
-  const total=events.length;
-  events.forEach((event,index)=>{
-    const x=(index/(total-1))*100;
-    const y=50 + Math.sin(index/(total-1)*Math.PI)*-40;
-    event.style.left=x+'%';
-    event.style.top=y+'%';
-    setTimeout(()=>{ event.classList.add("pop"); },index*300);
-  });
-}
+// TIMELINE EVENTS & LINE
+function positionTimelineEventsAndDrawLine(){
+  const events = document.querySelectorAll(".timeline-events .event");
+  const svg = document.querySelector(".timeline-graph");
+  const path = document.querySelector(".timeline-line");
+  const svgRect = svg.getBoundingClientRect();
+  const points = [];
+  const total = events.length;
 
-// ---------------- DRAW CURVED TIMELINE ----------------
-function drawTimelineCurve(){
-  const path=document.querySelector(".timeline-line");
-  const events=document.querySelectorAll(".timeline-events .event");
-  const svg=document.querySelector(".timeline-graph");
-  const svgWidth=svg.getBoundingClientRect().width;
-  const svgHeight=svg.getBoundingClientRect().height;
-
-  const points=[];
-  events.forEach(event=>{
-    const rect=event.getBoundingClientRect();
-    const x=(rect.left + rect.width/2) - svg.getBoundingClientRect().left;
-    const y=(rect.top + rect.height/2) - svg.getBoundingClientRect().top;
+  events.forEach((event, index) => {
+    const x = (index / (total-1)) * svgRect.width;
+    const y = 50 + Math.sin(index / (total-1) * Math.PI)*-40;
     points.push({x,y});
+    event.style.left = x + 'px';
+    event.style.top = y + 'px';
+    setTimeout(()=>{ event.classList.add("pop"); }, index*300);
   });
 
-  let d=`M ${points[0].x} ${points[0].y}`;
+  let d = `M ${points[0].x} ${points[0].y}`;
   for(let i=1;i<points.length;i++){
-    const cpX=(points[i-1].x + points[i].x)/2;
-    const cpY=points[i-1].y;
-    d+=` Q ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
+    const cpX = (points[i-1].x + points[i].x)/2;
+    const cpY = points[i-1].y;
+    d += ` Q ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
   }
-
-  path.setAttribute("d",d);
-  path.style.strokeDashoffset = path.getTotalLength();
-  path.style.strokeDasharray = path.getTotalLength();
-  setTimeout(()=>{ path.style.strokeDashoffset=0; },100);
+  path.setAttribute("d", d);
+  const pathLength = path.getTotalLength();
+  path.style.strokeDasharray = pathLength;
+  path.style.strokeDashoffset = pathLength;
+  setTimeout(()=>{ path.style.strokeDashoffset = 0; },100);
 }
 
-// ---------------- MODAL ----------------
+// MODAL
 const modal=document.getElementById("eventModal");
 const modalDate=document.getElementById("modalDate");
 const modalDesc=document.getElementById("modalDesc");
@@ -116,7 +103,7 @@ document.querySelectorAll(".timeline-events .event").forEach(event=>{
 });
 closeModal.addEventListener("click",()=> modal.classList.remove("show"));
 
-// ---------------- DRAG MODAL ----------------
+// DRAG MODAL
 let isDragging=false, offsetX=0, offsetY=0;
 modalTitleBar.addEventListener("mousedown",(e)=>{
   isDragging=true;
