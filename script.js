@@ -134,33 +134,36 @@ function animateTimeline() {
   svg.appendChild(mainLine);
 
   const events = document.querySelectorAll(".timeline-events .event");
-  const branchLength = 40; // branch height
-  let progress = 0;
+  const branchLength = 40;
 
-  // Reset all events for new run
+  // Reset events
   events.forEach(ev => {
     ev.style.opacity = 0;
     ev.style.transform = "translateX(-50%) scale(0)";
     ev.dataset.branchCreated = "";
   });
 
+  let progress = 0;
+
   const interval = setInterval(() => {
-    progress += 2; // line draw speed
+    progress += 2; // line speed
     if (progress > width) progress = width;
 
     mainLine.setAttribute("x2", progress);
 
     events.forEach((ev) => {
-      const pos = parseFloat(ev.style.left); // percent
-      const eventX = (pos / 100) * width;
+      const evRect = ev.getBoundingClientRect(); // actual position on screen
+      const svgRect = svg.getBoundingClientRect();
+      const eventCenterX = evRect.left + evRect.width / 2 - svgRect.left;
+
       const branchY = ev.classList.contains("top") ? height - branchLength : height + branchLength;
 
-      if (progress >= eventX && !ev.dataset.branchCreated) {
+      if (progress >= eventCenterX && !ev.dataset.branchCreated) {
         // Create branch
         const branch = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        branch.setAttribute("x1", eventX);
+        branch.setAttribute("x1", eventCenterX);
         branch.setAttribute("y1", height);
-        branch.setAttribute("x2", eventX);
+        branch.setAttribute("x2", eventCenterX);
         branch.setAttribute("y2", branchY);
         branch.setAttribute("stroke", "#ff1a75");
         branch.setAttribute("stroke-width", 2);
@@ -176,4 +179,3 @@ function animateTimeline() {
     if (progress === width) clearInterval(interval);
   }, 16);
 }
-
