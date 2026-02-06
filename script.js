@@ -1,7 +1,5 @@
-// ---------------- WAIT FOR HTML ----------------
 document.addEventListener("DOMContentLoaded", ()=>{
 
-  // ---------------- PANELS ----------------
   const panels = [
     document.getElementById("panel1"),
     document.getElementById("panel2"),
@@ -13,34 +11,31 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const navLeft = document.querySelector(".arrow-left");
   const navRight = document.querySelector(".arrow-right");
 
-  // ---------------- COUNTERS ----------------
-  let countdownStarted = false;
-  let messageCountStarted = false;
-
-  // ---------------- MUSIC ----------------
   const music = document.getElementById("music");
   const playBtn = document.getElementById("play-music");
 
-  // ---------------- LETTER ANIMATION ----------------
-  const forVerniceTitle = document.getElementById("forVernice");
+  let countdownStarted = false;
+  let messageCountStarted = false;
 
-  // split letters into spans
+  // ---------------- FOR VERNICE LETTERS ----------------
+  const forVerniceTitle = document.getElementById("forVernice");
   const text = forVerniceTitle.textContent;
   forVerniceTitle.textContent = "";
-  [...text].forEach(letter=>{
+
+  [...text].forEach((letter,index)=>{
       const span = document.createElement("span");
       span.textContent = letter;
       span.classList.add("letter");
+      span.style.setProperty("--i", index); // dynamic animation delay
       forVerniceTitle.appendChild(span);
   });
 
-  // ---------------- SHOW PANEL ----------------
+  // ---------------- PANEL FUNCTIONS ----------------
   function showPanel(i) {
       panels[current].classList.add("hidden");
       current = i;
       panels[current].classList.remove("hidden");
 
-      // Show navigation arrows only if not on first panel
       if(current > 0){
           navLeft.classList.add("visible");
           navRight.classList.add("visible");
@@ -49,32 +44,23 @@ document.addEventListener("DOMContentLoaded", ()=>{
           navRight.classList.remove("visible");
       }
 
-      // Start counters if panel is visible
       if(current === 1 && !countdownStarted) startCountdown();
       if(current === 2 && !messageCountStarted) startMessageCounter();
   }
 
-  // ---------------- NAVIGATION ----------------
-  function nextPanel() {
-      if(current < panels.length -1) showPanel(current + 1);
-  }
+  function nextPanel() { if(current < panels.length-1) showPanel(current+1); }
+  function prevPanel() { if(current > 0) showPanel(current-1); }
 
-  function prevPanel() {
-      if(current > 0) showPanel(current - 1);
-  }
-
-  // ---------------- DAYS SINCE ----------------
-  function daysSinceDate() {
+  // ---------------- COUNTERS ----------------
+  function daysSinceDate(){
       const start = new Date("2024-12-30");
       const today = new Date();
-      return Math.floor((today - start) / (1000 * 60 * 60 * 24));
+      return Math.floor((today - start) / (1000*60*60*24));
   }
 
-  // ---------------- CLOCK-TICK ANIMATION ----------------
-  function animateClockNumber(finalNumber, containerId, suffix = "") {
+  function animateClockNumber(finalNumber, containerId, suffix=""){
       const container = document.getElementById(containerId);
       container.innerHTML = "";
-
       [...finalNumber.toString()].forEach((num,i)=>{
           const span = document.createElement("span");
           span.className = "digit";
@@ -84,13 +70,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
           let currentDigit = 0;
           const interval = setInterval(()=>{
               span.textContent = currentDigit;
-              currentDigit = (currentDigit + 1) % 10;
+              currentDigit = (currentDigit+1)%10;
           },50);
 
           setTimeout(()=>{
               clearInterval(interval);
               span.textContent = num;
-          }, 800 + i*400);
+          }, 800+i*400);
       });
 
       if(suffix){
@@ -105,43 +91,38 @@ document.addEventListener("DOMContentLoaded", ()=>{
       }
   }
 
-  // ---------------- START COUNTERS ----------------
   function startCountdown(){
       countdownStarted = true;
-      setTimeout(()=>{ animateClockNumber(daysSinceDate(), "number"); },300);
+      setTimeout(()=>{ animateClockNumber(daysSinceDate(),"number"); },300);
   }
 
   function startMessageCounter(){
       messageCountStarted = true;
-      setTimeout(()=>{ animateClockNumber(64725, "msg-number","k+"); },300);
+      setTimeout(()=>{ animateClockNumber(64725,"msg-number","k+"); },300);
   }
 
   // ---------------- FOR VERNICE CLICK ----------------
   forVerniceTitle.addEventListener("click", ()=>{
-      // animate letters
       forVerniceTitle.classList.add("animate-letters");
 
-      // start pulsing after 9 seconds
       setTimeout(()=>{
           forVerniceTitle.classList.add("pulse-letters");
       },9000);
 
-      // show panel2 and play music
       showPanel(1);
       music.play().catch(()=>{
           playBtn.style.display = "inline-block";
       });
   });
 
-  // ---------------- FALLBACK PLAY BUTTON ----------------
+  // ---------------- MUSIC FALLBACK ----------------
   playBtn.addEventListener("click", ()=>{
       music.play();
       playBtn.style.display = "none";
   });
 
-  // ---------------- FLOATING HEARTS ----------------
+  // ---------------- HEARTS ----------------
   const heartsContainer = document.querySelector(".hearts-container");
-
   function createHeart(){
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -150,9 +131,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
       heart.textContent = "❤️";
       heartsContainer.appendChild(heart);
 
-      setTimeout(()=>{ heart.remove(); }, 8000);
+      setTimeout(()=>{ heart.remove(); },8000);
   }
-
-  setInterval(createHeart, 500);
+  setInterval(createHeart,500);
 
 });
