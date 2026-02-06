@@ -134,7 +134,8 @@ function animateTimeline() {
   svg.appendChild(mainLine);
 
   const events = document.querySelectorAll(".timeline-events .event");
-  const branchLength = 40;
+  const branchLength = 40; // branch length in px
+  const connectorOffset = 4; // match ::after circle
 
   // Reset events
   events.forEach(ev => {
@@ -146,17 +147,20 @@ function animateTimeline() {
   let progress = 0;
 
   const interval = setInterval(() => {
-    progress += 2; // line speed
+    progress += 2; // speed of main line
     if (progress > width) progress = width;
 
+    // Update main line
     mainLine.setAttribute("x2", progress);
 
     events.forEach((ev) => {
-      const evRect = ev.getBoundingClientRect(); // actual position on screen
+      const evRect = ev.getBoundingClientRect();
       const svgRect = svg.getBoundingClientRect();
       const eventCenterX = evRect.left + evRect.width / 2 - svgRect.left;
 
-      const branchY = ev.classList.contains("top") ? height - branchLength : height + branchLength;
+      const branchEndY = ev.classList.contains("top")
+        ? height - branchLength + connectorOffset
+        : height + branchLength - connectorOffset;
 
       if (progress >= eventCenterX && !ev.dataset.branchCreated) {
         // Create branch
@@ -164,13 +168,28 @@ function animateTimeline() {
         branch.setAttribute("x1", eventCenterX);
         branch.setAttribute("y1", height);
         branch.setAttribute("x2", eventCenterX);
-        branch.setAttribute("y2", branchY);
+        branch.setAttribute("y2", height); // start at main line
         branch.setAttribute("stroke", "#ff1a75");
         branch.setAttribute("stroke-width", 2);
         svg.appendChild(branch);
 
-        // Pop animation
-        ev.classList.add("pop");
+        // Animate branch grow
+        let branchProgress = 0;
+        const branchInterval = setInterval(() => {
+          branchProgress += 2; // speed of branch growth
+          if (branchProgress > branchLength) branchProgress = branchLength;
+
+          branch.setAttribute("y2", ev.classList.contains("top")
+            ? height - branchProgress + connectorOffset
+            : height + branchProgress - connectorOffset);
+
+          if (branchProgress === branchLength) clearInterval(branchInterval);
+        }, 16);
+
+        // Animate event pop after branch grows
+        setTimeout(() => {
+          ev.classList.add("pop");
+        }, 100); // tiny delay for branch first
 
         ev.dataset.branchCreated = "true";
       }
