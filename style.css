@@ -20,7 +20,6 @@ body {
   animation: floatPanel 6s ease-in-out infinite;
   transition:0.5s ease;
 }
-
 .hidden { opacity:0; pointer-events:none; transform:scale(0.95); }
 
 h1 {
@@ -53,7 +52,6 @@ h1 {
   overflow:hidden;
   z-index:0;
 }
-
 .heart {
   position:absolute;
   font-size:16px;
@@ -61,7 +59,6 @@ h1 {
   opacity:0.8;
   animation: floatSpin 8s linear infinite;
 }
-
 @keyframes floatSpin {
   0%{transform:translateY(0) rotate(0deg);opacity:0;}
   10%{opacity:0.8;}
@@ -88,85 +85,35 @@ h1 {
 /* ---------------- CREDIT ---------------- */
 .credit { position:fixed; bottom:12px; right:16px; opacity:0.6; font-size:.8rem; color:#ff1a75; }
 
-/* timeline */
-/* ---------------- LOVE TIMELINE ---------------- */
-.timeline-title{
-  font-size:2rem;
-  margin-bottom:25px;
-  color:#ff1a75;
+/* ---------------- PANEL FLOAT ---------------- */
+@keyframes floatPanel {
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
 }
 
-.timeline{
-  position:relative;
-  width:90%;
-  margin:auto;
-  padding:40px 0;
-}
-
-.timeline-line{
-  position:absolute;
-  top:0;
-  left:50%;
-  width:4px;
-  height:0;
-  background:#ff4d88;
-  transform:translateX(-50%);
-  animation: drawLine 2s forwards;
-}
-
-.timeline-item{
-  position:relative;
-  width:50%;
-  padding:20px;
+/* ---------------- LETTER ANIMATION ---------------- */
+.letter{
+  display:inline-block;
   opacity:0;
+  transform:translateY(50px) rotate(0deg);
 }
-
-.timeline-item.left{ left:0; text-align:right; }
-.timeline-item.right{ left:50%; text-align:left; }
-
-.timeline-item::after{
-  content:"";
-  position:absolute;
-  top:30px;
-  width:16px;
-  height:16px;
-  background:#ff1a75;
-  border-radius:50%;
-  animation: popDot .5s forwards;
+.animate-letters .letter{
+  animation:letterEnter 0.9s forwards;
+  animation-delay: calc(var(--i) * 0.1s);
 }
-
-.timeline-item.left::after{ right:-8px; }
-.timeline-item.right::after{ left:-8px; }
-
-.timeline-item .content{
-  background:rgba(255,255,255,0.15);
-  padding:12px 18px;
-  border-radius:14px;
-  backdrop-filter:blur(10px);
+@keyframes letterEnter{
+  0%{opacity:0; transform:translateY(50px) rotate(-30deg);}
+  30%{opacity:1; transform:translateY(-10px) rotate(10deg);}
+  60%{transform:translateY(5px) rotate(-5deg);}
+  100%{opacity:1; transform:translateY(0) rotate(0deg);}
 }
-
-#panel4:not(.hidden) .timeline-item{
-  animation: fadeSlide .8s forwards;
+.pulse-letters .letter{
+  animation:letterPulse 1s infinite;
 }
-
-#panel4:not(.hidden) .timeline-item:nth-child(2){animation-delay:.4s;}
-#panel4:not(.hidden) .timeline-item:nth-child(3){animation-delay:.8s;}
-#panel4:not(.hidden) .timeline-item:nth-child(4){animation-delay:1.2s;}
-#panel4:not(.hidden) .timeline-item:nth-child(5){animation-delay:1.6s;}
-
-@keyframes drawLine{
-  from{height:0;}
-  to{height:100%;}
-}
-
-@keyframes fadeSlide{
-  from{opacity:0; transform:translateY(30px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-@keyframes popDot{
-  from{transform:scale(0);}
-  to{transform:scale(1);}
+@keyframes letterPulse{
+  0%,100%{ transform: scale(1); }
+  50%{ transform: scale(1.15); }
 }
 
 /* ---------------- VIGNETTE ---------------- */
@@ -177,56 +124,7 @@ body::before {
   left:0;
   width:100%;
   height:100%;
-  pointer-events:none; /* so it doesn’t block clicks */
+  pointer-events:none;
   background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%);
-  z-index:5; /* above panels and below arrows/credit */
-}
-
-/* ---------------- LETTER ANIMATION ---------------- */
-.letter{
-  display:inline-block;
-  opacity:0;
-  transform:translateY(50px) rotate(0deg);
-}
-
-/* entrance animation over 9 seconds */
-.animate-letters .letter{
-  animation:letterEnter 9s forwards;
-}
-
-/* stagger letters slightly */
-.animate-letters .letter:nth-child(1){ animation-delay: 0s; }
-.animate-letters .letter:nth-child(2){ animation-delay: 0.1s; }
-.animate-letters .letter:nth-child(3){ animation-delay: 0.2s; }
-.animate-letters .letter:nth-child(4){ animation-delay: 0.3s; }
-.animate-letters .letter:nth-child(5){ animation-delay: 0.4s; }
-.animate-letters .letter:nth-child(6){ animation-delay: 0.5s; }
-.animate-letters .letter:nth-child(7){ animation-delay: 0.6s; }
-.animate-letters .letter:nth-child(8){ animation-delay: 0.7s; }
-.animate-letters .letter:nth-child(9){ animation-delay: 0.8s; }
-/* add more if your text has more letters */
-
-@keyframes letterEnter{
-  0%{opacity:0; transform:translateY(50px) rotate(-30deg);}
-  30%{opacity:1; transform:translateY(-10px) rotate(10deg);}
-  60%{transform:translateY(5px) rotate(-5deg);}
-  100%{opacity:1; transform:translateY(0) rotate(0deg);}
-}
-
-/* pulsing effect after entrance */
-.pulse-letters .letter{
-  animation:letterPulse 1s infinite;
-}
-
-@keyframes letterPulse{
-  0%,100%{ transform: scale(1); }
-  50%{ transform: scale(1.15); }
-}
-
-
-/* ---------------- PANEL FLOAT ---------------- */
-@keyframes floatPanel {
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
-  100%{transform:translateY(0);}
+  z-index:5;
 }
