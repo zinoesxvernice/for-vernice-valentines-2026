@@ -173,24 +173,40 @@ h1#forVernice {
   left: 0; /* JS will update left % */
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
-  background: #fff0f5;
-  color: #ff1a75;
-  padding: 6px 10px;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  box-shadow: 0 0 10px rgba(255, 26, 117, 0.4);
+  background: #111; /* modern black */
+  color: #ff4d88;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 10px rgba(255,77,136,0.3);
   cursor: pointer;
   z-index: 2;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 
+/* Alternate top/bottom positions */
 .timeline-events .event.top { top: 20%; }
 .timeline-events .event.bottom { top: 80%; }
 
 /* Pop animation */
 .timeline-events .event.pop {
   transform: translate(-50%, -50%) scale(1.1);
-  transition: transform 0.3s ease;
+}
+
+/* Hover float + glow branch effect */
+.timeline-events .event:hover {
+  animation: floatHover 1.2s ease-in-out infinite;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,77,136,0.6);
+}
+
+.timeline-events .event:hover ~ svg line {
+  filter: drop-shadow(0 0 6px #ff4d88);
+}
+
+@keyframes floatHover {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0) scale(1.05); }
+  50% { transform: translate(-50%, -50%) translateY(-8px) scale(1.05); }
 }
 
 /* Branch lines */
@@ -198,6 +214,7 @@ h1#forVernice {
   stroke: #ff1a75;
   stroke-width: 2;
   stroke-linecap: round;
+  transition: filter 0.3s ease;
 }
 
 /* ---------------- MODAL ---------------- */
