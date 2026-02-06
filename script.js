@@ -64,12 +64,13 @@ function positionTimelineEventsAndDrawLine(){
   const points = [];
   const total = events.length;
 
-  events.forEach((event, index) => {
-    const x = (index / (total-1)) * svgRect.width;
-    const y = 50 + Math.sin(index / (total-1) * Math.PI)*-40;
-    points.push({x,y});
-    event.style.left = x + 'px';
-    event.style.top = y + 'px';
+  events.forEach((event,index)=>{
+    const x = (index/(total-1)) * svgRect.width;
+    const y = 20; 
+    const dotY = y + event.offsetHeight + 10; 
+    points.push({x, y:dotY});
+    event.style.left = x+'px';
+    event.style.top = y+'px';
     setTimeout(()=>{ event.classList.add("pop"); }, index*300);
   });
 
