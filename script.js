@@ -1,138 +1,150 @@
-document.addEventListener("DOMContentLoaded", ()=>{
+// ---------------- PANELS ----------------
+const panels = [
+  document.getElementById("panel1"),
+  document.getElementById("panel2"),
+  document.getElementById("panel3"),
+  document.getElementById("panel4")
+];
+let current = 0;
 
-  const panels = [
-    document.getElementById("panel1"),
-    document.getElementById("panel2"),
-    document.getElementById("panel3"),
-    document.getElementById("panel4")
-  ];
-  let current = 0;
+const navLeft = document.querySelector(".arrow-left");
+const navRight = document.querySelector(".arrow-right");
 
-  const navLeft = document.querySelector(".arrow-left");
-  const navRight = document.querySelector(".arrow-right");
+// ---------------- COUNTERS ----------------
+let countdownStarted = false;
+let messageCountStarted = false;
 
-  const music = document.getElementById("music");
-  const playBtn = document.getElementById("play-music");
+// ---------------- MUSIC ----------------
+const music = document.getElementById("music");
+const playBtn = document.getElementById("play-music");
 
-  let countdownStarted = false;
-  let messageCountStarted = false;
+// ---------------- SHOW PANEL ----------------
+function showPanel(i){
+  panels[current].classList.add("hidden");
+  current = i;
+  panels[current].classList.remove("hidden");
 
-  // ---------------- FOR VERNICE LETTERS ----------------
-  const forVerniceTitle = document.getElementById("forVernice");
-  const text = forVerniceTitle.textContent;
-  forVerniceTitle.textContent = "";
+  if(current>0){
+    navLeft.classList.add("visible");
+    navRight.classList.add("visible");
+  } else {
+    navLeft.classList.remove("visible");
+    navRight.classList.remove("visible");
+  }
 
-  [...text].forEach((letter,index)=>{
-      const span = document.createElement("span");
-      span.textContent = letter;
-      span.classList.add("letter");
-      span.style.setProperty("--i", index); // dynamic animation delay
-      forVerniceTitle.appendChild(span);
+  if(current===1 && !countdownStarted) startCountdown();
+  if(current===2 && !messageCountStarted) startMessageCounter();
+  if(current===3) animateTimeline();
+}
+
+// ---------------- NAVIGATION ----------------
+function nextPanel(){ if(current<panels.length-1) showPanel(current+1); }
+function prevPanel(){ if(current>0) showPanel(current-1); }
+
+// ---------------- DAYS SINCE ----------------
+function daysSinceDate(){
+  const start = new Date("2024-12-30");
+  const today = new Date();
+  return Math.floor((today - start) / (1000*60*60*24));
+}
+
+// ---------------- CLOCK-TICK ANIMATION ----------------
+function animateClockNumber(finalNumber, containerId, suffix=""){
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  [...finalNumber.toString()].forEach((num,i)=>{
+    const span = document.createElement("span");
+    span.className="digit";
+    span.textContent="0";
+    container.appendChild(span);
+
+    let currentDigit=0;
+    const interval=setInterval(()=>{
+      span.textContent=currentDigit;
+      currentDigit=(currentDigit+1)%10;
+    },50);
+
+    setTimeout(()=>{
+      clearInterval(interval);
+      span.textContent=num;
+    },800+i*400);
   });
-
-  // ---------------- PANEL FUNCTIONS ----------------
-  function showPanel(i) {
-      panels[current].classList.add("hidden");
-      current = i;
-      panels[current].classList.remove("hidden");
-
-      if(current > 0){
-          navLeft.classList.add("visible");
-          navRight.classList.add("visible");
-      } else {
-          navLeft.classList.remove("visible");
-          navRight.classList.remove("visible");
-      }
-
-      if(current === 1 && !countdownStarted) startCountdown();
-      if(current === 2 && !messageCountStarted) startMessageCounter();
+  if(suffix){
+    setTimeout(()=>{
+      const suffixSpan=document.createElement("span");
+      suffixSpan.textContent=suffix;
+      suffixSpan.style.marginLeft="4px";
+      suffixSpan.style.color="#ff3b3b";
+      suffixSpan.style.fontWeight="800";
+      container.appendChild(suffixSpan);
+    },800+finalNumber.toString().length*400);
   }
+}
 
-  function nextPanel() { if(current < panels.length-1) showPanel(current+1); }
-  function prevPanel() { if(current > 0) showPanel(current-1); }
+// ---------------- START COUNTERS ----------------
+function startCountdown(){
+  countdownStarted=true;
+  setTimeout(()=>{ animateClockNumber(daysSinceDate(),"number"); },300);
+}
+function startMessageCounter(){
+  messageCountStarted=true;
+  setTimeout(()=>{ animateClockNumber(64725,"msg-number","k+"); },300);
+}
 
-  // ---------------- COUNTERS ----------------
-  function daysSinceDate(){
-      const start = new Date("2024-12-30");
-      const today = new Date();
-      return Math.floor((today - start) / (1000*60*60*24));
-  }
-
-  function animateClockNumber(finalNumber, containerId, suffix=""){
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
-      [...finalNumber.toString()].forEach((num,i)=>{
-          const span = document.createElement("span");
-          span.className = "digit";
-          span.textContent = "0";
-          container.appendChild(span);
-
-          let currentDigit = 0;
-          const interval = setInterval(()=>{
-              span.textContent = currentDigit;
-              currentDigit = (currentDigit+1)%10;
-          },50);
-
-          setTimeout(()=>{
-              clearInterval(interval);
-              span.textContent = num;
-          }, 800+i*400);
-      });
-
-      if(suffix){
-          setTimeout(()=>{
-              const suffixSpan = document.createElement("span");
-              suffixSpan.textContent = suffix;
-              suffixSpan.style.marginLeft = "4px";
-              suffixSpan.style.color = "#ff3b3b";
-              suffixSpan.style.fontWeight = "800";
-              container.appendChild(suffixSpan);
-          }, 800 + finalNumber.toString().length*400);
-      }
-  }
-
-  function startCountdown(){
-      countdownStarted = true;
-      setTimeout(()=>{ animateClockNumber(daysSinceDate(),"number"); },300);
-  }
-
-  function startMessageCounter(){
-      messageCountStarted = true;
-      setTimeout(()=>{ animateClockNumber(64725,"msg-number","k+"); },300);
-  }
-
-  // ---------------- FOR VERNICE CLICK ----------------
-  forVerniceTitle.addEventListener("click", ()=>{
-      forVerniceTitle.classList.add("animate-letters");
-
-      setTimeout(()=>{
-          forVerniceTitle.classList.add("pulse-letters");
-      },9000);
-
-      showPanel(1);
-      music.play().catch(()=>{
-          playBtn.style.display = "inline-block";
-      });
-  });
-
-  // ---------------- MUSIC FALLBACK ----------------
-  playBtn.addEventListener("click", ()=>{
-      music.play();
-      playBtn.style.display = "none";
-  });
-
-  // ---------------- HEARTS ----------------
-  const heartsContainer = document.querySelector(".hearts-container");
-  function createHeart(){
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.style.left = Math.random()*100+"%";
-      heart.style.fontSize = 12 + Math.random()*16 + "px";
-      heart.textContent = "❤️";
-      heartsContainer.appendChild(heart);
-
-      setTimeout(()=>{ heart.remove(); },8000);
-  }
-  setInterval(createHeart,500);
-
+// ---------------- FOR VERNICE CLICK ----------------
+document.getElementById("forVernice").addEventListener("click",()=>{
+  showPanel(1);
+  music.play().catch(()=>{ playBtn.style.display="inline-block"; });
 });
+
+// ---------------- FALLBACK PLAY BUTTON ----------------
+playBtn.addEventListener("click", ()=>{
+  music.play();
+  playBtn.style.display="none";
+});
+
+// ---------------- FLOATING HEARTS ----------------
+const heartsContainer=document.querySelector(".hearts-container");
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left=Math.random()*100+"%";
+  heart.style.fontSize=12+Math.random()*16+"px";
+  heart.textContent="❤️";
+  heartsContainer.appendChild(heart);
+  setTimeout(()=>{ heart.remove(); },8000);
+}
+setInterval(createHeart,500);
+
+// ---------------- TIMELINE ANIMATION ----------------
+function animateTimeline(){
+  const svg=document.getElementById("timeline");
+  svg.innerHTML="";
+  const width=svg.clientWidth;
+  const height=svg.clientHeight/2;
+
+  // Draw the main line
+  const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+  line.setAttribute("x1","0");
+  line.setAttribute("y1",height);
+  line.setAttribute("x2","0");
+  line.setAttribute("y2",height);
+  line.setAttribute("stroke","#ff1a75");
+  line.setAttribute("stroke-width","4");
+  svg.appendChild(line);
+
+  let progress=0;
+  const interval=setInterval(()=>{
+    progress+=2; // speed of line draw
+    if(progress>width) progress=width;
+    line.setAttribute("x2",progress);
+    if(progress===width) clearInterval(interval);
+
+    // Animate events
+    const events=document.querySelectorAll(".timeline-events .event");
+    events.forEach(ev=>{
+      const pos=parseFloat(ev.style.left);
+      if(progress>=pos/100*width) ev.style.opacity=1;
+    });
+  },16); // ~60fps
+}
