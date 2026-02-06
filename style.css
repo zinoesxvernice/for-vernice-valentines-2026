@@ -23,7 +23,6 @@ body {
   position: absolute;
   width: 100%;
   max-width: 900px;
-  animation: floatPanel 6s ease-in-out infinite;
   transition: 0.5s ease;
 }
 
@@ -33,7 +32,7 @@ body {
   transform: scale(0.95);
 }
 
-h1 {
+h1#forVernice {
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 900;
   color: #ff1a75;
@@ -53,7 +52,6 @@ h1 {
 #msg-number {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
-  display: flex;
   color: #ff1a75;
 }
 
@@ -119,7 +117,7 @@ h1 {
 .arrow.visible { opacity: 1; pointer-events: auto; }
 .arrow-left { left: 15px; }
 .arrow-right { right: 15px; }
-.arrow:hover { transform: scale(1.1); background: rgba(255,255,255,0.25); }
+.arrow:hover { transform: scale(1.1); background: rgba(255, 255, 255, 0.25); }
 
 /* ---------------- CREDIT ---------------- */
 .credit {
@@ -138,75 +136,126 @@ h1 {
   100% { transform: translateY(0); }
 }
 
-/* ---------------- TIMELINE PANEL ---------------- */
-.timeline-text {
-  font-size: clamp(1rem, 2vw, 1.5rem);
+/* ---------------- TIMELINE ---------------- */
+#panel4 .timeline-text {
+  font-size: clamp(1rem, 3vw, 1.5rem);
   color: #fff;
-  margin-bottom: 3rem;
-  text-align: center;
-  max-width: 90%;
-  line-height: 1.4;
+  margin-bottom: 40px;
 }
 
 #timeline {
-  width: 90%;
-  max-width: 900px;
-  height: 200px;
-  margin: 0 auto;
-  display: block;
+  width: 100%;
+  height: 150px;
 }
 
 .timeline-events {
   position: relative;
-  width: 90%;
-  max-width: 900px;
-  height: 200px;
-  margin: 0 auto;
+  width: 100%;
+  height: 150px;
 }
 
 .timeline-events .event {
   position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  text-align: center;
-  font-size: clamp(0.7rem, 1.5vw, 1rem);
-  color: #fff;
-  background: rgba(255, 26, 117, 0.2);
-  padding: clamp(4px, 0.5vw, 6px) clamp(6px, 1vw, 10px);
-  border-radius: 8px;
+  transform: translate(-50%, -50%);
+  background: #ffeff5;
+  color: #ff1a75;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px rgba(255, 26, 117, 0.4);
+  cursor: pointer;
   opacity: 0;
-  white-space: nowrap;
-  max-width: 120px;
+  transform: scale(0);
+  transition: all 0.3s ease;
+  z-index: 2;
 }
 
-/* Connector circle */
-.timeline-events .event::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  background: #ff1a75;
-  border-radius: 50%;
-}
-.timeline-events .event.top::after { bottom: -4px; }
-.timeline-events .event.bottom::after { top: -4px; }
+.timeline-events .event.top { top: 20%; }
+.timeline-events .event.bottom { top: 80%; }
 
-/* Event pop animation */
-@keyframes popIn {
-  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  60%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
+/* Pop animation for events */
 .timeline-events .event.pop {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ---------------- MODAL ---------------- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 192, 203, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: #fff0f5;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 26, 117, 0.5);
   animation: popIn 0.5s forwards;
 }
 
-/* Responsive adjustments */
+.modal-content h2 {
+  color: #ff1a75;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: #ff4d88;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+#closeModal {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ff1a75;
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
 @media (max-width: 600px) {
-  #timeline, .timeline-events { height: 250px; }
-  .timeline-text { margin-bottom: 4rem; font-size: 1rem; }
-  .timeline-events .event { font-size: 0.8rem; padding: 4px 6px; max-width: 90px; }
+  .timeline-events .event {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  #panel4 .timeline-text {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  #timeline {
+    height: 120px;
+  }
+
+  .timeline-events {
+    height: 120px;
+  }
 }
