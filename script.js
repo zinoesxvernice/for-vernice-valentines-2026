@@ -7,6 +7,7 @@ const panels = [
 ];
 let current = 0;
 
+// Navigation arrows
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
@@ -110,14 +111,8 @@ const forVerniceBtn = document.getElementById("forVernice");
 forVerniceBtn.addEventListener("click", () => {
   showPanel(1);
   music.play().catch(() => {
-    playBtn.style.display = "inline-block";
+    if(playBtn) playBtn.style.display = "inline-block";
   });
-});
-
-// ---------------- FALLBACK PLAY BUTTON ----------------
-playBtn.addEventListener("click", () => {
-  music.play();
-  playBtn.style.display = "none";
 });
 
 // ---------------- FLOATING HEARTS ----------------
@@ -136,10 +131,11 @@ function createHeart() {
 
 setInterval(createHeart, 500);
 
-// ---------------- TIMELINE ANIMATION ----------------
+// ---------------- TIMELINE ----------------
 function animateTimeline() {
   const svg = document.getElementById("timeline");
   if (!svg) return;
+
   svg.innerHTML = "";
   const width = svg.clientWidth;
   const height = svg.clientHeight / 2;
@@ -164,11 +160,12 @@ function animateTimeline() {
     const percent = ((i + 1) / (events.length + 1)) * 100;
     ev.style.left = percent + "%";
 
-    // Alternate top/bottom automatically
+    // Alternate top/bottom
     ev.classList.remove("top", "bottom");
     ev.classList.add(i % 2 === 0 ? "top" : "bottom");
   });
 
+  // Animate main line and branches
   let progress = 0;
   const interval = setInterval(() => {
     progress += 2;
@@ -213,5 +210,32 @@ function animateTimeline() {
   }, 16);
 }
 
-// Redraw timeline on window resize
+// Redraw timeline on resize
 window.addEventListener("resize", () => animateTimeline());
+
+// ---------------- MODAL ----------------
+const eventModal = document.getElementById("eventModal");
+const closeModal = document.getElementById("closeModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+
+// Open modal when clicking any timeline event
+const timelineEvents = document.querySelectorAll(".timeline-events .event");
+timelineEvents.forEach((ev, i) => {
+  ev.addEventListener("click", () => {
+    modalTitle.textContent = `special moment #${i + 1} 💖`;
+    modalText.textContent = ev.textContent;
+
+    eventModal.classList.add("show");
+  });
+});
+
+// Close modal
+closeModal.addEventListener("click", () => {
+  eventModal.classList.remove("show");
+});
+
+// Close modal by clicking outside content
+eventModal.addEventListener("click", (e) => {
+  if (e.target === eventModal) eventModal.classList.remove("show");
+});
