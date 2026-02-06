@@ -10,6 +10,31 @@ let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
+
+// ---------------- LETTER SPLIT & ANIMATION ----------------
+const forVerniceTitle = document.getElementById("forVernice");
+
+// split letters into spans
+const text = forVerniceTitle.textContent;
+forVerniceTitle.textContent = "";
+[...text].forEach(letter=>{
+    const span = document.createElement("span");
+    span.textContent = letter;
+    span.classList.add("letter");
+    forVerniceTitle.appendChild(span);
+});
+
+// add animation class on click
+forVerniceTitle.addEventListener("click", ()=>{
+    forVerniceTitle.classList.add("animate-letters");
+    
+    // start pulsing after 9s
+    setTimeout(()=>{
+        forVerniceTitle.classList.add("pulse-letters");
+    },9000);
+});
+
+
 // ---------------- COUNTERS ----------------
 let countdownStarted = false;
 let messageCountStarted = false;
