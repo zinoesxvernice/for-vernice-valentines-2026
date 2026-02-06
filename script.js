@@ -137,8 +137,15 @@ function animateTimeline() {
   const branchLength = 40; // branch height
   let progress = 0;
 
+  // Reset all events for new run
+  events.forEach(ev => {
+    ev.style.opacity = 0;
+    ev.style.transform = "translateX(-50%) scale(0)";
+    ev.dataset.branchCreated = "";
+  });
+
   const interval = setInterval(() => {
-    progress += 2; // main line draw speed
+    progress += 2; // line draw speed
     if (progress > width) progress = width;
 
     mainLine.setAttribute("x2", progress);
@@ -159,14 +166,14 @@ function animateTimeline() {
         branch.setAttribute("stroke-width", 2);
         svg.appendChild(branch);
 
-        // Animate event pop
+        // Pop animation
         ev.classList.add("pop");
 
-        ev.dataset.branchCreated = "true"; // prevent duplicate branch
+        ev.dataset.branchCreated = "true";
       }
     });
 
     if (progress === width) clearInterval(interval);
-  }, 16); // ~60fps
+  }, 16);
 }
 
