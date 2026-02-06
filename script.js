@@ -21,7 +21,7 @@ function showPanel(i){
 
   if(current===1&&!countdownStarted) startCountdown();
   if(current===2&&!messageCountStarted) startMessageCounter();
-  if(current===3) positionTimelineEvents();
+  if(current===3){ positionTimelineEvents(); createTimelineBranches(); }
 }
 
 // ---------------- NAVIGATION ----------------
@@ -55,7 +55,7 @@ const heartsContainer=document.querySelector(".hearts-container");
 function createHeart(){ const heart=document.createElement("div"); heart.classList.add("heart"); heart.style.left=Math.random()*100+"%"; heart.style.fontSize=12+Math.random()*16+"px"; heart.textContent="❤️"; heartsContainer.appendChild(heart); setTimeout(()=>{ heart.remove(); },8000); }
 setInterval(createHeart,500);
 
-// ---------------- TIMELINE EVENT POSITIONS ----------------
+// ---------------- TIMELINE EVENTS ----------------
 function positionTimelineEvents(){
   const events=document.querySelectorAll(".timeline-events .event");
   const total=events.length;
@@ -64,6 +64,23 @@ function positionTimelineEvents(){
     event.style.left=percent+"%";
     setTimeout(()=>{ event.classList.add("pop"); },index*300);
   });
+}
+
+// ---------------- RANDOM TIMELINE BRANCHES ----------------
+function createTimelineBranches(){
+  const svg=document.querySelector("#panel4 .timeline-branches");
+  svg.innerHTML="";
+  for(let i=0;i<3;i++){
+    const yPercent=20 + Math.random()*60;
+    const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1","0%"); line.setAttribute("y1",yPercent+"%"); line.setAttribute("x2","100%"); line.setAttribute("y2",yPercent+"%");
+    line.classList.add("timeline-branch");
+    svg.appendChild(line);
+    line.style.strokeDasharray="100%";
+    line.style.strokeDashoffset="100%";
+    line.style.transition="stroke-dashoffset 1.2s ease";
+    setTimeout(()=>{ line.style.strokeDashoffset="0"; },i*200);
+  }
 }
 
 // ---------------- MODAL ----------------
