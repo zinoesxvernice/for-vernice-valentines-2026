@@ -9,11 +9,12 @@
 </head>
 <body>
 
-<!-- ---------------- PANELS ---------------- -->
+<!-- Panel 1 -->
 <div id="panel1" class="panel">
   <h1 id="forVernice">for vernice 💖</h1>
 </div>
 
+<!-- Panel 2: Days since -->
 <div id="panel2" class="panel hidden">
   <div class="counter-wrap">
     <div id="number"></div>
@@ -22,6 +23,7 @@
   <div class="subtext">and our love keeps growing 💌</div>
 </div>
 
+<!-- Panel 3: Messages -->
 <div id="panel3" class="panel hidden">
   <div class="counter-wrap">
     <div id="msg-number"></div>
@@ -30,55 +32,53 @@
   <div class="subtext">let’s reach 100k together soon :D</div>
 </div>
 
+<!-- Panel 4: Timeline -->
 <div id="panel4" class="panel hidden">
   <div class="timeline-text">every special moment and memory we’ve shared 💌</div>
-
-  <!-- SVG timeline line -->
-  <svg id="timeline" width="100%" height="4"></svg>
-
-  <!-- Events -->
+  <div id="timeline"></div>
   <div class="timeline-events">
-    <div class="event top" data-date="dec 22, 2024" data-desc="first met💕">dec 22, 2024<br>first met💕</div>
-    <div class="event bottom" data-date="dec 30, 2024" data-desc="got together🌹">dec 30, 2024<br>got together🌹</div>
-    <div class="event top" data-date="dec 31, 2024" data-desc="first new years🎆">dec 31, 2024<br>first new years🎆</div>
-    <div class="event bottom" data-date="feb 14, 2025" data-desc="first valentines💝">feb 14, 2025<br>first valentines💝</div>
+    <div class="event top" data-date="dec 22, 2024" data-desc="first met 💕">dec 22, 2024<br>first met 💕</div>
+    <div class="event bottom" data-date="dec 30, 2024" data-desc="got together 🌹">dec 30, 2024<br>got together 🌹</div>
+    <div class="event top" data-date="dec 31, 2024" data-desc="first new years 🎆">dec 31, 2024<br>first new years 🎆</div>
+    <div class="event bottom" data-date="feb 14, 2025" data-desc="first valentines 💝">feb 14, 2025<br>first valentines 💝</div>
     <div class="event top" data-date="apr 30, 2025" data-desc="4 month4️⃣">apr 30, 2025<br>4 month4️⃣</div>
-    <div class="event bottom" data-date="feb 14, 2026" data-desc="present day💖">feb 14, 2026<br>present day💖</div>
+    <div class="event bottom" data-date="feb 14, 2026" data-desc="present day 💖">feb 14, 2026<br>present day 💖</div>
+    <!-- SVG branches -->
+    <svg class="timeline-branches" width="100%" height="100%" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <line x1="0" y1="40%" x2="100%" y2="40%" class="timeline-branch"/>
+      <line x1="0" y1="80%" x2="100%" y2="80%" class="timeline-branch"/>
+    </svg>
   </div>
 </div>
 
-<!-- Modal for event details -->
-<div class="modal" id="eventModal">
-  <div class="modal-content">
-    <span id="closeModal">&times;</span>
-    <h2 id="modalDate"></h2>
-    <p id="modalDesc"></p>
-  </div>
-</div>
-
-<!-- ---------------- FLOATING HEARTS ---------------- -->
+<!-- Floating hearts -->
 <div class="hearts-container"></div>
 
-<!-- ---------------- NAVIGATION ARROWS ---------------- -->
+<!-- Navigation arrows -->
 <div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
 <div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
 
-<!-- ---------------- MODAL FOR EVENTS ---------------- -->
-<div id="eventModal" class="modal hidden">
-  <div class="modal-content">
-    <span id="closeModal">&times;</span>
-    <h2 id="modalTitle">event title 💖</h2>
-    <p id="modalText">this is where you can write a cute memory or message for this event. 🥰</p>
-  </div>
-</div>
-
-<!-- ---------------- CREDIT ---------------- -->
+<!-- Credit -->
 <div class="credit">made by zino</div>
 
-<!-- ---------------- MUSIC ---------------- -->
+<!-- Background music -->
 <audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
+
+<!-- Modal -->
+<div class="modal" id="eventModal">
+  <div class="modal-window" id="modalWindow">
+    <div class="modal-titlebar" id="modalTitleBar">
+      <span class="modal-title">event details</span>
+      <span id="closeModal" class="modal-close">&times;</span>
+    </div>
+    <div class="modal-content">
+      <h2 id="modalDate"></h2>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
