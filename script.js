@@ -136,16 +136,20 @@ function animateTimeline() {
   const events = document.querySelectorAll(".timeline-events .event");
 
   // Reset events
-  events.forEach(ev => {
+  events.forEach((ev, i) => {
     ev.style.opacity = 0;
-    ev.style.transform = "translateX(-50%) scale(0)";
+    ev.style.transform = "translate(-50%, -50%) scale(0)";
     ev.dataset.branchCreated = "";
+
+    // Distribute events evenly along the timeline
+    const percent = ((i + 1) / (events.length + 1)) * 100;
+    ev.style.left = percent + "%";
   });
 
   let progress = 0;
 
   const interval = setInterval(() => {
-    progress += 2; // speed of main line
+    progress += 2;
     if (progress > width) progress = width;
 
     mainLine.setAttribute("x2", progress);
@@ -154,27 +158,24 @@ function animateTimeline() {
       const evRect = ev.getBoundingClientRect();
       const svgRect = svg.getBoundingClientRect();
 
-      // Calculate event center for X
       const eventCenterX = evRect.left + evRect.width / 2 - svgRect.left;
 
-      // Calculate branch end at connector circle
-      const connectorOffsetY = ev.classList.contains("top") 
-        ? evRect.bottom - svgRect.top - 4 // 4px for the circle
+      const connectorY = ev.classList.contains("top")
+        ? evRect.bottom - svgRect.top - 4
         : evRect.top - svgRect.top + 4;
 
       if (progress >= eventCenterX && !ev.dataset.branchCreated) {
-        // Create branch
         const branch = document.createElementNS("http://www.w3.org/2000/svg", "line");
         branch.setAttribute("x1", eventCenterX);
         branch.setAttribute("y1", height);
         branch.setAttribute("x2", eventCenterX);
-        branch.setAttribute("y2", height); // start at main line
+        branch.setAttribute("y2", height);
         branch.setAttribute("stroke", "#ff1a75");
         branch.setAttribute("stroke-width", 2);
         svg.appendChild(branch);
 
-        // Animate branch growth to connector
-        const totalLength = connectorOffsetY - height;
+        // Branch grow animation
+        const totalLength = connectorY - height;
         let branchProgress = 0;
         const branchInterval = setInterval(() => {
           branchProgress += 2;
@@ -183,11 +184,7 @@ function animateTimeline() {
           if (branchProgress === totalLength) clearInterval(branchInterval);
         }, 16);
 
-        // Pop event after branch grows
-        setTimeout(() => {
-          ev.classList.add("pop");
-        }, 100);
-
+        setTimeout(() => ev.classList.add("pop"), 100);
         ev.dataset.branchCreated = "true";
       }
     });
@@ -195,4 +192,7 @@ function animateTimeline() {
     if (progress === width) clearInterval(interval);
   }, 16);
 }
+
+// Optional: redraw timeline on resize for responsiveness
+window.addEventListener("resize", () => animateTimeline());
 
