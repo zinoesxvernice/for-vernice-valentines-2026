@@ -1,4 +1,146 @@
-/* Container text */
+/* ---------------- RESET ---------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Baloo 2', cursive;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #ffd6e0 0%, #ffb6c1 100%);
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+}
+
+/* ---------------- PANELS ---------------- */
+.panel {
+  position: absolute;
+  width: 100%;
+  max-width: 900px;
+  animation: floatPanel 6s ease-in-out infinite;
+  transition: 0.5s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  color: #ff1a75;
+  text-shadow: 0 0 12px #ff6b81;
+  cursor: pointer;
+}
+
+.counter-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#number,
+#msg-number {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 800;
+  display: flex;
+  color: #ff1a75;
+}
+
+.digit {
+  display: inline-block;
+  width: 0.7em;
+}
+
+.subtext {
+  margin-top: 15px;
+  color: #fff0f5;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+/* ---------------- FLOATING HEARTS ---------------- */
+.hearts-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.heart {
+  position: absolute;
+  font-size: 16px;
+  color: #ff4d88;
+  opacity: 0.8;
+  animation: floatSpin 8s linear infinite;
+}
+
+@keyframes floatSpin {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  50% { transform: translateY(-300px) rotate(180deg); }
+  100% { transform: translateY(-600px) rotate(360deg); opacity: 0; }
+}
+
+/* ---------------- NAVIGATION ---------------- */
+.arrow {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s ease;
+}
+
+.arrow.visible { opacity: 1; pointer-events: auto; }
+.arrow-left { left: 15px; }
+.arrow-right { right: 15px; }
+.arrow:hover { transform: scale(1.1); background: rgba(255,255,255,0.25); }
+
+/* ---------------- CREDIT ---------------- */
+.credit {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  opacity: 0.6;
+  font-size: 0.8rem;
+  color: #ff1a75;
+}
+
+/* ---------------- PANEL FLOAT ---------------- */
+@keyframes floatPanel {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* ---------------- TIMELINE PANEL ---------------- */
+
+/* Timeline text above the line */
 .timeline-text {
   font-size: clamp(1rem, 2vw, 1.5rem);
   color: #fff;
@@ -8,11 +150,11 @@
   line-height: 1.4;
 }
 
-/* Timeline SVG */
+/* Timeline SVG container */
 #timeline {
   width: 90%;
   max-width: 900px;
-  height: 200px; /* default height */
+  height: 200px;
   margin: 0 auto;
   display: block;
 }
@@ -22,14 +164,14 @@
   position: relative;
   width: 90%;
   max-width: 900px;
-  margin: 0 auto;
   height: 200px;
+  margin: 0 auto;
 }
 
-/* Events */
+/* Events styling */
 .timeline-events .event {
   position: absolute;
-  top: 50%; /* start near middle, adjusted in JS */
+  top: 50%;
   transform: translate(-50%, -50%) scale(0);
   text-align: center;
   font-size: clamp(0.7rem, 2vw, 1rem);
@@ -41,7 +183,7 @@
   white-space: nowrap;
 }
 
-/* Connector circle */
+/* Connector circle for branches */
 .timeline-events .event::after {
   content: '';
   position: absolute;
@@ -55,7 +197,7 @@
 .timeline-events .event.top::after { bottom: -4px; }
 .timeline-events .event.bottom::after { top: -4px; }
 
-/* Pop animation */
+/* Event pop animation */
 @keyframes popIn {
   0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
   60%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
@@ -66,10 +208,9 @@
   animation: popIn 0.5s forwards;
 }
 
-/* Adjust SVG height for small screens */
+/* Responsive adjustments for small screens */
 @media (max-width: 600px) {
-  #timeline, .timeline-events {
-    height: 250px;
-  }
-  .timeline-text { margin-bottom: 4rem; }
+  #timeline, .timeline-events { height: 250px; }
+  .timeline-text { margin-bottom: 4rem; font-size: 1rem; }
+  .timeline-events .event { font-size: 0.8rem; padding: 4px 6px; }
 }
