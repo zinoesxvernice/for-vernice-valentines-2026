@@ -9,12 +9,11 @@
 </head>
 <body>
 
-<!-- Panel 1: FOR VERNICE -->
+<!-- ---------------- PANELS ---------------- -->
 <div id="panel1" class="panel">
-  <h1 id="forVernice">FOR VERNICE 💖</h1>
+  <h1 id="forVernice">for vernice 💖</h1>
 </div>
 
-<!-- Panel 2: Days since -->
 <div id="panel2" class="panel hidden">
   <div class="counter-wrap">
     <div id="number"></div>
@@ -23,50 +22,56 @@
   <div class="subtext">and our love keeps growing 💌</div>
 </div>
 
-<!-- Panel 3: Messages -->
 <div id="panel3" class="panel hidden">
   <div class="counter-wrap">
     <div id="msg-number"></div>
-    <div>messages shared across Discord and TikTok 💌</div>
+    <div>messages shared across discord and tiktok 💌</div>
   </div>
   <div class="subtext">let’s reach 100k together soon :D</div>
 </div>
 
-<!-- Panel 4: Love Timeline -->
 <div id="panel4" class="panel hidden">
   <div class="timeline-text">
-    Every special moment and memory we’ve shared 💌
+    every special moment and memory we’ve shared 💌
   </div>
 
-  <svg id="timeline" width="100%" height="200px"></svg>
+  <!-- Timeline SVG line -->
+  <svg id="timeline"></svg>
 
+  <!-- Timeline events -->
   <div class="timeline-events">
-    <div class="event bottom" style="left:5%;">Dec 22, 2024<br>first met💕</div>
-    <div class="event bottom" style="left:25%;">Dec 30, 2024<br>got together🌹</div>
-    <div class="event bottom" style="left:25%;">Dec 31, 2024<br>first new years🎆</div>
-    <div class="event bottom" style="left:50%;">Feb 14, 2025<br>first valentines💝</div>
-    <div class="event bottom" style="left:75%;">April 30, 2025<br>4 month4️⃣</div>
-    <div class="event bottom" style="left:90%;">Feb 14, 2026<br>present day💖</div>
+    <div class="event top">Dec 22, 2024<br>first met 💕</div>
+    <div class="event bottom">Dec 30, 2024<br>got together 🌹</div>
+    <div class="event top">Dec 31, 2024<br>first new years 🎆</div>
+    <div class="event bottom">Feb 14, 2025<br>first valentines 💝</div>
+    <div class="event top">April 30, 2025<br>4 month 4️⃣</div>
+    <div class="event bottom">Feb 14, 2026<br>present day 💖</div>
   </div>
 </div>
 
-
-<!-- Floating hearts -->
+<!-- ---------------- FLOATING HEARTS ---------------- -->
 <div class="hearts-container"></div>
 
-<!-- Navigation Arrows -->
+<!-- ---------------- NAVIGATION ARROWS ---------------- -->
 <div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
 <div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
 
-<!-- Credit -->
+<!-- ---------------- MODAL FOR EVENTS ---------------- -->
+<div id="eventModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="closeModal">&times;</span>
+    <h2 id="modalTitle">event title 💖</h2>
+    <p id="modalText">this is where you can write a cute memory or message for this event. 🥰</p>
+  </div>
+</div>
+
+<!-- ---------------- CREDIT ---------------- -->
 <div class="credit">made by zino</div>
 
-<!-- Background music -->
+<!-- ---------------- MUSIC ---------------- -->
 <audio id="music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
-
-<button id="play-music" style="display:none;position:fixed;top:10px;right:10px;">Play Music</button>
 
 <script src="script.js"></script>
 </body>
