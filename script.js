@@ -133,109 +133,58 @@ setInterval(createHeart, 500);
 
 // ---------------- TIMELINE ----------------
 function animateTimeline() {
-  const svg = document.getElementById("timeline");
-  if (!svg) return;
+  const timeline = document.getElementById("timeline");
+  const events = document.querySelectorAll("#panel4 .timeline-events .event");
 
-  svg.innerHTML = "";
-  const width = svg.clientWidth;
-  const height = svg.clientHeight / 2;
+  const timelineWidth = timeline.clientWidth;
+  const totalEvents = events.length;
 
-  // Draw main horizontal line
-  const mainLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  mainLine.setAttribute("x1", 0);
-  mainLine.setAttribute("y1", height);
-  mainLine.setAttribute("x2", 0);
-  mainLine.setAttribute("y2", height);
-  mainLine.setAttribute("stroke", "#ff1a75");
-  mainLine.setAttribute("stroke-width", 4);
-  svg.appendChild(mainLine);
-
-  const events = document.querySelectorAll(".timeline-events .event");
-  events.forEach((ev, i) => {
-    ev.style.opacity = 0;
-    ev.style.transform = "translate(-50%, -50%) scale(0)";
-    ev.dataset.branchCreated = "";
-
-    // Evenly space along timeline
-    const percent = ((i + 1) / (events.length + 1)) * 100;
-    ev.style.left = percent + "%";
-
-    // Alternate top/bottom
-    ev.classList.remove("top", "bottom");
-    ev.classList.add(i % 2 === 0 ? "top" : "bottom");
+  // Set event positions evenly
+  events.forEach((event, i) => {
+    const leftPercent = (i / (totalEvents - 1)) * 100;
+    event.style.left = `${leftPercent}%`;
   });
 
-  // Animate main line and branches
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += 2;
-    if (progress > width) progress = width;
-    mainLine.setAttribute("x2", progress);
+  // Draw branches connecting timeline line to each event
+  events.forEach((event) => {
+    const branch = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    branch.classList.add("timeline-branch");
 
-    events.forEach(ev => {
-      const evRect = ev.getBoundingClientRect();
-      const svgRect = svg.getBoundingClientRect();
+    const rect = event.getBoundingClientRect();
+    const containerRect = timeline.getBoundingClientRect();
 
-      const eventCenterX = evRect.left + evRect.width / 2 - svgRect.left;
-      const connectorY = ev.classList.contains("top")
-        ? evRect.bottom - svgRect.top - 4
-        : evRect.top - svgRect.top + 4;
+    const x1 = ((rect.left + rect.width/2) - containerRect.left);
+    const y1 = 0;
+    const x2 = x1;
+    const y2 = event.classList.contains("top") ? rect.top - containerRect.top : rect.bottom - containerRect.top;
 
-      if (progress >= eventCenterX && !ev.dataset.branchCreated) {
-        const branch = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        branch.setAttribute("x1", eventCenterX);
-        branch.setAttribute("y1", height);
-        branch.setAttribute("x2", eventCenterX);
-        branch.setAttribute("y2", height);
-        branch.setAttribute("stroke", "#ff1a75");
-        branch.setAttribute("stroke-width", 2);
-        svg.appendChild(branch);
+    branch.setAttribute("x1", x1);
+    branch.setAttribute("y1", y1);
+    branch.setAttribute("x2", x1);
+    branch.setAttribute("y2", y1);
 
-        // Animate branch growth
-        const totalLength = connectorY - height;
-        let branchProgress = 0;
-        const branchInterval = setInterval(() => {
-          branchProgress += 2;
-          if (Math.abs(branchProgress) > Math.abs(totalLength)) branchProgress = totalLength;
-          branch.setAttribute("y2", height + branchProgress);
-          if (branchProgress === totalLength) clearInterval(branchInterval);
-        }, 16);
+    timeline.appendChild(branch);
 
-        setTimeout(() => ev.classList.add("pop"), 100);
-        ev.dataset.branchCreated = "true";
-      }
-    });
-
-    if (progress === width) clearInterval(interval);
-  }, 16);
+    // Animate branch growing
+    setTimeout(() => {
+      branch.setAttribute("y2", y2);
+      event.classList.add("pop"); // event pops in when branch reaches it
+    }, i * 400);
+  });
 }
 
-// Redraw timeline on resize
-window.addEventListener("resize", () => animateTimeline());
-
-// ---------------- MODAL ----------------
-const eventModal = document.getElementById("eventModal");
+// Modal functionality
+const modal = document.getElementById("eventModal");
+const modalDate = document.getElementById("modalDate");
+const modalDesc = document.getElementById("modalDesc");
 const closeModal = document.getElementById("closeModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalText = document.getElementById("modalText");
 
-// Open modal when clicking any timeline event
-const timelineEvents = document.querySelectorAll(".timeline-events .event");
-timelineEvents.forEach((ev, i) => {
-  ev.addEventListener("click", () => {
-    modalTitle.textContent = `special moment #${i + 1} 💖`;
-    modalText.textContent = ev.textContent;
-
-    eventModal.classList.add("show");
+document.querySelectorAll(".timeline-events .event").forEach(event => {
+  event.addEventListener("click", () => {
+    modalDate.textContent = event.dataset.date;
+    modalDesc.textContent = event.dataset.desc;
+    modal.classList.add("show");
   });
 });
 
-// Close modal
-closeModal.addEventListener("click", () => {
-  eventModal.classList.remove("show");
-});
-
-// Close modal by clicking outside content
-eventModal.addEventListener("click", (e) => {
-  if (e.target === eventModal) eventModal.classList.remove("show");
-});
+closeModal.addEventListener("click", () => modal.classList.remove("show"));
