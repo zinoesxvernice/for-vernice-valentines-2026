@@ -227,6 +227,63 @@ h1#forVernice {
   50% { transform: translate(-50%,0) translateY(-8px) scale(1.05); }
 }
 
+/* ---------------- PANEL 5: UPCOMING EVENTS ---------------- */
+#panel5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative;
+}
+
+#panel5 .timeline-text {
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  color: #fff;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.upcoming-events {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  text-align: center;
+}
+
+.upcoming-events li {
+  color: #fff0f5;
+  font-weight: 600;
+}
+
+.upcoming-events .days {
+  color: #ff1a75;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  margin-right: 6px;
+  display: inline-block;
+}
+
+/* Counting animation for numbers */
+.upcoming-events .days span {
+  display: inline-block;
+}
+
+/* Responsive adjustments */
+@media(max-width:600px) {
+  .upcoming-events {
+    gap: 12px;
+    font-size: 0.9rem;
+  }
+
+  .upcoming-events .days {
+    font-size: 1.5rem;
+  }
+}
+
+
+
 /* ---------------- BOTTOM TEXT ---------------- */
 #panel4 .bottom-text {
   color: #fff;
