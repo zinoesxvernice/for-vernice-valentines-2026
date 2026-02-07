@@ -38,7 +38,7 @@ function showPanel(i) {
   }
 
   if (current === 1 && !countdownStarted) startCountdown();
-  if (current === 2) startMessageCounter();
+  if (current === 2 && !messageCountStarted) startMessageCounter();
   if (current === 3) setTimeout(positionTimeline, 50);
   if (current === 4) startPanel5Counters();
 }
@@ -247,6 +247,13 @@ function startPanel5Counters() {
     animateNumber(diff, elem);
   });
 }
+
+window.addEventListener("load", () => {
+  if (current === 2 && !messageCountStarted) {
+    startMessageCounter();
+  }
+});
+
 
 /* Hearts */
 const heartsContainer = document.querySelector(".hearts-container");
