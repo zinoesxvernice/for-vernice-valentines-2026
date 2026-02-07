@@ -61,30 +61,39 @@ function daysSinceDate() {
 function animateNumber(finalNumber, container) {
   container.innerHTML = "";
 
-  const digits = [...finalNumber.toString()].map(n => parseInt(n, 10));
+  const digits = finalNumber.toString().split("");
+  const spans = [];
 
-  digits.forEach((finalDigit, index) => {
+  // create digit spans
+  digits.forEach(() => {
     const span = document.createElement("span");
     span.className = "digit";
     span.textContent = "0";
     container.appendChild(span);
+    spans.push(span);
+  });
 
+  // sequential rolling
+  spans.forEach((span, i) => {
+    const target = parseInt(digits[i], 10);
     let current = 0;
-    const rolls = 20 + index * 5; // stagger + feel like a clock
-    let count = 0;
+    let ticks = 0;
+    const maxTicks = 20 + i * 8; // later digits roll longer
 
     const interval = setInterval(() => {
       span.textContent = current;
       current = (current + 1) % 10;
-      count++;
+      ticks++;
 
-      if (count >= rolls && current === finalDigit) {
-        span.textContent = finalDigit;
+      if (ticks >= maxTicks && current === target) {
+        span.textContent = target;
         clearInterval(interval);
       }
-    }, 40);
+    }, 35);
   });
 }
+
+
 
 
 function startCountdown() {
