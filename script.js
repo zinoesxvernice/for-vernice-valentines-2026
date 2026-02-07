@@ -56,7 +56,7 @@ function createHeart(){ const heart=document.createElement("div"); heart.classLi
 setInterval(createHeart,500);
 
 // TIMELINE EVENTS & LINE
-function positionTimelineEventsAndDrawLine(){
+function positionTimelineEventsAndDrawLine() {
   const events = document.querySelectorAll(".timeline-events .event");
   const svg = document.querySelector(".timeline-graph");
   const path = document.querySelector(".timeline-line");
@@ -64,46 +64,42 @@ function positionTimelineEventsAndDrawLine(){
   const points = [];
   const total = events.length;
 
+  const amplitude = Math.min(60, window.innerHeight / 6); 
+  const offsetY = Math.min(40, window.innerHeight / 10); 
+
   events.forEach((event, index) => {
     const x = (index / (total - 1)) * svgRect.width;
-    const y = 20; // box top
+    const y = offsetY + Math.sin(index * 1.2) * amplitude;
     const dot = event.querySelector(".dot");
 
-    // Position the box
-    event.style.left = x + 'px';
-    event.style.top = y + 'px';
-    setTimeout(() => { event.classList.add("pop"); }, index * 300);
+    event.style.left = `${x}px`;
+    event.style.top = `${y}px`;
+    setTimeout(() => event.classList.add("pop"), index * 200);
 
-    // Calculate dot position relative to SVG
-    const eventRect = event.getBoundingClientRect();
     const dotRect = dot.getBoundingClientRect();
     const dotCenterX = dotRect.left + dotRect.width / 2 - svgRect.left;
     const dotCenterY = dotRect.top + dotRect.height / 2 - svgRect.top;
-
     points.push({ x: dotCenterX, y: dotCenterY });
   });
 
-  // Build smooth curved path
   let d = `M ${points[0].x} ${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
     const cpX = (points[i - 1].x + points[i].x) / 2;
-    const cpY = points[i - 1].y;
+    const cpY = (points[i - 1].y + points[i].y) / 2;
     d += ` Q ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
   }
 
   path.setAttribute("d", d);
-
-  // Animate the line drawing
   const pathLength = path.getTotalLength();
   path.style.strokeDasharray = pathLength;
   path.style.strokeDashoffset = pathLength;
-  setTimeout(() => {
-    path.style.transition = "stroke-dashoffset 2s ease";
-    path.style.strokeDashoffset = 0;
-  }, 100);
+  setTimeout(() => { path.style.transition = "stroke-dashoffset 2s ease"; path.style.strokeDashoffset = 0; }, 100);
 }
 
-
+// Redraw timeline on resize
+window.addEventListener("resize", () => {
+  if(!panels[3].classList.contains("hidden")) positionTimelineEventsAndDrawLine();
+});
 
 // MODAL
 const modal=document.getElementById("eventModal");
