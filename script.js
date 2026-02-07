@@ -123,21 +123,25 @@ function positionTimelineEventsAndDrawLine() {
   const total = events.length;
   const points = new Array(total);
 
-  const amplitude = Math.min(60, window.innerHeight / 6);
-  const offsetY = Math.min(40, window.innerHeight / 10);
+  // Screen-adaptive offsets
+  const minTop = 20; // minimum distance from top of panel
+  const maxHeight = svgRect.height - 60; // leave space at bottom
+  const amplitude = Math.min(60, maxHeight / 2); // scatter amplitude
 
   events.forEach((event, index) => {
     const x = (index / (total - 1)) * svgRect.width;
-    const y = offsetY + Math.sin(index * 1.3) * amplitude + Math.random() * 10;
+
+    // Scatter vertically but stay within panel
+    let y = minTop + Math.sin(index * 1.3) * amplitude + Math.random() * 10;
+    y = Math.min(y, maxHeight - event.offsetHeight);
 
     event.style.left = `${x}px`;
     event.style.top = `${y}px`;
     setTimeout(() => event.classList.add("pop"), index * 200);
 
-    // Wait for the event box to render fully
+    // Wait for box to fully render
     requestAnimationFrame(() => {
       const dot = event.querySelector(".dot");
-      const eventRect = event.getBoundingClientRect();
       const dotRect = dot.getBoundingClientRect();
 
       const dotCenterX = dotRect.left + dotRect.width / 2 - svgRect.left;
