@@ -101,34 +101,6 @@ function animateNumber(finalNumber, container) {
   });
 }
 
-
-function addKPlus(container) {
-  const k = document.createElement("span");
-  k.textContent = "K+";
-  k.style.marginLeft = "6px";
-  k.style.fontWeight = "800";
-  k.style.color = "#ff1a75";
-  k.style.display = "inline-block";
-  k.style.transform = "scale(0.4)";
-  k.style.opacity = "0";
-  k.style.transition = "0.3s ease";
-
-  container.appendChild(k);
-
-  requestAnimationFrame(() => {
-    k.style.transform = "scale(1.2)";
-    k.style.opacity = "1";
-
-    setTimeout(() => {
-      k.style.transform = "scale(1)";
-    }, 150);
-  });
-}
-
-
-
-
-
 function startCountdown() {
   countdownStarted = true;
   animateNumber(daysSinceDate(), numberEl);
