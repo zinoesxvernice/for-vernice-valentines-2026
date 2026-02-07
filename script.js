@@ -32,7 +32,10 @@ function showPanel(i) {
 
   if (current === 1 && !countdownStarted) startCountdown();
   if (current === 2 && !messageCountStarted) startMessageCounter();
-  if (current === 3) positionTimelineEventsAndDrawLine();
+  if (current === 3) {
+    positionTimelineEventsAndDrawLine();
+    addTimelineBottomText();
+  }
 }
 
 // ------------------- NAVIGATION -------------------
@@ -123,15 +126,14 @@ function positionTimelineEventsAndDrawLine() {
   const total = events.length;
   const points = new Array(total);
 
-  // Screen-adaptive offsets
-  const minTop = 20; // minimum distance from top of panel
-  const maxHeight = svgRect.height - 60; // leave space at bottom
-  const amplitude = Math.min(60, maxHeight / 2); // scatter amplitude
+  // Lower boxes more and scatter vertically
+  const minTop = 80; // further down from top
+  const maxHeight = svgRect.height - 60;
+  const amplitude = Math.min(60, maxHeight / 2);
 
   events.forEach((event, index) => {
     const x = (index / (total - 1)) * svgRect.width;
 
-    // Scatter vertically but stay within panel
     let y = minTop + Math.sin(index * 1.3) * amplitude + Math.random() * 10;
     y = Math.min(y, maxHeight - event.offsetHeight);
 
@@ -139,7 +141,6 @@ function positionTimelineEventsAndDrawLine() {
     event.style.top = `${y}px`;
     setTimeout(() => event.classList.add("pop"), index * 200);
 
-    // Wait for box to fully render
     requestAnimationFrame(() => {
       const dot = event.querySelector(".dot");
       const dotRect = dot.getBoundingClientRect();
@@ -154,6 +155,7 @@ function positionTimelineEventsAndDrawLine() {
   });
 }
 
+// Draw cubic line
 function drawTimelineLine(points, path) {
   let d = `M ${points[0].x} ${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
@@ -177,6 +179,22 @@ function drawTimelineLine(points, path) {
     path.style.transition = "stroke-dashoffset 2s ease";
     path.style.strokeDashoffset = 0;
   }, 100);
+}
+
+// Add text at bottom of timeline
+function addTimelineBottomText() {
+  let bottomText = document.querySelector("#panel4 .bottom-text");
+  if (!bottomText) {
+    bottomText = document.createElement("div");
+    bottomText.className = "bottom-text";
+    bottomText.style.color = "#fff";
+    bottomText.style.fontSize = "1rem";
+    bottomText.style.marginTop = "20px";
+    bottomText.style.opacity = "0.9";
+    bottomText.style.textAlign = "center";
+    bottomText.textContent = "click on the boxes for a special surprise ;)";
+    panels[3].appendChild(bottomText);
+  }
 }
 
 // Redraw timeline on resize
