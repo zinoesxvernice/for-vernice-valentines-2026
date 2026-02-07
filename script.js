@@ -61,10 +61,9 @@ function daysSinceDate() {
 function animateNumber(finalNumber, container) {
   container.innerHTML = "";
 
-  const digits = finalNumber.toString().split("");
+  const digits = finalNumber.toString().split("").map(Number);
   const spans = [];
 
-  // create digit spans
   digits.forEach(() => {
     const span = document.createElement("span");
     span.className = "digit";
@@ -73,25 +72,59 @@ function animateNumber(finalNumber, container) {
     spans.push(span);
   });
 
-  // sequential rolling
-  spans.forEach((span, i) => {
-    const target = parseInt(digits[i], 10);
+  spans.forEach((span, index) => {
+    const finalDigit = digits[index];
     let current = 0;
-    let ticks = 0;
-    const maxTicks = 20 + i * 8; // later digits roll longer
+    let rolls = 20 + index * 10;
 
-    const interval = setInterval(() => {
+    function roll() {
       span.textContent = current;
       current = (current + 1) % 10;
-      ticks++;
+      rolls--;
 
-      if (ticks >= maxTicks && current === target) {
-        span.textContent = target;
-        clearInterval(interval);
+      if (rolls > 0 || current !== finalDigit) {
+        requestAnimationFrame(roll);
+      } else {
+        span.textContent = finalDigit;
+
+        // ONLY panel 3 (messages) gets K+
+        if (
+          index === spans.length - 1 &&
+          container === msgNumberEl
+        ) {
+          addKPlus(container);
+        }
       }
-    }, 35);
+    }
+
+    setTimeout(roll, index * 120);
   });
 }
+
+
+function addKPlus(container) {
+  const k = document.createElement("span");
+  k.textContent = "K+";
+  k.style.marginLeft = "6px";
+  k.style.fontWeight = "800";
+  k.style.color = "#ff1a75";
+  k.style.display = "inline-block";
+  k.style.transform = "scale(0.4)";
+  k.style.opacity = "0";
+  k.style.transition = "0.3s ease";
+
+  container.appendChild(k);
+
+  requestAnimationFrame(() => {
+    k.style.transform = "scale(1.2)";
+    k.style.opacity = "1";
+
+    setTimeout(() => {
+      k.style.transform = "scale(1)";
+    }, 150);
+  });
+}
+
 
 
 
