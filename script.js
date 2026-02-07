@@ -14,9 +14,11 @@ const navRight = document.querySelector(".arrow-right");
 // ------------------- COUNTERS -------------------
 let countdownStarted = false;
 let messageCountStarted = false;
+let panel5CountersStarted = false;
 
 // ------------------- MUSIC -------------------
 const music = document.getElementById("music");
+let musicPlayed = false;
 
 // ------------------- SHOW PANEL -------------------
 function showPanel(i) {
@@ -25,11 +27,14 @@ function showPanel(i) {
   panels[current].classList.remove("hidden");
 
   // Show/hide arrows
-  if (current > 0) {
+  if (current > 0 && current < panels.length - 1) {
     navLeft.classList.add("visible");
     navRight.classList.add("visible");
-  } else {
+  } else if (current === 0) {
     navLeft.classList.remove("visible");
+    navRight.classList.add("visible");
+  } else if (current === panels.length - 1) {
+    navLeft.classList.add("visible");
     navRight.classList.remove("visible");
   }
 
@@ -37,7 +42,7 @@ function showPanel(i) {
   if (current === 1 && !countdownStarted) startCountdown();
   if (current === 2 && !messageCountStarted) startMessageCounter();
   if (current === 3) positionTimelineEventsAndDrawLine();
-  if (current === 4) startPanel5Counters();
+  if (current === 4 && !panel5CountersStarted) startPanel5Counters();
 }
 
 // ------------------- NAVIGATION -------------------
@@ -66,7 +71,7 @@ function animateNumber(finalNumber, container) {
 
     let currentDigit = 0;
     const interval = setInterval(() => {
-      span.textContent = currentDigit;
+      if (currentDigit <= 9) span.textContent = currentDigit;
       currentDigit = (currentDigit + 1) % 10;
     }, 50);
 
@@ -93,7 +98,10 @@ function startMessageCounter() {
 // ------------------- CLICK "FOR VERNICE" -------------------
 document.getElementById("forVernice").addEventListener("click", () => {
   showPanel(1);
-  music.play().catch(() => {});
+  if (!musicPlayed) {
+    music.play().catch(() => {});
+    musicPlayed = true;
+  }
 });
 
 // ------------------- FLOATING HEARTS -------------------
@@ -117,8 +125,10 @@ function positionTimelineEventsAndDrawLine() {
   const svgRect = svg.getBoundingClientRect();
   const points = [];
 
-  // Attach click listeners for modal
+  if (!events.length) return;
+
   events.forEach(event => {
+    // click to open modal
     event.addEventListener("click", () => {
       document.getElementById("modalDate").textContent = event.dataset.date;
       document.getElementById("modalDesc").textContent = event.dataset.desc;
@@ -126,20 +136,18 @@ function positionTimelineEventsAndDrawLine() {
     });
   });
 
-  // Scatter events nicely
   const minTop = 140;
-  const maxHeight = svgRect.height - 60;
+  const maxHeight = Math.max(svgRect.height - 60, 100);
   const amplitude = Math.min(50, maxHeight / 2);
 
   events.forEach((event, i) => {
     const x = (i / (events.length - 1)) * svgRect.width;
-    let y = minTop + Math.sin(i * 1.3) * amplitude + Math.random() * 10;
+    let y = minTop + Math.sin(i * 1.3) * amplitude + Math.random() * 8;
     y = Math.min(y, maxHeight - event.offsetHeight);
     event.style.left = `${x}px`;
     event.style.top = `${y}px`;
-    setTimeout(() => event.classList.add("pop"), i * 200);
+    setTimeout(() => event.classList.add("pop"), i * 150);
 
-    // Position dots
     const dot = event.querySelector(".dot");
     const dotRect = dot.getBoundingClientRect();
     const dotCenterX = dotRect.left + dotRect.width / 2 - svgRect.left;
@@ -169,12 +177,11 @@ function drawTimelineLine(points, path) {
   setTimeout(() => path.style.strokeDashoffset = 0, 100);
 }
 
-// Redraw timeline on resize
 window.addEventListener("resize", () => {
   if (!panels[3].classList.contains("hidden")) positionTimelineEventsAndDrawLine();
 });
 
-// ------------------- MODAL DRAG -------------------
+// ------------------- MODAL DRAG (MOUSE + TOUCH) -------------------
 const modal = document.getElementById("eventModal");
 const modalWindow = document.getElementById("modalWindow");
 const modalTitleBar = document.getElementById("modalTitleBar");
@@ -183,34 +190,47 @@ const closeModal = document.getElementById("closeModal");
 closeModal.addEventListener("click", () => modal.classList.remove("show"));
 
 let isDragging = false, offsetX = 0, offsetY = 0;
-modalTitleBar.addEventListener("mousedown", e => {
-  isDragging = true;
+
+function startDrag(x, y) {
   const rect = modalWindow.getBoundingClientRect();
-  offsetX = e.clientX - rect.left;
-  offsetY = e.clientY - rect.top;
+  offsetX = x - rect.left;
+  offsetY = y - rect.top;
+  isDragging = true;
   modalWindow.style.transition = "none";
-});
-document.addEventListener("mousemove", e => {
-  if (isDragging) {
-    modalWindow.style.left = e.clientX - offsetX + "px";
-    modalWindow.style.top = e.clientY - offsetY + "px";
-    modalWindow.style.position = "fixed";
-  }
-});
-document.addEventListener("mouseup", () => {
+}
+
+function dragMove(x, y) {
+  if (!isDragging) return;
+  modalWindow.style.left = x - offsetX + "px";
+  modalWindow.style.top = y - offsetY + "px";
+  modalWindow.style.position = "fixed";
+}
+
+function stopDrag() {
   if (isDragging) isDragging = false;
   modalWindow.style.transition = "all 0.3s ease";
-});
+}
+
+// Mouse events
+modalTitleBar.addEventListener("mousedown", e => startDrag(e.clientX, e.clientY));
+document.addEventListener("mousemove", e => dragMove(e.clientX, e.clientY));
+document.addEventListener("mouseup", stopDrag);
+
+// Touch events
+modalTitleBar.addEventListener("touchstart", e => startDrag(e.touches[0].clientX, e.touches[0].clientY));
+document.addEventListener("touchmove", e => dragMove(e.touches[0].clientX, e.touches[0].clientY));
+document.addEventListener("touchend", stopDrag);
 
 // ------------------- PANEL 5: UPCOMING EVENTS -------------------
 function startPanel5Counters() {
+  panel5CountersStarted = true;
   const daysElems = document.querySelectorAll("#panel5 .days");
   const today = new Date();
 
   daysElems.forEach(elem => {
     const targetDate = new Date(elem.dataset.date);
     let diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
-    if (diffDays < 0) diffDays = 0;
+    diffDays = Math.max(diffDays, 0);
     animateNumber(diffDays, elem);
   });
 }
