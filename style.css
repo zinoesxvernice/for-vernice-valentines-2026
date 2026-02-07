@@ -185,7 +185,7 @@ body {
 }
 
 /* =========================
-   MODAL
+   MODAL - FULLY FIXED
 ========================= */
 .modal {
   position: fixed;
@@ -195,14 +195,15 @@ body {
   justify-content: center;
   align-items: center;
   padding: 16px;
+  overflow: auto; /* scroll modal if screen is small */
 }
 
 .modal-window {
   width: min(92vw, 520px);
-  max-height: 85vh;
+  max-height: 90vh;
   background: #fff0f7;
   border-radius: 20px;
-  display: block; /* block instead of flex to avoid clipping */
+  display: block; /* prevents flex shrinking */
   overflow: hidden;
 }
 
@@ -212,6 +213,7 @@ body {
   justify-content: space-between;
   align-items: center;
   font-weight: 700;
+  flex-shrink: 0; /* prevent shrinking header */
 }
 
 .modal-close {
@@ -223,13 +225,15 @@ body {
 
 .modal-content {
   padding: 16px;
-  max-height: calc(85vh - 60px); /* space for titlebar */
-  overflow-y: auto; /* allows scrolling */
+  max-height: calc(90vh - 60px); /* leave space for titlebar */
+  overflow-y: auto; /* scroll for long text */
 }
 
 .modal-content p {
-  white-space: normal;
+  white-space: normal !important; /* wrap text */
+  word-wrap: break-word;
   word-break: break-word;
+  overflow-wrap: break-word;
   line-height: 1.6;
 }
 
