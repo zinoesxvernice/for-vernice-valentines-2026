@@ -38,7 +38,7 @@ function showPanel(i) {
   }
 
   if (current === 1 && !countdownStarted) startCountdown();
-  if (current === 2) startMessageCounter();
+  if (current === 2 && !messageCountStarted) startMessageCounter();
   if (current === 3) setTimeout(positionTimeline, 50);
   if (current === 4) startPanel5Counters();
 }
@@ -135,10 +135,9 @@ function startCountdown() {
 }
 
 function startMessageCounter() {
-  msgNumberEl.innerHTML = "";
+  messageCountStarted = true;
   animateNumber(64725, msgNumberEl);
 }
-
 
 
   // K+
