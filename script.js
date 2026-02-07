@@ -83,29 +83,77 @@ forVernice.addEventListener("click", () => {
   music.play().catch(() => {});
 });
 
+function drawTimelineLine(points, path) {
+  if (!points.length) return;
+
+  let d = `M ${points[0].x} ${points[0].y}`;
+
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+
+    const cp1X = prev.x + (curr.x - prev.x) / 2;
+    const cp1Y = prev.y;
+    const cp2X = prev.x + (curr.x - prev.x) / 2;
+    const cp2Y = curr.y;
+
+    d += ` C ${cp1X} ${cp1Y} ${cp2X} ${cp2Y} ${curr.x} ${curr.y}`;
+  }
+
+  path.setAttribute("d", d);
+
+  const length = path.getTotalLength();
+  path.style.strokeDasharray = length;
+  path.style.strokeDashoffset = length;
+
+  setTimeout(() => {
+    path.style.strokeDashoffset = 0;
+  }, 100);
+}
+
+
 /* Timeline */
 function positionTimeline() {
   const events = document.querySelectorAll(".timeline-events .event");
   const container = document.querySelector(".timeline-events");
+  const svg = document.querySelector(".timeline-graph");
+  const path = document.querySelector(".timeline-line");
+
   const width = container.offsetWidth;
   const height = container.offsetHeight;
 
+  const points = [];
+
   events.forEach((event, i) => {
     const total = events.length;
-    const x = ((i + 1) / (total + 1)) * width;
-    const y = height / 2 + Math.sin(i) * 40;
+
+    // Even horizontal spacing
+    const x = ((i + 0.5) / total) * width;
+
+    // Wave pattern vertically
+    const amplitude = 50;
+    const centerY = height / 2;
+    const y = centerY + Math.sin(i * 1.2) * amplitude;
 
     event.style.left = x + "px";
     event.style.top = y + "px";
     event.classList.add("pop");
 
-    event.addEventListener("click", () => {
-      modalDate.textContent = event.dataset.date;
+    // Position for line (center bottom of box)
+    const dotY = y + event.offsetHeight + 10;
+
+    points.push({ x: x, y: dotY });
+
+    event.onclick = () => {
+     modalDate.textContent = event.dataset.date;
       modalDesc.textContent = event.dataset.desc;
       modal.classList.add("show");
-    });
+    };
   });
+
+  drawTimelineLine(points, path);
 }
+
 
 window.addEventListener("resize", () => {
   if (current === 3) positionTimeline();
