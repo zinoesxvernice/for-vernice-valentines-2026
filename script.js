@@ -111,12 +111,10 @@ function drawTimelineLine(points, path) {
   }, 100);
 }
 
-
 /* Timeline */
 function positionTimeline() {
   const events = document.querySelectorAll(".timeline-events .event");
   const container = document.querySelector(".timeline-events");
-  const svg = document.querySelector(".timeline-graph");
   const path = document.querySelector(".timeline-line");
 
   const width = container.offsetWidth;
@@ -127,13 +125,12 @@ function positionTimeline() {
   events.forEach((event, i) => {
     const total = events.length;
 
-    // Even horizontal spacing
+    // FIX 1: prevent overlap (respect box width)
     const rawX = ((i + 0.5) / total) * width;
     const boxHalf = event.offsetWidth / 2;
     const x = Math.max(boxHalf, Math.min(width - boxHalf, rawX));
 
-
-    // Wave pattern vertically
+    // vertical wave stays unchanged
     const amplitude = 50;
     const centerY = height / 2;
     const y = centerY + Math.sin(i * 1.2) * amplitude;
@@ -142,13 +139,12 @@ function positionTimeline() {
     event.style.top = y + "px";
     event.classList.add("pop");
 
-    // Position for line (center bottom of box)
+    // FIX 2: connect line to dot center
     const dotY = y + event.offsetHeight + 10 + 6;
-
     points.push({ x: x, y: dotY });
 
     event.onclick = () => {
-     modalDate.textContent = event.dataset.date;
+      modalDate.textContent = event.dataset.date;
       modalDesc.textContent = event.dataset.desc;
       modal.classList.add("show");
     };
@@ -156,7 +152,6 @@ function positionTimeline() {
 
   drawTimelineLine(points, path);
 }
-
 
 window.addEventListener("resize", () => {
   if (current === 3) positionTimeline();
