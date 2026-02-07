@@ -136,16 +136,9 @@ function startCountdown() {
 
 function startMessageCounter() {
   messageCountStarted = true;
+  animateNumber(64725, msgNumberEl);
+}
 
-  msgNumberEl.innerHTML = "";
-
-  // number
-  [..."64725"].forEach(num => {
-    const span = document.createElement("span");
-    span.className = "digit";
-    span.textContent = num;
-    msgNumberEl.appendChild(span);
-  });
 
   // K+
   const k = document.createElement("span");
