@@ -1,16 +1,10 @@
-// Panels
-const panels = [document.getElementById("panel1"),document.getElementById("panel2"),document.getElementById("panel3"),document.getElementById("panel4"),document.getElementById("panel5")];
+const panels=[document.getElementById("panel1"),document.getElementById("panel2"),document.getElementById("panel3"),document.getElementById("panel4"),document.getElementById("panel5")];
 let current=0;
 const navLeft=document.querySelector(".arrow-left");
 const navRight=document.querySelector(".arrow-right");
-
-// Counters
 let countdownStarted=false,messageCountStarted=false;
-
-// Music
 const music=document.getElementById("music");
 
-// Show Panel
 function showPanel(i){
   panels[current].classList.add("hidden");
   current=i;
@@ -22,14 +16,11 @@ function showPanel(i){
   if(current===4)startPanel5Counters();
 }
 
-// Navigation
 function nextPanel(){if(current<panels.length-1)showPanel(current+1);}
 function prevPanel(){if(current>0)showPanel(current-1);}
 
-// Days since
-function daysSinceDate(){const start=new Date("2024-12-30");const today=new Date();return Math.floor((today-start)/(1000*60*60*24));}
+function daysSinceDate(){return Math.floor((new Date()-new Date("2024-12-30"))/(1000*60*60*24));}
 
-// Animate numbers
 function animateNumber(finalNumber,container){
   container.innerHTML="";
   [...finalNumber.toString()].forEach((num,i)=>{
@@ -43,11 +34,8 @@ function animateNumber(finalNumber,container){
   });
 }
 
-// Counters
 function startCountdown(){countdownStarted=true;animateNumber(daysSinceDate(),document.getElementById("number"));}
 function startMessageCounter(){messageCountStarted=true;animateNumber(64725,document.getElementById("msg-number"));}
-
-// Click intro
 document.getElementById("forVernice").addEventListener("click",()=>{showPanel(1);music.play().catch(()=>{});});
 
 // Hearts
@@ -62,19 +50,22 @@ function positionTimelineEventsAndDrawLine(){
   const path=document.querySelector(".timeline-line");
   const svgRect=svg.getBoundingClientRect();
   const points=[];
-  if(!events.length)return;
+  const containerWidth=svgRect.width;
+
   events.forEach((event,i)=>{
-    const x=(i/(events.length-1))*(svgRect.width-50)+25;
-    const minTop=20,maxTop=svgRect.height-60;
+    const total=events.length;
+    const x=((i+0.5)/total)*containerWidth;
+    const minTop=40,maxTop=svgRect.height-60;
     const amplitude=Math.min(50,(maxTop-minTop)/2);
     let y=minTop+Math.sin(i*1.3)*amplitude;
     y=Math.min(Math.max(y,minTop),maxTop);
-    event.style.left=x+"px";event.style.top=y+"px";
-    setTimeout(()=>event.classList.add("pop"),i*150);
-    const dot=event.querySelector(".dot");
-    points[i]={x:x,y:y+event.offsetHeight};
+    event.style.left=x+"px";
+    event.style.top=y+"px";
+    event.classList.add("pop");
+    points[i]={x:x,y:y+event.offsetHeight/2};
     event.addEventListener("click",()=>{document.getElementById("modalDate").textContent=event.dataset.date;document.getElementById("modalDesc").textContent=event.dataset.desc;document.getElementById("eventModal").classList.add("show");});
   });
+
   drawTimelineLine(points,path);
 }
 
@@ -96,7 +87,7 @@ function drawTimelineLine(points,path){
 
 window.addEventListener("resize",()=>{if(!panels[3].classList.contains("hidden"))positionTimelineEventsAndDrawLine();});
 
-// Modal drag
+// Modal
 const modal=document.getElementById("eventModal");
 const modalWindow=document.getElementById("modalWindow");
 const modalTitleBar=document.getElementById("modalTitleBar");
