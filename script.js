@@ -140,7 +140,7 @@ function positionTimeline() {
     event.classList.add("pop");
 
     // Position for line (center bottom of box)
-    const dotY = y + event.offsetHeight + 10;
+    const dotY = y + event.offsetHeight + 10 + 6;
 
     points.push({ x: x, y: dotY });
 
