@@ -3,7 +3,8 @@ const panels = [
   document.getElementById("panel1"),
   document.getElementById("panel2"),
   document.getElementById("panel3"),
-  document.getElementById("panel4")
+  document.getElementById("panel4"),
+  document.getElementById("panel5")
 ];
 let current = 0;
 const navLeft = document.querySelector(".arrow-left");
@@ -12,6 +13,8 @@ const navRight = document.querySelector(".arrow-right");
 // ------------------- COUNTERS -------------------
 let countdownStarted = false;
 let messageCountStarted = false;
+
+
 
 // ------------------- MUSIC -------------------
 const music = document.getElementById("music");
@@ -200,6 +203,59 @@ document.querySelectorAll(".timeline-events .event").forEach(event => {
 });
 
 closeModal.addEventListener("click", () => modal.classList.remove("show"));
+
+// ---------------- PANEL 5 COUNTERS ----------------
+function startPanel5Counters() {
+  const daysElems = document.querySelectorAll("#panel5 .days");
+
+  daysElems.forEach(elem => {
+    const targetDate = new Date(elem.dataset.date);
+    const today = new Date();
+    let diffDays = Math.ceil((targetDate - today) / (1000*60*60*24));
+    if (diffDays < 0) diffDays = 0;
+
+    // Animate number like previous panels
+    animateClockNumber(diffDays, elem);
+  });
+}
+
+// Modified animateClockNumber to support element instead of containerId
+function animateClockNumber(finalNumber, elem) {
+  elem.innerHTML = "";
+  [...finalNumber.toString()].forEach((num, i) => {
+    const span = document.createElement("span");
+    span.className = "digit";
+    span.textContent = "0";
+    elem.appendChild(span);
+
+    let currentDigit = 0;
+    const interval = setInterval(() => {
+      span.textContent = currentDigit;
+      currentDigit = (currentDigit + 1) % 10;
+    }, 50);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      span.textContent = num;
+    }, 800 + i * 400);
+  });
+}
+
+// Start Panel 5 counters when panel 5 shows
+function showPanel(i) {
+  panels[current].classList.add("hidden");
+  current = i;
+  panels[current].classList.remove("hidden");
+  if (current > 0) { navLeft.classList.add("visible"); navRight.classList.add("visible"); }
+  else { navLeft.classList.remove("visible"); navRight.classList.remove("visible"); }
+
+  if (current === 1 && !countdownStarted) startCountdown();
+  if (current === 2 && !messageCountStarted) startMessageCounter();
+  if (current === 3) { positionTimelineEventsAndDrawLine(); }
+  if (current === 4) { startPanel5Counters(); } // Panel 5
+}
+
+
 
 // ------------------- DRAG MODAL -------------------
 let isDragging = false,
