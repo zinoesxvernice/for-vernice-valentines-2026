@@ -24,14 +24,17 @@ body {
   width: 100vw;
   height: 100vh;
   padding: clamp(16px, 4vw, 48px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   text-align: center;
   position: absolute;
   top: 0;
   left: 0;
+
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -191,7 +194,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  padding: 16px;
 }
 
 .modal-window {
@@ -199,8 +202,7 @@ body {
   max-height: 85vh;
   background: #fff0f7;
   border-radius: 20px;
-  display: flex;
-  flex-direction: column;
+  display: block; /* block instead of flex to avoid clipping */
   overflow: hidden;
 }
 
@@ -221,8 +223,8 @@ body {
 
 .modal-content {
   padding: 16px;
-  overflow-y: auto;
-  flex: 1;
+  max-height: calc(85vh - 60px); /* space for titlebar */
+  overflow-y: auto; /* allows scrolling */
 }
 
 .modal-content p {
