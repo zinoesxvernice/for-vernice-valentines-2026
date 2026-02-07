@@ -136,8 +136,27 @@ function startCountdown() {
 
 function startMessageCounter() {
   messageCountStarted = true;
-  animateNumber(64725, msgNumberEl);
+
+  msgNumberEl.innerHTML = "";
+
+  // number
+  [..."64725"].forEach(num => {
+    const span = document.createElement("span");
+    span.className = "digit";
+    span.textContent = num;
+    msgNumberEl.appendChild(span);
+  });
+
+  // K+
+  const k = document.createElement("span");
+  k.textContent = "K+";
+  k.style.marginLeft = "6px";
+  k.style.fontWeight = "800";
+  k.style.color = "#ff1a75";
+
+  msgNumberEl.appendChild(k);
 }
+
 
 forVernice.addEventListener("click", () => {
   showPanel(1);
