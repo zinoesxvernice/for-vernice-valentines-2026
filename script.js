@@ -120,43 +120,52 @@ function positionTimelineEventsAndDrawLine() {
   const svg = document.querySelector(".timeline-graph");
   const path = document.querySelector(".timeline-line");
   const svgRect = svg.getBoundingClientRect();
-  const points = [];
   const total = events.length;
+  const points = new Array(total);
 
   const amplitude = Math.min(60, window.innerHeight / 6);
   const offsetY = Math.min(40, window.innerHeight / 10);
 
   events.forEach((event, index) => {
     const x = (index / (total - 1)) * svgRect.width;
-    const y = offsetY + Math.sin(index * 1.2) * amplitude + Math.random() * 10;
+    const y = offsetY + Math.sin(index * 1.3) * amplitude + Math.random() * 10;
 
-    // Position the event box
     event.style.left = `${x}px`;
     event.style.top = `${y}px`;
     setTimeout(() => event.classList.add("pop"), index * 200);
 
-    // Dot position relative to SVG
-    const dot = event.querySelector(".dot");
-    const dotX = x;
-    const dotY = y + event.offsetHeight / 2 + dot.offsetHeight / 2;
-    points.push({ x: dotX, y: dotY });
-  });
+    // Wait for the event box to render fully
+    requestAnimationFrame(() => {
+      const dot = event.querySelector(".dot");
+      const eventRect = event.getBoundingClientRect();
+      const dotRect = dot.getBoundingClientRect();
 
-  // Build smooth cubic Bezier curve path
+      const dotCenterX = dotRect.left + dotRect.width / 2 - svgRect.left;
+      const dotCenterY = dotRect.top + dotRect.height / 2 - svgRect.top;
+
+      points[index] = { x: dotCenterX, y: dotCenterY };
+
+      if (points.every(p => p)) drawTimelineLine(points, path);
+    });
+  });
+}
+
+function drawTimelineLine(points, path) {
   let d = `M ${points[0].x} ${points[0].y}`;
   for (let i = 1; i < points.length; i++) {
     const prev = points[i - 1];
     const curr = points[i];
+
     const cp1X = prev.x + (curr.x - prev.x) / 2;
     const cp1Y = prev.y;
     const cp2X = prev.x + (curr.x - prev.x) / 2;
     const cp2Y = curr.y;
+
     d += ` C ${cp1X} ${cp1Y} ${cp2X} ${cp2Y} ${curr.x} ${curr.y}`;
   }
 
   path.setAttribute("d", d);
 
-  // Animate line
   const pathLength = path.getTotalLength();
   path.style.strokeDasharray = pathLength;
   path.style.strokeDashoffset = pathLength;
@@ -190,7 +199,9 @@ document.querySelectorAll(".timeline-events .event").forEach(event => {
 closeModal.addEventListener("click", () => modal.classList.remove("show"));
 
 // ------------------- DRAG MODAL -------------------
-let isDragging = false, offsetX = 0, offsetY = 0;
+let isDragging = false,
+  offsetX = 0,
+  offsetY = 0;
 modalTitleBar.addEventListener("mousedown", e => {
   isDragging = true;
   const rect = modalWindow.getBoundingClientRect();
