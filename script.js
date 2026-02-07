@@ -128,7 +128,10 @@ function positionTimeline() {
     const total = events.length;
 
     // Even horizontal spacing
-    const x = ((i + 0.5) / total) * width;
+    const rawX = ((i + 0.5) / total) * width;
+    const boxHalf = event.offsetWidth / 2;
+    const x = Math.max(boxHalf, Math.min(width - boxHalf, rawX));
+
 
     // Wave pattern vertically
     const amplitude = 50;
