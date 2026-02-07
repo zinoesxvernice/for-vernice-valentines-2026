@@ -1,109 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Vernice</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  />
+
+  <title>For Vernice</title>
+
+  <!-- Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<!-- Panel 1: Intro -->
-<div id="panel1" class="panel">
-  <h1 id="forVernice">for vernice 💖</h1>
-</div>
+  <!-- PANEL 1 : INTRO -->
+  <section id="panel1" class="panel" onclick="startExperience()">
+    <h1 id="forVernice">for vernice 💖</h1>
+    <p class="tap-hint">tap anywhere 💕</p>
+  </section>
 
-<!-- Panel 2: Days since -->
-<div id="panel2" class="panel hidden">
-  <div class="counter-wrap">
-    <div id="number"></div>
-    <div>days since we met 💕</div>
+  <!-- PANEL 2 : DAYS SINCE -->
+  <section id="panel2" class="panel hidden">
+    <div class="counter-wrap">
+      <div id="number"></div>
+      <div class="label">days since we met 💕</div>
+    </div>
+    <div class="subtext">and our love keeps growing 💌</div>
+  </section>
+
+  <!-- PANEL 3 : MESSAGE COUNT -->
+  <section id="panel3" class="panel hidden">
+    <div class="counter-wrap">
+      <div id="msg-number"></div>
+      <div class="label">
+        messages shared across discord and tiktok 💌
+      </div>
+    </div>
+    <div class="subtext">let’s reach 100k together soon :D</div>
+  </section>
+
+  <!-- PANEL 4 : TIMELINE -->
+  <section id="panel4" class="panel hidden">
+
+    <div class="timeline-text">
+      every special moment and memory we’ve shared 💌
+    </div>
+
+    <!-- Timeline graph -->
+    <svg
+      class="timeline-graph"
+      viewBox="0 0 1000 300"
+      preserveAspectRatio="none"
+    >
+      <path
+        class="timeline-line"
+        fill="none"
+        stroke="#ff1a75"
+        stroke-width="3"
+      />
+    </svg>
+
+    <!-- Timeline events -->
+    <div class="timeline-events">
+
+      <div
+        class="event"
+        data-date="dec 22, 2024"
+        data-desc="on this day, 418 days ago, we first interacted in a server and i would never ever forget this day..."
+      >
+        dec 22, 2024<br />
+        first met 💕
+        <span class="dot"></span>
+      </div>
+
+      <div
+        class="event"
+        data-date="dec 30, 2024"
+        data-desc="on this day, 411 days ago, at 4:53 PM, i dmed u on discord..."
+      >
+        dec 30, 2024<br />
+        got together 🌹
+        <span class="dot"></span>
+      </div>
+
+      <div
+        class="event"
+        data-date="dec 31, 2024"
+        data-desc="celebrated our first new year's together 🎆"
+      >
+        dec 31, 2024<br />
+        first new years 🎆
+        <span class="dot"></span>
+      </div>
+
+      <div
+        class="event"
+        data-date="feb 14, 2025"
+        data-desc="our first valentines 💝 exchanged cute gifts and smiles"
+      >
+        feb 14, 2025<br />
+        first valentines 💝
+        <span class="dot"></span>
+      </div>
+
+      <div
+        class="event"
+        data-date="apr 30, 2025"
+        data-desc="celebrated 4 months together 🥰 every moment cherished"
+      >
+        apr 30, 2025<br />
+        4 months 💖
+        <span class="dot"></span>
+      </div>
+
+      <div
+        class="event"
+        data-date="feb 14, 2026"
+        data-desc="present day 💖 still going strong"
+      >
+        feb 14, 2026<br />
+        present day 💖
+        <span class="dot"></span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FLOATING HEARTS -->
+  <div class="hearts-container"></div>
+
+  <!-- NAVIGATION -->
+  <button class="arrow arrow-left" onclick="prevPanel()">&lt;</button>
+  <button class="arrow arrow-right" onclick="nextPanel()">&gt;</button>
+
+  <!-- CREDIT -->
+  <div class="credit">made by zino</div>
+
+  <!-- MUSIC -->
+  <audio id="music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- EVENT MODAL -->
+  <div class="modal hidden" id="eventModal">
+    <div class="modal-window" id="modalWindow">
+
+      <div class="modal-titlebar" id="modalTitleBar">
+        <span class="modal-title">event details</span>
+        <button id="closeModal" class="modal-close">&times;</button>
+      </div>
+
+      <div class="modal-content">
+        <h2 id="modalDate"></h2>
+        <p id="modalDesc"></p>
+      </div>
+
+    </div>
   </div>
-  <div class="subtext">and our love keeps growing 💌</div>
-</div>
 
-<!-- Panel 3: Messages -->
-<div id="panel3" class="panel hidden">
-  <div class="counter-wrap">
-    <div id="msg-number"></div>
-    <div>messages shared across discord and tiktok 💌</div>
-  </div>
-  <div class="subtext">let’s reach 100k together soon :D</div>
-</div>
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
 
-<!-- Panel 4: Love Timeline -->
-<div id="panel4" class="panel hidden">
-  <div class="timeline-text">every special moment and memory we’ve shared 💌</div>
-  
-  <!-- SVG line -->
-  <svg class="timeline-graph" width="100%" height="300px" preserveAspectRatio="none">
-    <path class="timeline-line" fill="none" stroke="#ff1a75" stroke-width="3"/>
-  </svg>
-
-  <!-- Events -->
-  <div class="timeline-events">
-    <div class="event" data-date="dec 22, 2024" data-desc="on this day, 418 days ago, we first interacted in a server and i would never ever forget this day, this was genuinely one of the best days, if not the best day, you were the sweetest girl i met and i fell in love with you almost immediately, you were kind, sincere, and sweet, and thats what i loved about you so so much, we didn't really get together at first but im glad we talked alot more after that and i was really happy, before this, i was thinking about leaving discord altogether because my friends had already left discord too at that point, but im glad i never did, im glad i thought about sticking a bit longer to meet you, im glad ezra convinced me to stay abit longer and thats probably the only thing i can thank him for, i'll see you in the other dates my baby">
-      dec 22, 2024<br>first met 💕
-      <span class="dot"></span>
-    </div>
-
-    <div class="event" data-date="dec 30, 2024" data-desc="on this day, 411 days ago, at 4:53 PM, i dmed u on discord because elise told me so and im glad i did, my best decision of my life was getting together with you, you helped me overcome my challenges and assisted me in my problems in life, my first text to you was, 'hey kitten' and now that i think about it, it was pretty corny that i did that, i wish i couldve done a more better introduction of myself but i cant change the past now, this day will always hold a very special place in my heart, as this day was of course the day we got together, i know at first you didnt expect us to last as long but i also expected us to break up in 1 week, but i guess not so after i started dating you i stayed on discord just a bit longer however i was still planning to leave, but of course you changed my mind as ive stated before, you were still the sweetest princess i knew around this time and you still are up to this day, i'll forever remember this day no matter how many arguments we have or if we're even still together as of writing this, i love you so much vernice and i forever will my baby, youre so sweet, kind, sincere, awesome, cute, beautiful, gorgeous, the best girlfriend i could ever ask for, after this we got to spend our first new year together however i'll let the next timeline explain that">
-      dec 30, 2024<br>got together 🌹
-      <span class="dot"></span>
-    </div>
-
-    <div class="event" data-date="dec 31, 2024" data-desc="celebrated our first new year's together 🎆 with fireworks and laughter">
-      dec 31, 2024<br>first new years 🎆
-      <span class="dot"></span>
-    </div>
-
-    <div class="event" data-date="feb 14, 2025" data-desc="our first valentines 💝 exchanged cute gifts and smiles">
-      feb 14, 2025<br>first valentines 💝
-      <span class="dot"></span>
-    </div>
-
-    <div class="event" data-date="apr 30, 2025" data-desc="celebrated 4 months together 🥰 every moment cherished">
-      apr 30, 2025<br>4 month4️⃣
-      <span class="dot"></span>
-    </div>
-
-    <div class="event" data-date="feb 14, 2026" data-desc="present day 💖 still going strong, making memories every day">
-      feb 14, 2026<br>present day 💖
-      <span class="dot"></span>
-    </div>
-  </div>
-</div>
-
-<!-- Floating hearts -->
-<div class="hearts-container"></div>
-
-<!-- Navigation -->
-<div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
-<div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
-
-<!-- Credit -->
-<div class="credit">made by zino</div>
-
-<!-- Music -->
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Event Modal -->
-<div class="modal" id="eventModal">
-  <div class="modal-window" id="modalWindow">
-    <div class="modal-titlebar" id="modalTitleBar">
-      <span class="modal-title">event details</span>
-      <span id="closeModal" class="modal-close">&times;</span>
-    </div>
-    <div class="modal-content">
-      <h2 id="modalDate"></h2>
-      <p id="modalDesc"></p>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
