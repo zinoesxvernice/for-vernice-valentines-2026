@@ -296,19 +296,21 @@ closeLetterModal.addEventListener("click", () => {
   letterModal.classList.remove("show");
 });
 
+// Select scroll arrow inside notebook-content
 const notebookContent = document.querySelector("#letterModal .notebook-content");
-const scrollArrow = document.querySelector("#letterModal .scroll-arrow");
+const scrollArrow = notebookContent.querySelector(".scroll-arrow");
 
+// Update arrow visibility based on scroll
 function updateScrollArrow() {
   const scrollTop = notebookContent.scrollTop;
   const scrollHeight = notebookContent.scrollHeight;
   const clientHeight = notebookContent.clientHeight;
 
-  // If user has scrolled to the bottom
+  // Hide arrow if scrolled to bottom
   if (scrollTop + clientHeight >= scrollHeight - 1) {
-    scrollArrow.style.opacity = 0; // hide
+    scrollArrow.style.opacity = 0;
   } else {
-    scrollArrow.style.opacity = 1; // show
+    scrollArrow.style.opacity = 1;
   }
 }
 
@@ -319,6 +321,7 @@ notebookContent.addEventListener("scroll", updateScrollArrow);
 letterModal.addEventListener("transitionend", () => {
   updateScrollArrow();
 });
+
 
 
 /* Panel 7: Photo Puzzle */
