@@ -4,7 +4,8 @@ const panels = [
   document.getElementById("panel3"),
   document.getElementById("panel4"),
   document.getElementById("panel5"),
-  document.getElementById("panel6")
+  document.getElementById("panel6"),
+  document.getElementById("panel7)
 ];
 
 let current = 0;
@@ -290,6 +291,99 @@ letter.addEventListener("click", () => {
 closeLetterModal.addEventListener("click", () => {
   letterModal.classList.remove("show");
 });
+
+/* Panel 7: Photo Puzzle */
+const puzzleGrid = document.getElementById("puzzleGrid");
+const shuffleBtn = document.getElementById("shuffleBtn");
+const puzzleMessage = document.getElementById("puzzleMessage");
+
+// Configure your puzzle image here
+const puzzleImage = "assets/puzzle-photo.jpg"; // change this to your uploaded image
+const gridSize = 3; // 3x3
+
+let pieces = [];
+let draggingPiece = null;
+
+// Initialize puzzle
+function initPuzzle() {
+  puzzleGrid.innerHTML = "";
+  pieces = [];
+
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const piece = document.createElement("div");
+      piece.classList.add("puzzle-piece");
+      piece.style.backgroundImage = `url(${puzzleImage})`;
+      piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+      piece.dataset.index = row * gridSize + col; // correct position
+      piece.dataset.currentIndex = piece.dataset.index;
+      puzzleGrid.appendChild(piece);
+      pieces.push(piece);
+
+      piece.addEventListener("dragstart", (e) => {
+        draggingPiece = piece;
+      });
+
+      piece.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      piece.addEventListener("drop", (e) => {
+        if (!draggingPiece || draggingPiece === piece) return;
+
+        // swap pieces
+        const tempIndex = piece.dataset.currentIndex;
+        piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
+        draggingPiece.dataset.currentIndex = tempIndex;
+
+        // swap background positions
+        const tempPos = piece.style.backgroundPosition;
+        piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
+        draggingPiece.style.backgroundPosition = tempPos;
+
+        checkPuzzleSolved();
+      });
+    }
+  }
+
+  puzzleMessage.style.display = "none";
+}
+
+// Shuffle puzzle
+function shufflePuzzle() {
+  for (let i = pieces.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    // swap currentIndex
+    const temp = pieces[i].dataset.currentIndex;
+    pieces[i].dataset.currentIndex = pieces[j].dataset.currentIndex;
+    pieces[j].dataset.currentIndex = temp;
+
+    // swap backgroundPosition
+    const tempPos = pieces[i].style.backgroundPosition;
+    pieces[i].style.backgroundPosition = pieces[j].style.backgroundPosition;
+    pieces[j].style.backgroundPosition = tempPos;
+  }
+
+  puzzleMessage.style.display = "none";
+}
+
+// Check if puzzle is solved
+function checkPuzzleSolved() {
+  const solved = pieces.every(
+    (piece) => piece.dataset.currentIndex === piece.dataset.index
+  );
+  if (solved) {
+    puzzleMessage.style.display = "block";
+    // 🎉 optional: floating hearts effect
+    for (let i = 0; i < 20; i++) createHeart();
+  }
+}
+
+shuffleBtn.addEventListener("click", shufflePuzzle);
+
+// Initialize on load
+initPuzzle();
 
 
 
