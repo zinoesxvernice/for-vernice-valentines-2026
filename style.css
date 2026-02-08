@@ -325,7 +325,8 @@ h1#forVernice{
 
 /* Letter modal */
 /* Notebook modal */
-.modal-window.notebook {
+/* Notebook-style letter modal */
+#letterModal .modal-window.notebook {
   background: #fff9e6; /* light paper color */
   border-radius: 8px;
   padding: 20px 30px;
@@ -337,19 +338,22 @@ h1#forVernice{
   font-family: 'Baloo 2', cursive;
   line-height: 1.6;
   background-image: 
-    linear-gradient(to bottom, #cfcfcf 1px, transparent 1px); /* lines */
-  background-size: 100% 30px; /* distance between lines */
+    linear-gradient(to bottom, #cfcfcf 1px, transparent 1px); /* horizontal lines */
+  background-size: 100% 30px; /* space between lines */
   color: #333;
+  text-align: left;
 }
 
-/* Make the content fill the modal */
-.notebook-content {
+/* The content inside the notebook */
+#letterModal .notebook-content {
   width: 100%;
   min-height: 300px;
   outline: none;
-  white-space: pre-wrap; /* preserves line breaks */
+  white-space: pre-wrap; /* preserve line breaks */
   word-wrap: break-word;
+  font-size: 1rem;
 }
+
 
 
 /* Falling letter */
