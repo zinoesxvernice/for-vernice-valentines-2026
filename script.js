@@ -296,6 +296,31 @@ closeLetterModal.addEventListener("click", () => {
   letterModal.classList.remove("show");
 });
 
+const notebookContent = document.querySelector("#letterModal .notebook-content");
+const scrollArrow = document.querySelector("#letterModal .scroll-arrow");
+
+function updateScrollArrow() {
+  const scrollTop = notebookContent.scrollTop;
+  const scrollHeight = notebookContent.scrollHeight;
+  const clientHeight = notebookContent.clientHeight;
+
+  // If user has scrolled to the bottom
+  if (scrollTop + clientHeight >= scrollHeight - 1) {
+    scrollArrow.style.opacity = 0; // hide
+  } else {
+    scrollArrow.style.opacity = 1; // show
+  }
+}
+
+// Listen to scroll
+notebookContent.addEventListener("scroll", updateScrollArrow);
+
+// Optional: run once on modal open
+letterModal.addEventListener("transitionend", () => {
+  updateScrollArrow();
+});
+
+
 /* Panel 7: Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
