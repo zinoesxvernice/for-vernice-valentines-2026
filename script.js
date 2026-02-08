@@ -296,15 +296,12 @@ closeLetterModal.addEventListener("click", () => {
 /* Panel 7: 3D Photo Puzzle */
 const puzzleGrid = document.getElementById("puzzleGrid");
 const puzzleMessage = document.getElementById("puzzleMessage");
-
-// Configure your puzzle image here
-const puzzleImage = "assets/puzzle-photo.jpg"; // Change to your uploaded image
+const puzzleImage = "assets/puzzle-photo.jpg"; // make sure this is 300x300px
 const gridSize = 3; // 3x3 puzzle
 
 let pieces = [];
 let draggingPiece = null;
 
-// Initialize puzzle
 function initPuzzle() {
   puzzleGrid.innerHTML = "";
   pieces = [];
@@ -315,7 +312,7 @@ function initPuzzle() {
       piece.classList.add("puzzle-piece");
       piece.style.backgroundImage = `url(${puzzleImage})`;
       piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-      piece.dataset.index = row * gridSize + col; // correct position
+      piece.dataset.index = row * gridSize + col;
       piece.dataset.currentIndex = piece.dataset.index;
 
       puzzleGrid.appendChild(piece);
@@ -327,14 +324,12 @@ function initPuzzle() {
         draggingPiece = piece;
       });
 
-      piece.addEventListener("dragover", (e) => {
-        e.preventDefault();
-      });
+      piece.addEventListener("dragover", (e) => e.preventDefault());
 
       piece.addEventListener("drop", () => {
         if (!draggingPiece || draggingPiece === piece) return;
 
-        // Swap currentIndex
+        // Swap dataset currentIndex
         const temp = piece.dataset.currentIndex;
         piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
         draggingPiece.dataset.currentIndex = temp;
@@ -349,15 +344,12 @@ function initPuzzle() {
     }
   }
 
-  shufflePuzzle(); // auto-shuffle on load
+  shufflePuzzle();
 }
 
-// Shuffle pieces randomly
 function shufflePuzzle() {
   for (let i = pieces.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-
-    // Swap dataset currentIndex
     const temp = pieces[i].dataset.currentIndex;
     pieces[i].dataset.currentIndex = pieces[j].dataset.currentIndex;
     pieces[j].dataset.currentIndex = temp;
@@ -371,7 +363,6 @@ function shufflePuzzle() {
   puzzleMessage.style.display = "none";
 }
 
-// Check if solved
 function checkPuzzleSolved() {
   const solved = pieces.every(
     (piece) => piece.dataset.currentIndex === piece.dataset.index
@@ -379,14 +370,13 @@ function checkPuzzleSolved() {
 
   if (solved) {
     puzzleMessage.style.display = "block";
-
-    // 🎉 Floating hearts when completed
     for (let i = 0; i < 20; i++) createHeart();
   }
 }
 
-// Initialize puzzle on load
+// Initialize puzzle
 initPuzzle();
+
 
 
 
