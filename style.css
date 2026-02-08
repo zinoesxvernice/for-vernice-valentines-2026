@@ -407,7 +407,7 @@ h1#forVernice{
 .puzzle-piece {
   width: 100px;
   height: 100px;
-  background-size: 300px 300px; /* 3x3 image */
+  background-size: 300px 300px;
   border-radius: 10px;
   cursor: grab;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
@@ -418,14 +418,15 @@ h1#forVernice{
 .puzzle-piece.dragging {
   opacity: 0.7;
   cursor: grabbing;
-  transform: rotateX(10deg) rotateY(10deg);
+  transform: rotateX(15deg) rotateY(15deg) translateZ(15px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.6);
 }
 
-.puzzle-piece:hover {
+.puzzle-piece:hover:not(.dragging) {
   transform: translateZ(15px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.5);
 }
+
 
 #puzzleMessage {
   font-size: 1.2rem;
