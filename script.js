@@ -5,7 +5,7 @@ const panels = [
   document.getElementById("panel4"),
   document.getElementById("panel5"),
   document.getElementById("panel6"),
-  document.getElementById("panel7)
+  document.getElementById("panel7")
 ];
 
 let current = 0;
