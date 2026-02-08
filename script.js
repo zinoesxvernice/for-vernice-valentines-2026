@@ -267,7 +267,6 @@ balloon.addEventListener("click", () => {
   if (balloonScale >= maxBalloonScale) {
     balloon.classList.add("shake");
 
-    // remove shake after animation ends
     balloon.addEventListener("animationend", () => {
       balloon.classList.remove("shake");
 
@@ -277,9 +276,14 @@ balloon.addEventListener("click", () => {
       // show letter
       letter.classList.remove("hidden");
       letter.style.transform = "translateX(-50%) scale(1)";
+
+      // change the subtext
+      const panel6Subtext = document.querySelector("#panel6 .subtext");
+      panel6Subtext.textContent = "click on the letter! 💌";
     }, { once: true });
   }
 });
+
 
 
 // Click letter to open GUI
