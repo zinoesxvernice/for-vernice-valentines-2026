@@ -184,49 +184,36 @@ function positionTimeline() {
   const points = [];
 
   events.forEach((event, i) => {
-    const total = events.length;
+  const total = events.length;
 
-    // FIX 1: prevent overlap (respect box width)
-    const rawX = ((i + 0.5) / total) * width;
-    const boxHalf = event.offsetWidth / 2;
-    const x = Math.max(boxHalf, Math.min(width - boxHalf, rawX));
+  const rawX = ((i + 0.5) / total) * width;
+  const boxHalf = event.offsetWidth / 2;
+  const x = Math.max(boxHalf, Math.min(width - boxHalf, rawX));
 
-    // vertical wave stays unchanged
-    const amplitude = 50;
-    const centerY = height / 2;
-    const y = centerY + Math.sin(i * 1.2) * amplitude;
+  const amplitude = 50;
+  const centerY = height / 2;
+  const y = centerY + Math.sin(i * 1.2) * amplitude;
 
-    event.style.left = x + "px";
-    event.style.top = y + "px";
-    event.classList.add("pop");
+  event.style.left = x + "px";
+  event.style.top = y + "px";
+  event.classList.add("pop");
 
-    // FIX 2: connect line to dot center
-    const dotY = y + event.offsetHeight + 10 + 6;
-    points.push({ x: x, y: dotY });
+  const dotY = y + event.offsetHeight + 10 + 6;
+  points.push({ x: x, y: dotY });
 
-    event.onclick = () => {
+  // 👇 single click handler
+  event.onclick = () => {
+    document.querySelectorAll(".timeline-events .event")
+      .forEach(e => e.classList.remove("selected"));
 
-  // remove selected from others
-  document.querySelectorAll(".timeline-events .event")
-    .forEach(e => e.classList.remove("selected"));
+    event.classList.add("selected");
 
-  // add selected to clicked one
- event.onclick = () => {
-
-  // remove selected from all events
-  document.querySelectorAll(".timeline-events .event")
-    .forEach(e => e.classList.remove("selected"));
-
-  // add selected to clicked event
-  event.classList.add("selected");
-
-  // open modal
-  modalDate.textContent = event.dataset.date;
-  modalDesc.textContent = event.dataset.desc;
-  modal.classList.add("show");
-};
-
+    modalDate.textContent = event.dataset.date;
+    modalDesc.textContent = event.dataset.desc;
+    modal.classList.add("show");
+  };
 });
+
 
   drawTimelineLine(points, path);
 }
