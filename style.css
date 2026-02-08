@@ -326,6 +326,7 @@ h1#forVernice{
 /* Letter modal */
 /* Notebook modal */
 /* Notebook-style letter modal */
+/* Notebook-style letter modal */
 #letterModal .modal-window.notebook {
   background: #fff9e6; /* light paper color */
   border-radius: 8px;
@@ -334,18 +335,21 @@ h1#forVernice{
   max-height: 90%;
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   position: relative;
-  overflow-y: auto;
+  overflow: hidden; /* changed from auto so scroll-arrow can sit inside content */
   font-family: 'Baloo 2', cursive;
   line-height: 1.6;
-  background-image: 
-    linear-gradient(to bottom, #cfcfcf 1px, transparent 1px); /* horizontal lines */
+  background-image: linear-gradient(to bottom, #cfcfcf 1px, transparent 1px); /* horizontal lines */
   background-size: 100% 30px; /* space between lines */
   color: #333;
   text-align: left;
 }
 
-/* The content inside the notebook */
+/* The content inside the notebook modal */
 #letterModal .notebook-content {
+  position: relative;       /* make arrow position relative to this container */
+  max-height: 400px;        /* scrollable height */
+  overflow-y: auto;
+  padding: 20px;
   width: 100%;
   min-height: 300px;
   outline: none;
@@ -353,6 +357,27 @@ h1#forVernice{
   word-wrap: break-word;
   font-size: 1rem;
 }
+
+/* Scroll arrow inside notebook */
+#letterModal .scroll-arrow {
+  position: absolute;       /* relative to notebook-content */
+  bottom: 10px;             /* floats near bottom of visible content */
+  left: 50%;                /* center horizontally */
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: #ff1a75;
+  animation: bounce 1s infinite;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 10;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
 
 
 
