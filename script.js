@@ -340,27 +340,31 @@ function initPuzzle() {
       piece.addEventListener("dragover", (e) => e.preventDefault());
 
       piece.addEventListener("drop", () => {
-        if (!draggingPiece || draggingPiece === piece) return;
+  if (!draggingPiece || draggingPiece === piece) return;
 
-        // Swap currentIndex
-        const tempIndex = piece.dataset.currentIndex;
-        piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
-        draggingPiece.dataset.currentIndex = tempIndex;
+  // Swap currentIndex
+  const tempIndex = piece.dataset.currentIndex;
+  piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
+  draggingPiece.dataset.currentIndex = tempIndex;
 
-        // Swap background positions
-        const tempPos = piece.style.backgroundPosition;
-        piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
-        draggingPiece.style.backgroundPosition = tempPos;
+  // Swap background positions
+  const tempBg = piece.style.backgroundPosition;
+  piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
+  draggingPiece.style.backgroundPosition = tempBg;
 
-        // Animate new positions
-        const tempLeft = piece.style.left;
-        const tempTop = piece.style.top;
-        piece.style.left = draggingPiece.style.left;
-        piece.style.top = draggingPiece.style.top;
-        draggingPiece.style.left = tempLeft;
-        draggingPiece.style.top = tempTop;
+  // Swap absolute positions smoothly
+  const tempLeft = piece.style.left;
+  const tempTop = piece.style.top;
 
-        checkPuzzleSolved();
+  piece.style.left = draggingPiece.style.left;
+  piece.style.top = draggingPiece.style.top;
+
+  draggingPiece.style.left = tempLeft;
+  draggingPiece.style.top = tempTop;
+
+  checkPuzzleSolved();
+});
+
       });
     }
   }
