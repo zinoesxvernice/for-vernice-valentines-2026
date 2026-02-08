@@ -270,12 +270,16 @@ balloon.addEventListener("click", () => {
     balloon.addEventListener("animationend", () => {
       balloon.classList.remove("shake");
 
+      // hide the heart balloon after popping
+      balloon.style.display = "none";
+
       // show letter
       letter.classList.remove("hidden");
       letter.style.transform = "translateX(-50%) scale(1)";
     }, { once: true });
   }
 });
+
 
 // Click letter to open GUI
 letter.addEventListener("click", () => {
