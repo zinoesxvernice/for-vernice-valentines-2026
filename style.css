@@ -491,27 +491,6 @@ h1#forVernice{
   cursor: pointer;
 }
 
-#letterModal .scroll-arrow {
-  position: absolute;       /* position relative to modal window */
-  bottom: 15px;             /* distance from bottom of visible modal */
-  left: 50%;                /* center horizontally */
-  transform: translateX(-50%);
-  font-size: 2rem;
-  color: #ff1a75;
-  animation: bounceGlow 1.2s ease-in-out infinite;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  opacity: 1;
-  z-index: 10;              /* make sure it’s on top */
-}
-
-@keyframes bounceGlow {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.8; }
-  50% { transform: translateX(-50%) translateY(-10px); opacity: 1; }
-}
-
-
-
 /* soft float animation */
 @keyframes floaty {
   0%, 100% {
