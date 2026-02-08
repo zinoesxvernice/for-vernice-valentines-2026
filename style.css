@@ -438,6 +438,14 @@ h1#forVernice{
   display: none;
 }
 
+.puzzle-title {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #ff1a75;
+  text-shadow: 0 0 8px #ff6b81;
+  margin-bottom: 20px;
+}
+
 
 
 /* Hearts */
