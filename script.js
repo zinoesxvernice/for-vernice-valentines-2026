@@ -295,6 +295,7 @@ closeLetterModal.addEventListener("click", () => {
 /* Panel 7: Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
+/* Panel 7: 3D Photo Puzzle */
 const puzzleGrid = document.getElementById("puzzleGrid");
 const puzzleMessage = document.getElementById("puzzleMessage");
 const puzzleImage = "assets/puzzle-photo.jpg"; // 300x300px
@@ -305,10 +306,10 @@ const gap = 5;
 let pieces = [];
 let draggingPiece = null;
 
+// TOUCH SUPPORT globals
 let touchDraggingPiece = null;
 let touchOffsetX = 0;
 let touchOffsetY = 0;
-
 
 function initPuzzle() {
   puzzleGrid.innerHTML = "";
@@ -333,7 +334,7 @@ function initPuzzle() {
       puzzleGrid.appendChild(piece);
       pieces.push(piece);
 
-      // Drag handlers
+      // Desktop drag events
       piece.addEventListener("dragstart", () => {
         draggingPiece = piece;
         piece.classList.add("dragging");
@@ -358,15 +359,66 @@ function initPuzzle() {
         draggingPiece.dataset.col = tempCol;
 
         // Animate absolute positions
-        const leftA = piece.dataset.col * (pieceSize + gap) + "px";
-        const topA = piece.dataset.row * (pieceSize + gap) + "px";
-        const leftB = draggingPiece.dataset.col * (pieceSize + gap) + "px";
-        const topB = draggingPiece.dataset.row * (pieceSize + gap) + "px";
+        piece.style.left = piece.dataset.col * (pieceSize + gap) + "px";
+        piece.style.top = piece.dataset.row * (pieceSize + gap) + "px";
+        draggingPiece.style.left = draggingPiece.dataset.col * (pieceSize + gap) + "px";
+        draggingPiece.style.top = draggingPiece.dataset.row * (pieceSize + gap) + "px";
 
-        piece.style.left = leftA;
-        piece.style.top = topA;
-        draggingPiece.style.left = leftB;
-        draggingPiece.style.top = topB;
+        checkPuzzleSolved();
+      });
+
+      // TOUCH SUPPORT for mobile
+      piece.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        touchDraggingPiece = piece;
+
+        const touch = e.touches[0];
+        const rect = piece.getBoundingClientRect();
+        touchOffsetX = touch.clientX - rect.left;
+        touchOffsetY = touch.clientY - rect.top;
+
+        piece.style.zIndex = 1000;
+      });
+
+      piece.addEventListener("touchmove", (e) => {
+        if (!touchDraggingPiece) return;
+        const touch = e.touches[0];
+
+        const left = touch.clientX - touchOffsetX - puzzleGrid.getBoundingClientRect().left;
+        const top = touch.clientY - touchOffsetY - puzzleGrid.getBoundingClientRect().top;
+
+        piece.style.left = `${Math.max(0, Math.min(left, gridSize*(pieceSize+gap)-pieceSize))}px`;
+        piece.style.top = `${Math.max(0, Math.min(top, gridSize*(pieceSize+gap)-pieceSize))}px`;
+      });
+
+      piece.addEventListener("touchend", () => {
+        if (!touchDraggingPiece) return;
+
+        const left = parseFloat(piece.style.left);
+        const top = parseFloat(piece.style.top);
+
+        const col = Math.round(left / (pieceSize + gap));
+        const row = Math.round(top / (pieceSize + gap));
+
+        const targetPiece = pieces.find(p => p !== piece && Number(p.dataset.row) === row && Number(p.dataset.col) === col);
+
+        if (targetPiece) {
+          const tempRow = targetPiece.dataset.row;
+          const tempCol = targetPiece.dataset.col;
+          targetPiece.dataset.row = piece.dataset.row;
+          targetPiece.dataset.col = piece.dataset.col;
+          piece.dataset.row = tempRow;
+          piece.dataset.col = tempCol;
+
+          targetPiece.style.left = targetPiece.dataset.col * (pieceSize + gap) + "px";
+          targetPiece.style.top = targetPiece.dataset.row * (pieceSize + gap) + "px";
+        }
+
+        piece.style.left = piece.dataset.col * (pieceSize + gap) + "px";
+        piece.style.top = piece.dataset.row * (pieceSize + gap) + "px";
+
+        touchDraggingPiece.style.zIndex = "";
+        touchDraggingPiece = null;
 
         checkPuzzleSolved();
       });
@@ -377,9 +429,8 @@ function initPuzzle() {
 }
 
 function shufflePuzzle() {
-  // Shuffle positions
   const coords = pieces.map(p => ({ row: p.dataset.row, col: p.dataset.col }));
-  coords.sort(() => Math.random() - 0.5); // shuffle array
+  coords.sort(() => Math.random() - 0.5);
 
   pieces.forEach((piece, i) => {
     piece.dataset.row = coords[i].row;
@@ -404,6 +455,7 @@ function checkPuzzleSolved() {
 
 // Initialize puzzle
 initPuzzle();
+
 
 
 
