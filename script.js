@@ -300,27 +300,27 @@ closeLetterModal.addEventListener("click", () => {
 const notebookContent = document.querySelector("#letterModal .notebook-content");
 const scrollArrow = notebookContent.querySelector(".scroll-arrow");
 
-// Update arrow visibility based on scroll
 function updateScrollArrow() {
   const scrollTop = notebookContent.scrollTop;
   const scrollHeight = notebookContent.scrollHeight;
   const clientHeight = notebookContent.clientHeight;
 
-  // Hide arrow if scrolled to bottom
+  // Arrow stays at the bottom unless scrolled to bottom
   if (scrollTop + clientHeight >= scrollHeight - 1) {
-    scrollArrow.style.opacity = 0;
+    scrollArrow.style.opacity = 0; // hide arrow at bottom
   } else {
-    scrollArrow.style.opacity = 1;
+    scrollArrow.style.opacity = 1; // show arrow
   }
 }
 
 // Listen to scroll
 notebookContent.addEventListener("scroll", updateScrollArrow);
 
-// Optional: run once on modal open
+// Run once on modal open to position arrow
 letterModal.addEventListener("transitionend", () => {
   updateScrollArrow();
 });
+
 
 
 
