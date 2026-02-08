@@ -294,10 +294,13 @@ closeLetterModal.addEventListener("click", () => {
 
 /* Panel 7: Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
+/* Panel 7: 3D Photo Puzzle */
 const puzzleGrid = document.getElementById("puzzleGrid");
 const puzzleMessage = document.getElementById("puzzleMessage");
-const puzzleImage = "assets/puzzle-photo.jpg"; // make sure this is 300x300px
-const gridSize = 3; // 3x3 puzzle
+const puzzleImage = "assets/puzzle-photo.jpg"; // 300x300px
+const gridSize = 3; // 3x3
+const pieceSize = 100;
+const gap = 5;
 
 let pieces = [];
 let draggingPiece = null;
@@ -306,19 +309,17 @@ function initPuzzle() {
   puzzleGrid.innerHTML = "";
   pieces = [];
 
-  const pieceSize = 100; // 100x100px
-  const gap = 5; // same as CSS gap
-
   for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
       const piece = document.createElement("div");
       piece.classList.add("puzzle-piece");
       piece.style.backgroundImage = `url(${puzzleImage})`;
       piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-      piece.dataset.index = row * gridSize + col;
-      piece.dataset.currentIndex = piece.dataset.index;
+      piece.dataset.index = row * gridSize + col; // original position
+      piece.dataset.row = row;
+      piece.dataset.col = col;
 
-      // Set absolute position
+      // Set absolute positions
       piece.style.left = `${col * (pieceSize + gap)}px`;
       piece.style.top = `${row * (pieceSize + gap)}px`;
 
@@ -327,6 +328,7 @@ function initPuzzle() {
       puzzleGrid.appendChild(piece);
       pieces.push(piece);
 
+      // Drag handlers
       piece.addEventListener("dragstart", () => {
         draggingPiece = piece;
         piece.classList.add("dragging");
@@ -337,34 +339,31 @@ function initPuzzle() {
         draggingPiece = null;
       });
 
-      piece.addEventListener("dragover", (e) => e.preventDefault());
+      piece.addEventListener("dragover", e => e.preventDefault());
 
       piece.addEventListener("drop", () => {
-  if (!draggingPiece || draggingPiece === piece) return;
+        if (!draggingPiece || draggingPiece === piece) return;
 
-  // Swap currentIndex
-  const tempIndex = piece.dataset.currentIndex;
-  piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
-  draggingPiece.dataset.currentIndex = tempIndex;
+        // Swap grid coordinates
+        const tempRow = piece.dataset.row;
+        const tempCol = piece.dataset.col;
+        piece.dataset.row = draggingPiece.dataset.row;
+        piece.dataset.col = draggingPiece.dataset.col;
+        draggingPiece.dataset.row = tempRow;
+        draggingPiece.dataset.col = tempCol;
 
-  // Swap background positions
-  const tempBg = piece.style.backgroundPosition;
-  piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
-  draggingPiece.style.backgroundPosition = tempBg;
+        // Animate absolute positions
+        const leftA = piece.dataset.col * (pieceSize + gap) + "px";
+        const topA = piece.dataset.row * (pieceSize + gap) + "px";
+        const leftB = draggingPiece.dataset.col * (pieceSize + gap) + "px";
+        const topB = draggingPiece.dataset.row * (pieceSize + gap) + "px";
 
-  // Swap absolute positions smoothly
-  const tempLeft = piece.style.left;
-  const tempTop = piece.style.top;
+        piece.style.left = leftA;
+        piece.style.top = topA;
+        draggingPiece.style.left = leftB;
+        draggingPiece.style.top = topB;
 
-  piece.style.left = draggingPiece.style.left;
-  piece.style.top = draggingPiece.style.top;
-
-  draggingPiece.style.left = tempLeft;
-  draggingPiece.style.top = tempTop;
-
-  checkPuzzleSolved();
-});
-
+        checkPuzzleSolved();
       });
     }
   }
@@ -372,26 +371,24 @@ function initPuzzle() {
   shufflePuzzle();
 }
 
-
 function shufflePuzzle() {
-  for (let i = pieces.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = pieces[i].dataset.currentIndex;
-    pieces[i].dataset.currentIndex = pieces[j].dataset.currentIndex;
-    pieces[j].dataset.currentIndex = temp;
+  // Shuffle positions
+  const coords = pieces.map(p => ({ row: p.dataset.row, col: p.dataset.col }));
+  coords.sort(() => Math.random() - 0.5); // shuffle array
 
-    // Swap background positions
-    const tempPos = pieces[i].style.backgroundPosition;
-    pieces[i].style.backgroundPosition = pieces[j].style.backgroundPosition;
-    pieces[j].style.backgroundPosition = tempPos;
-  }
+  pieces.forEach((piece, i) => {
+    piece.dataset.row = coords[i].row;
+    piece.dataset.col = coords[i].col;
+    piece.style.left = coords[i].col * (pieceSize + gap) + "px";
+    piece.style.top = coords[i].row * (pieceSize + gap) + "px";
+  });
 
   puzzleMessage.style.display = "none";
 }
 
 function checkPuzzleSolved() {
-  const solved = pieces.every(
-    (piece) => piece.dataset.currentIndex === piece.dataset.index
+  const solved = pieces.every(piece => 
+    Number(piece.dataset.row) * gridSize + Number(piece.dataset.col) == piece.dataset.index
   );
 
   if (solved) {
