@@ -306,45 +306,59 @@ function initPuzzle() {
   puzzleGrid.innerHTML = "";
   pieces = [];
 
+  const pieceSize = 100; // 100x100px
+  const gap = 5; // same as CSS gap
+
   for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
       const piece = document.createElement("div");
       piece.classList.add("puzzle-piece");
       piece.style.backgroundImage = `url(${puzzleImage})`;
-      piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+      piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
       piece.dataset.index = row * gridSize + col;
       piece.dataset.currentIndex = piece.dataset.index;
+
+      // Set absolute position
+      piece.style.left = `${col * (pieceSize + gap)}px`;
+      piece.style.top = `${row * (pieceSize + gap)}px`;
+
+      piece.setAttribute("draggable", true);
 
       puzzleGrid.appendChild(piece);
       pieces.push(piece);
 
-      piece.setAttribute("draggable", true);
-
       piece.addEventListener("dragstart", () => {
         draggingPiece = piece;
         piece.classList.add("dragging");
-});
+      });
 
       piece.addEventListener("dragend", () => {
         piece.classList.remove("dragging");
         draggingPiece = null;
-});
-
+      });
 
       piece.addEventListener("dragover", (e) => e.preventDefault());
 
       piece.addEventListener("drop", () => {
         if (!draggingPiece || draggingPiece === piece) return;
 
-        // Swap dataset currentIndex
-        const temp = piece.dataset.currentIndex;
+        // Swap currentIndex
+        const tempIndex = piece.dataset.currentIndex;
         piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
-        draggingPiece.dataset.currentIndex = temp;
+        draggingPiece.dataset.currentIndex = tempIndex;
 
         // Swap background positions
         const tempPos = piece.style.backgroundPosition;
         piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
         draggingPiece.style.backgroundPosition = tempPos;
+
+        // Animate new positions
+        const tempLeft = piece.style.left;
+        const tempTop = piece.style.top;
+        piece.style.left = draggingPiece.style.left;
+        piece.style.top = draggingPiece.style.top;
+        draggingPiece.style.left = tempLeft;
+        draggingPiece.style.top = tempTop;
 
         checkPuzzleSolved();
       });
@@ -353,6 +367,7 @@ function initPuzzle() {
 
   shufflePuzzle();
 }
+
 
 function shufflePuzzle() {
   for (let i = pieces.length - 1; i > 0; i--) {
