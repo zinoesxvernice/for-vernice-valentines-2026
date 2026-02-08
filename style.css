@@ -219,11 +219,13 @@ h1#forVernice{
 }
 
 .balloon {
-  font-size: 5rem;
+  width: 100px; /* initial size */
+  height: 100px;
   cursor: pointer;
   transition: transform 0.3s ease;
   user-select: none;
 }
+
 
 .balloon:hover {
   transform: scale(1.1);
