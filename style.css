@@ -387,34 +387,29 @@ h1#forVernice{
 
 /* Panel 7: Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
+/* Panel 7: Photo Puzzle */
 #panel7 {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 }
 
-.puzzle-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.puzzle-grid {
+#puzzleGrid {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  perspective: 800px; /* 3D depth perspective */
+  perspective: 800px;
 }
 
 .puzzle-piece {
   width: 100px;
   height: 100px;
-  background-size: 300px 300px;
-  cursor: grab;
+  background-size: 300px 300px; /* 3x3 image */
   border-radius: 10px;
+  cursor: grab;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   transform-style: preserve-3d;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -432,13 +427,12 @@ h1#forVernice{
   box-shadow: 0 12px 25px rgba(0,0,0,0.5);
 }
 
-.puzzle-message {
-  margin-top: 15px;
+#puzzleMessage {
   font-size: 1.2rem;
   font-weight: 700;
   color: #ff1a75;
-  display: none;
   text-align: center;
+  display: none;
 }
 
 
