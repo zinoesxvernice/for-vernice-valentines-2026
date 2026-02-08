@@ -3,7 +3,8 @@ const panels = [
   document.getElementById("panel2"),
   document.getElementById("panel3"),
   document.getElementById("panel4"),
-  document.getElementById("panel5")
+  document.getElementById("panel5"),
+  document.getElementById("panel6")
 ];
 
 let current = 0;
