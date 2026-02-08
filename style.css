@@ -386,6 +386,7 @@ h1#forVernice{
 }
 
 /* Panel 7: Photo Puzzle */
+/* Panel 7: 3D Photo Puzzle */
 #panel7 {
   display: flex;
   flex-direction: column;
@@ -405,35 +406,30 @@ h1#forVernice{
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
   gap: 5px;
-  margin-bottom: 20px;
+  perspective: 800px; /* 3D depth perspective */
 }
 
 .puzzle-piece {
   width: 100px;
   height: 100px;
-  background-size: 300px 300px; /* adjust if you change grid size */
+  background-size: 300px 300px;
   cursor: grab;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .puzzle-piece.dragging {
-  opacity: 0.6;
+  opacity: 0.7;
   cursor: grabbing;
+  transform: rotateX(10deg) rotateY(10deg);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.6);
 }
 
-#shuffleBtn {
-  padding: 8px 15px;
-  background: #ff1a75;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-#shuffleBtn:hover {
-  background: #ff4d88;
+.puzzle-piece:hover {
+  transform: translateZ(15px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
 }
 
 .puzzle-message {
@@ -442,7 +438,9 @@ h1#forVernice{
   font-weight: 700;
   color: #ff1a75;
   display: none;
+  text-align: center;
 }
+
 
 
 /* Hearts */
