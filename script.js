@@ -293,13 +293,13 @@ closeLetterModal.addEventListener("click", () => {
 });
 
 /* Panel 7: Photo Puzzle */
+/* Panel 7: 3D Photo Puzzle */
 const puzzleGrid = document.getElementById("puzzleGrid");
-const shuffleBtn = document.getElementById("shuffleBtn");
 const puzzleMessage = document.getElementById("puzzleMessage");
 
 // Configure your puzzle image here
-const puzzleImage = "assets/puzzle-photo.jpg"; // change this to your uploaded image
-const gridSize = 3; // 3x3
+const puzzleImage = "assets/puzzle-photo.jpg"; // Change to your uploaded image
+const gridSize = 3; // 3x3 puzzle
 
 let pieces = [];
 let draggingPiece = null;
@@ -317,10 +317,13 @@ function initPuzzle() {
       piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
       piece.dataset.index = row * gridSize + col; // correct position
       piece.dataset.currentIndex = piece.dataset.index;
+
       puzzleGrid.appendChild(piece);
       pieces.push(piece);
 
-      piece.addEventListener("dragstart", (e) => {
+      piece.setAttribute("draggable", true);
+
+      piece.addEventListener("dragstart", () => {
         draggingPiece = piece;
       });
 
@@ -328,15 +331,15 @@ function initPuzzle() {
         e.preventDefault();
       });
 
-      piece.addEventListener("drop", (e) => {
+      piece.addEventListener("drop", () => {
         if (!draggingPiece || draggingPiece === piece) return;
 
-        // swap pieces
-        const tempIndex = piece.dataset.currentIndex;
+        // Swap currentIndex
+        const temp = piece.dataset.currentIndex;
         piece.dataset.currentIndex = draggingPiece.dataset.currentIndex;
-        draggingPiece.dataset.currentIndex = tempIndex;
+        draggingPiece.dataset.currentIndex = temp;
 
-        // swap background positions
+        // Swap background positions
         const tempPos = piece.style.backgroundPosition;
         piece.style.backgroundPosition = draggingPiece.style.backgroundPosition;
         draggingPiece.style.backgroundPosition = tempPos;
@@ -346,20 +349,20 @@ function initPuzzle() {
     }
   }
 
-  puzzleMessage.style.display = "none";
+  shufflePuzzle(); // auto-shuffle on load
 }
 
-// Shuffle puzzle
+// Shuffle pieces randomly
 function shufflePuzzle() {
   for (let i = pieces.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
 
-    // swap currentIndex
+    // Swap dataset currentIndex
     const temp = pieces[i].dataset.currentIndex;
     pieces[i].dataset.currentIndex = pieces[j].dataset.currentIndex;
     pieces[j].dataset.currentIndex = temp;
 
-    // swap backgroundPosition
+    // Swap background positions
     const tempPos = pieces[i].style.backgroundPosition;
     pieces[i].style.backgroundPosition = pieces[j].style.backgroundPosition;
     pieces[j].style.backgroundPosition = tempPos;
@@ -368,22 +371,23 @@ function shufflePuzzle() {
   puzzleMessage.style.display = "none";
 }
 
-// Check if puzzle is solved
+// Check if solved
 function checkPuzzleSolved() {
   const solved = pieces.every(
     (piece) => piece.dataset.currentIndex === piece.dataset.index
   );
+
   if (solved) {
     puzzleMessage.style.display = "block";
-    // 🎉 optional: floating hearts effect
+
+    // 🎉 Floating hearts when completed
     for (let i = 0; i < 20; i++) createHeart();
   }
 }
 
-shuffleBtn.addEventListener("click", shufflePuzzle);
-
-// Initialize on load
+// Initialize puzzle on load
 initPuzzle();
+
 
 
 
