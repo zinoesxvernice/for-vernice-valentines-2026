@@ -205,6 +205,31 @@ h1#forVernice{
   display:inline-block;
 }
 
+/* Panel 6: Balloon */
+#panel6 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.balloon-container {
+  position: relative;
+  margin: 40px 0;
+}
+
+.balloon {
+  font-size: 5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.balloon:hover {
+  transform: scale(1.1);
+}
+
+
 /* Modal */
 .modal{
   position:fixed;
