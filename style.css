@@ -360,18 +360,18 @@ h1#forVernice{
 
 /* Scroll arrow inside notebook */
 #letterModal .scroll-arrow {
-  position: absolute;   /* relative to notebook-content */
-  bottom: 10px;         /* stays at bottom */
+  position: absolute;       /* relative to modal window */
+  bottom: 15px;             /* sticks to bottom of modal viewport */
   left: 50%;
   transform: translateX(-50%);
   font-size: 2rem;
   color: #ff1a75;
+  animation: bounceGlow 1.2s ease-in-out infinite;
   pointer-events: none;
-  transition: opacity 0.3s ease;
   opacity: 1;
   z-index: 10;
-  animation: bounceGlow 1.2s ease-in-out infinite;
 }
+
 
 
 /* Bounce animation */
