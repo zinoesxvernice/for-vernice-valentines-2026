@@ -412,18 +412,16 @@ h1#forVernice{
   cursor: grab;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   transform-style: preserve-3d;
-  position: absolute; /* necessary for absolute positioning */
+  position: absolute;
   transition: left 0.3s ease, top 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-
 .puzzle-piece.dragging {
-  opacity: 0.7;
   cursor: grabbing;
+  opacity: 0.7;
   transform: rotateX(15deg) rotateY(15deg) translateZ(15px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.6);
 }
+
 
 .puzzle-piece:hover:not(.dragging) {
   transform: translateZ(15px);
