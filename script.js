@@ -297,15 +297,17 @@ closeLetterModal.addEventListener("click", () => {
 /* Panel 7: 3D Photo Puzzle */
 /* Panel 7: 3D Photo Puzzle */
 /* Panel 7: Tap-to-Swap Puzzle */
+/* Panel 7: Tap-to-Swap Puzzle */
 const puzzleGrid = document.getElementById("puzzleGrid");
 const puzzleMessage = document.getElementById("puzzleMessage");
-const puzzleImage = "assets/puzzle-photo.jpg";
+const puzzleImage = "assets/puzzle-photo.jpg"; // your puzzle image
 const gridSize = 3;
 const gap = 5;
 
 let pieces = [];
 let selectedPiece = null;
 
+// Get piece size dynamically based on grid width
 function getPieceSize() {
   const maxWidth = puzzleGrid.offsetWidth;
   return Math.floor((maxWidth - gap * (gridSize - 1)) / gridSize);
@@ -329,22 +331,22 @@ function initPuzzle() {
       piece.style.width = piece.style.height = pieceSize + "px";
       piece.style.left = `${col * (pieceSize + gap)}px`;
       piece.style.top = `${row * (pieceSize + gap)}px`;
+      piece.style.position = "absolute";
+      piece.style.cursor = "pointer";
+
       puzzleGrid.appendChild(piece);
       pieces.push(piece);
 
-      // TAP-TO-SWAP
+      // Tap-to-swap logic
       piece.addEventListener("click", () => {
         if (!selectedPiece) {
-          // First piece selected
           selectedPiece = piece;
-          piece.classList.add("selected"); // add a border/glow
+          piece.classList.add("selected"); // highlight first tap
         } else if (selectedPiece === piece) {
-          // Deselect if clicked again
-          selectedPiece.classList.remove("selected");
+          selectedPiece.classList.remove("selected"); // deselect if same piece
           selectedPiece = null;
         } else {
-          // Swap selectedPiece with this piece
-          swapPieces(selectedPiece, piece, pieceSize);
+          swapPieces(selectedPiece, piece);
           selectedPiece.classList.remove("selected");
           selectedPiece = null;
         }
@@ -355,7 +357,10 @@ function initPuzzle() {
   shufflePuzzle();
 }
 
-function swapPieces(a, b, pieceSize) {
+function swapPieces(a, b) {
+  const pieceSize = getPieceSize();
+
+  // Swap dataset coordinates
   const tempRow = a.dataset.row;
   const tempCol = a.dataset.col;
   a.dataset.row = b.dataset.row;
@@ -363,6 +368,7 @@ function swapPieces(a, b, pieceSize) {
   b.dataset.row = tempRow;
   b.dataset.col = tempCol;
 
+  // Animate positions
   a.style.left = a.dataset.col * (pieceSize + gap) + "px";
   a.style.top = a.dataset.row * (pieceSize + gap) + "px";
   b.style.left = b.dataset.col * (pieceSize + gap) + "px";
@@ -374,13 +380,15 @@ function swapPieces(a, b, pieceSize) {
 function shufflePuzzle() {
   const pieceSize = getPieceSize();
   const coords = pieces.map(p => ({ row: p.dataset.row, col: p.dataset.col }));
-  coords.sort(() => Math.random() - 0.5);
+  coords.sort(() => Math.random() - 0.5); // shuffle
+
   pieces.forEach((p, i) => {
     p.dataset.row = coords[i].row;
     p.dataset.col = coords[i].col;
     p.style.left = coords[i].col * (pieceSize + gap) + "px";
     p.style.top = coords[i].row * (pieceSize + gap) + "px";
   });
+
   puzzleMessage.style.display = "none";
 }
 
@@ -388,6 +396,7 @@ function checkPuzzleSolved() {
   const solved = pieces.every(piece =>
     Number(piece.dataset.row) * gridSize + Number(piece.dataset.col) == piece.dataset.index
   );
+
   if (solved) {
     puzzleMessage.style.display = "block";
     for (let i = 0; i < 20; i++) createHeart();
@@ -396,6 +405,16 @@ function checkPuzzleSolved() {
 
 // Initialize puzzle
 initPuzzle();
+
+// Optional: responsive resizing
+window.addEventListener("resize", () => {
+  const pieceSize = getPieceSize();
+  pieces.forEach(p => {
+    p.style.width = p.style.height = pieceSize + "px";
+    p.style.left = p.dataset.col * (pieceSize + gap) + "px";
+    p.style.top = p.dataset.row * (pieceSize + gap) + "px";
+  });
+});
 
 
 
