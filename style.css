@@ -428,6 +428,14 @@ h1#forVernice{
   box-shadow: 0 12px 25px rgba(0,0,0,0.5);
 }
 
+/* Highlight selected piece */
+.puzzle-piece.selected {
+  outline: 3px solid #ff1a75; /* pink border */
+  transform: scale(1.05);       /* slight hover effect */
+  z-index: 100;                  /* bring above others */
+  transition: transform 0.2s, outline 0.2s;
+}
+
 
 #puzzleMessage {
   font-size: 1.2rem;
