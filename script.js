@@ -305,6 +305,11 @@ const gap = 5;
 let pieces = [];
 let draggingPiece = null;
 
+let touchDraggingPiece = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+
 function initPuzzle() {
   puzzleGrid.innerHTML = "";
   pieces = [];
