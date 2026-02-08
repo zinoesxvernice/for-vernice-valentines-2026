@@ -249,12 +249,46 @@ window.addEventListener("load", () => {
 
 /* Panel 6: Balloon interaction */
 const balloon = document.querySelector("#panel6 .balloon");
+const letter = document.querySelector("#panel6 .letter");
+const letterModal = document.getElementById("letterModal");
+const letterContent = document.getElementById("letterContent");
+const closeLetterModal = document.getElementById("closeLetterModal");
+
 let balloonScale = 1;
+const maxBalloonScale = 2.5; // maximum before shake
 
 balloon.addEventListener("click", () => {
-  balloonScale += 0.2; // grows 20% each click
-  balloon.style.transform = `scale(${balloonScale})`;
+  if (balloonScale < maxBalloonScale) {
+    balloonScale += 0.2;
+    balloon.style.transform = `scale(${balloonScale})`;
+  }
+
+  if (balloonScale >= maxBalloonScale) {
+    balloon.classList.add("shake");
+
+    // remove shake after animation ends
+    balloon.addEventListener("animationend", () => {
+      balloon.classList.remove("shake");
+
+      // show letter
+      letter.classList.remove("hidden");
+      letter.style.transform = "translateX(-50%) scale(1)";
+    }, { once: true });
+  }
 });
+
+// Click letter to open GUI
+letter.addEventListener("click", () => {
+  letterModal.classList.add("show");
+});
+
+// Close GUI
+closeLetterModal.addEventListener("click", () => {
+  letterModal.classList.remove("show");
+});
+
+
+
 
 
 
