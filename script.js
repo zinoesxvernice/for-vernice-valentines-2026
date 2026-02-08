@@ -322,7 +322,14 @@ function initPuzzle() {
 
       piece.addEventListener("dragstart", () => {
         draggingPiece = piece;
-      });
+        piece.classList.add("dragging");
+});
+
+      piece.addEventListener("dragend", () => {
+        piece.classList.remove("dragging");
+        draggingPiece = null;
+});
+
 
       piece.addEventListener("dragover", (e) => e.preventDefault());
 
