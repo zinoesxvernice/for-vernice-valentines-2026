@@ -205,11 +205,28 @@ function positionTimeline() {
     points.push({ x: x, y: dotY });
 
     event.onclick = () => {
-      modalDate.textContent = event.dataset.date;
-      modalDesc.textContent = event.dataset.desc;
-      modal.classList.add("show");
-    };
-  });
+
+  // remove selected from others
+  document.querySelectorAll(".timeline-events .event")
+    .forEach(e => e.classList.remove("selected"));
+
+  // add selected to clicked one
+ event.onclick = () => {
+
+  // remove selected from all events
+  document.querySelectorAll(".timeline-events .event")
+    .forEach(e => e.classList.remove("selected"));
+
+  // add selected to clicked event
+  event.classList.add("selected");
+
+  // open modal
+  modalDate.textContent = event.dataset.date;
+  modalDesc.textContent = event.dataset.desc;
+  modal.classList.add("show");
+};
+
+});
 
   drawTimelineLine(points, path);
 }
