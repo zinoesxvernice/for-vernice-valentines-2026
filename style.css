@@ -358,9 +358,8 @@ h1#forVernice{
   font-size: 1rem;
 }
 
-/* Scroll arrow inside notebook */
 #letterModal .scroll-arrow {
-  position: absolute;       /* relative to modal window */
+  position: absolute;       /* relative to modal-window */
   bottom: 15px;             /* sticks to bottom of modal viewport */
   left: 50%;
   transform: translateX(-50%);
@@ -370,7 +369,9 @@ h1#forVernice{
   pointer-events: none;
   opacity: 1;
   z-index: 10;
+  transition: opacity 0.3s ease;
 }
+
 
 
 
