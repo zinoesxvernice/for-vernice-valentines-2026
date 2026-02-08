@@ -299,6 +299,93 @@ h1#forVernice{
   opacity:0.8;
 }
 
+/* Letter pop */
+.letter {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
+
+/* Shake animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  25% { transform: translateX(-50%) translateY(-5px); }
+  50% { transform: translateX(-50%) translateY(5px); }
+  75% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.shake {
+  animation: shake 0.5s ease 0s 3;
+}
+
+/* Letter modal */
+#letterModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,192,203,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 20;
+}
+
+#letterModal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#letterModal .modal-window {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
+}
+
+#letterModal .modal-window img {
+  max-width: 100%;
+  max-height: 80vh;
+}
+
+/* Falling letter */
+.letter {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  transition: transform 0.5s ease;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* falling animation using keyframes */
+@keyframes fall {
+  0% {
+    top: -50px;
+    transform: translateX(-50%) scale(1);
+  }
+  100% {
+    top: calc(100% - 100px); /* lands 100px from bottom */
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.fall {
+  animation: fall 1s ease-in forwards;
+}
+
+
 /* Hearts */
 .hearts-container{
   position:fixed;
