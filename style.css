@@ -324,37 +324,33 @@ h1#forVernice{
 }
 
 /* Letter modal */
-#letterModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,192,203,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.3s ease;
-  z-index: 20;
-}
-
-#letterModal.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#letterModal .modal-window {
-  background: #fff;
+/* Notebook modal */
+.modal-window.notebook {
+  background: #fff9e6; /* light paper color */
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 30px;
   max-width: 90%;
   max-height: 90%;
-  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  position: relative;
+  overflow-y: auto;
+  font-family: 'Baloo 2', cursive;
+  line-height: 1.6;
+  background-image: 
+    linear-gradient(to bottom, #cfcfcf 1px, transparent 1px); /* lines */
+  background-size: 100% 30px; /* distance between lines */
+  color: #333;
 }
 
-#letterModal .modal-window img {
-  max-width: 100%;
-  max-height: 80vh;
+/* Make the content fill the modal */
+.notebook-content {
+  width: 100%;
+  min-height: 300px;
+  outline: none;
+  white-space: pre-wrap; /* preserves line breaks */
+  word-wrap: break-word;
 }
+
 
 /* Falling letter */
 .letter {
