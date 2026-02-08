@@ -247,6 +247,16 @@ window.addEventListener("load", () => {
   }
 });
 
+/* Panel 6: Balloon interaction */
+const balloon = document.querySelector("#panel6 .balloon");
+let balloonScale = 1;
+
+balloon.addEventListener("click", () => {
+  balloonScale += 0.2; // grows 20% each click
+  balloon.style.transform = `scale(${balloonScale})`;
+});
+
+
 
 /* Hearts */
 const heartsContainer = document.querySelector(".hearts-container");
