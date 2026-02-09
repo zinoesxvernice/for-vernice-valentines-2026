@@ -6,8 +6,7 @@ const panels = [
   document.getElementById("panel5"),
   document.getElementById("panel6"),
   document.getElementById("panel7"),
-  document.getElementById("panel8"),
-  document.getElementById("panel9")
+  document.getElementById("panel8")
 ];
 
 let current = 0;
@@ -504,70 +503,7 @@ function resetPromisePanel() {
 /* Panel 9: Falling Hearts */
 /* Panel 9: Falling Hearts */
 /* Panel 9: Falling Hearts forming a sentence */
-const panel9Container = document.querySelector(".hearts-container-panel9");
 
-// --- Add sentence ---
-const sentence = "I LOVE YOU FOREVER VERNICE!"; // cute sentence
-const panel9Sentence = document.getElementById("panel9Sentence");
-let caughtLetters = 0;
-
-// Initialize sentence container
-panel9Sentence.innerHTML = "";
-sentence.split("").forEach(letter => {
-  const span = document.createElement("span");
-  span.textContent = letter;
-  panel9Sentence.appendChild(span);
-});
-
-// Function to create falling hearts using letters
-function createFallingHeart() {
-  if (caughtLetters >= sentence.length) return; // stop spawning
-
-  const heart = document.createElement("div");
-  heart.classList.add("falling-heart");
-  heart.textContent = sentence[caughtLetters]; // next letter/emoji
-
-  heart.style.left = Math.random() * 90 + "vw";
-
-  const size = 18 + Math.random() * 22;
-  heart.style.fontSize = size + "px";
-
-  const duration = 5000 + Math.random() * 3000;
-  heart.style.animation = `fallPanel9 ${duration}ms linear forwards`;
-
-  const tapHandler = () => {
-    heart.remove();
-
-    // show next letter
-    const spans = panel9Sentence.querySelectorAll("span");
-    spans[caughtLetters].classList.add("show");
-
-    caughtLetters++;
-    if (caughtLetters >= sentence.length) stopPanel9Hearts();
-  };
-
-  heart.addEventListener("click", tapHandler);
-  heart.addEventListener("touchstart", tapHandler);
-
-  panel9Container.appendChild(heart);
-
-  setTimeout(() => {
-    if (heart.parentElement) heart.remove();
-  }, duration);
-}
-
-// Interval to spawn hearts
-let panel9Interval;
-
-function startPanel9Hearts() {
-  caughtLetters = 0;
-  panel9Sentence.querySelectorAll("span").forEach(span => span.classList.remove("show"));
-  panel9Interval = setInterval(createFallingHeart, 500);
-}
-
-function stopPanel9Hearts() {
-  clearInterval(panel9Interval);
-}
 
 
 
