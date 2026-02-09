@@ -6,7 +6,8 @@ const panels = [
   document.getElementById("panel5"),
   document.getElementById("panel6"),
   document.getElementById("panel7"),
-  document.getElementById("panel8")
+  document.getElementById("panel8"),
+  document.getElementById("panel9")
 ];
 
 let current = 0;
@@ -503,6 +504,88 @@ function resetPromisePanel() {
 /* Panel 9: Falling Hearts */
 /* Panel 9: Falling Hearts */
 /* Panel 9: Falling Hearts forming a sentence */
+/* Panel 9: Message in a Bubble */
+const panel9Container = document.querySelector(".hearts-container-panel9");
+const panel9Message = document.getElementById("panel9Message");
+
+// The cute sentence to reveal
+const sentence = "I 💖 you forever!";
+let lettersRevealed = 0;
+
+// Clear previous message letters
+panel9Message.innerHTML = "";
+sentence.split("").forEach(letter => {
+  const span = document.createElement("span");
+  span.textContent = letter;
+  span.style.opacity = 0;
+  span.style.transition = "opacity 0.5s ease, transform 0.3s ease";
+  panel9Message.appendChild(span);
+});
+
+function createBubble() {
+  if (lettersRevealed >= sentence.length) return; // stop spawning
+
+  const bubble = document.createElement("div");
+  bubble.classList.add("floating-bubble");
+  bubble.textContent = sentence[lettersRevealed]; // next letter
+
+  const leftPos = Math.random() * 90; // horizontal start
+  bubble.style.left = leftPos + "vw";
+
+  const size = 30 + Math.random() * 20;
+  bubble.style.width = bubble.style.height = size + "px";
+  bubble.style.fontSize = Math.max(16, size / 2) + "px";
+
+  const duration = 5000 + Math.random() * 3000;
+  bubble.style.animationDuration = duration + "ms";
+  bubble.style.animationName = "floatBubble";
+
+  // Wiggle continuously
+  bubble.style.animationIterationCount = "infinite";
+  bubble.style.animationTimingFunction = "linear";
+  bubble.style.animationDirection = "normal";
+
+  // Tap/click to pop
+  const popBubble = () => {
+    bubble.style.animation = "popBubble 0.4s forwards";
+    const spans = panel9Message.querySelectorAll("span");
+    spans[lettersRevealed].style.opacity = 1;
+    spans[lettersRevealed].style.transform = "scale(1.2)";
+    setTimeout(() => {
+      spans[lettersRevealed].style.transform = "scale(1)";
+    }, 150);
+
+    lettersRevealed++;
+
+    // Stop spawning when all letters revealed
+    if (lettersRevealed >= sentence.length) stopPanel9Bubbles();
+
+    setTimeout(() => bubble.remove(), 400);
+  };
+
+  bubble.addEventListener("click", popBubble);
+  bubble.addEventListener("touchstart", popBubble);
+
+  panel9Container.appendChild(bubble);
+
+  // Auto remove if bubble reaches top
+  setTimeout(() => {
+    if (bubble.parentElement) bubble.remove();
+  }, duration);
+}
+
+let panel9Interval;
+
+function startPanel9Bubbles() {
+  panel9Interval = setInterval(createBubble, 500);
+  panel9Message.classList.add("show");
+  lettersRevealed = 0;
+}
+
+function stopPanel9Bubbles() {
+  clearInterval(panel9Interval);
+  panel9Container.innerHTML = "";
+}
 
 
 
