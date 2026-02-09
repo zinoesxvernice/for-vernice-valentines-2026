@@ -497,25 +497,29 @@ h1#forVernice{
 /* Panel 8: Promise text styling */
 #panel8 {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  height: 100vh;           /* full viewport height */
+  width: 100%;
   position: relative;
-  background: transparent; /* remove any white box */
+  background: transparent;
   overflow: hidden;
+  text-align: center;      /* center text inside container */
+  padding: 20px;           /* optional padding for small screens */
 }
 
 .promise-text {
-  font-family: 'Baloo 2', cursive; /* cute Baloo font */
-  color: #ff66b2; /* pink text */
-  font-size: 2rem;
-  text-align: center;
-  max-width: 80%;
+  font-family: 'Baloo 2', cursive;
+  color: #ff66b2;
+  font-size: clamp(1.5rem, 4vw, 2rem); /* responsive font size */
+  max-width: 90%;
   opacity: 0;
   transform: scale(0.8);
   transition: transform 0.5s ease, opacity 0.5s ease;
   line-height: 1.4;
+  margin: 0 auto;           /* auto margin for horizontal centering */
 }
+
 
 .promise-text.show {
   opacity: 1;
