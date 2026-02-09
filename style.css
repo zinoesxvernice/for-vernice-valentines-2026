@@ -497,16 +497,18 @@ h1#forVernice{
 /* Panel 8: Promise text styling */
 /* Panel 8: Promise text styling */
 #panel8 {
+  position: relative !important;  /* override absolute from .panel */
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+
   display: flex;
-  flex-direction: column;   /* stack promise + hint vertically */
-  justify-content: center;  /* vertical centering */
-  align-items: center;      /* horizontal centering */
-  height: 100vh;            /* full viewport height */
-  width: 100%;              /* full width */
-  position: relative;
-  background: transparent;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;    /* full viewport height */
+  width: 100%;      /* full width */
   text-align: center;
-  overflow: hidden;
 }
 
 .promise-text {
