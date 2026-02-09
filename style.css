@@ -504,6 +504,43 @@ h1#forVernice{
   }
 }
 
+/* Panel 8: Promise Panel */
+#panel8 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promise-wrap {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.promise-text {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  color: #ff1a75;
+  text-shadow: 0 0 10px #ff6b81;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.4s ease;
+}
+
+.promise-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.promise-hint {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  color: #fff0f5;
+  animation: floaty 2.5s ease-in-out infinite;
+}
+
+
 
 /* Hearts */
 .hearts-container{
