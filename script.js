@@ -5,7 +5,8 @@ const panels = [
   document.getElementById("panel4"),
   document.getElementById("panel5"),
   document.getElementById("panel6"),
-  document.getElementById("panel7")
+  document.getElementById("panel7"),
+  document.getElementById("panel8")
 ];
 
 let current = 0;
@@ -452,6 +453,42 @@ window.addEventListener("resize", () => {
 });
 
 
+/* Panel 8: Promise Panel */
+const promiseText = document.getElementById("promiseText");
+
+const promises = [
+  "I promise to always choose you.",
+  "I promise to listen, even when it’s hard.",
+  "I promise to grow instead of running away.",
+  "I promise to be honest with you.",
+  "I promise to protect your heart.",
+  "I promise to love you on your best and worst days.",
+  "I promise you will never be alone.",
+  "I promise you… my future. 💍"
+];
+
+let promiseIndex = 0;
+
+function showPromise(index) {
+  promiseText.classList.remove("show");
+  setTimeout(() => {
+    promiseText.textContent = promises[index];
+    promiseText.classList.add("show");
+  }, 200);
+}
+
+document.getElementById("panel8").addEventListener("click", () => {
+  if (promiseIndex < promises.length - 1) {
+    promiseIndex++;
+    showPromise(promiseIndex);
+  }
+});
+
+// reset when entering panel
+function resetPromisePanel() {
+  promiseIndex = 0;
+  showPromise(0);
+}
 
 
 
