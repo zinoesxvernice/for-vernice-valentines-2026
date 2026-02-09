@@ -610,6 +610,35 @@ h1#forVernice{
   }
 }
 
+.panel9-sentence {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: #ff4da6;
+  text-shadow: 0 0 12px #ffb6c1, 0 0 20px #ff1a75;
+  font-family: 'Baloo 2', cursive;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  pointer-events: none; /* hearts fall through */
+  z-index: 5;
+}
+.panel9-sentence span {
+  display: inline-block;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.panel9-sentence span.show {
+  transform: scale(1);
+  opacity: 1;
+}
+
+
 
 
 /* Hearts */
