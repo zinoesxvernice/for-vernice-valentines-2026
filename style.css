@@ -495,39 +495,32 @@ h1#forVernice{
 }
 
 /* Panel 8: Promise text styling */
-/* Panel 8: Promise text styling */
 #panel8 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* full viewport height */
-  width: 100vw;  /* full viewport width */
+  height: 100%;
   position: relative;
   background: transparent; /* remove any white box */
   overflow: hidden;
 }
 
 .promise-text {
-  position: absolute; /* absolutely center inside panel */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8); /* center and scale initially */
-  font-family: 'Baloo 2', cursive;
-  color: #ff66b2;
+  font-family: 'Baloo 2', cursive; /* cute Baloo font */
+  color: #ff66b2; /* pink text */
   font-size: 2rem;
   text-align: center;
   max-width: 80%;
   opacity: 0;
+  transform: scale(0.8);
   transition: transform 0.5s ease, opacity 0.5s ease;
   line-height: 1.4;
-  word-wrap: break-word;
 }
 
 .promise-text.show {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1); /* keep centered when shown */
+  transform: scale(1);
 }
-
 
 
 @keyframes bounce {
