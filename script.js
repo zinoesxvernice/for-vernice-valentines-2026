@@ -503,28 +503,47 @@ function resetPromisePanel() {
 
 /* Panel 9: Falling Hearts */
 /* Panel 9: Falling Hearts */
+/* Panel 9: Falling Hearts forming a sentence */
 const panel9Container = document.querySelector(".hearts-container-panel9");
 
+// --- Add sentence ---
+const sentence = "I LOVE YOU FOREVER VERNICE!"; // cute sentence
+const panel9Sentence = document.getElementById("panel9Sentence");
+let caughtLetters = 0;
+
+// Initialize sentence container
+panel9Sentence.innerHTML = "";
+sentence.split("").forEach(letter => {
+  const span = document.createElement("span");
+  span.textContent = letter;
+  panel9Sentence.appendChild(span);
+});
+
+// Function to create falling hearts using letters
 function createFallingHeart() {
+  if (caughtLetters >= sentence.length) return; // stop spawning
+
   const heart = document.createElement("div");
   heart.classList.add("falling-heart");
-  heart.textContent = "💖";
+  heart.textContent = sentence[caughtLetters]; // next letter/emoji
 
-  // Random horizontal position
   heart.style.left = Math.random() * 90 + "vw";
 
-  // Random size
-  const size = 18 + Math.random() * 22; // 18–40px
+  const size = 18 + Math.random() * 22;
   heart.style.fontSize = size + "px";
 
-  // Random fall duration
-  const duration = 5000 + Math.random() * 3000; // 5–8s
+  const duration = 5000 + Math.random() * 3000;
   heart.style.animation = `fallPanel9 ${duration}ms linear forwards`;
 
-  // Tap / click to pop
   const tapHandler = () => {
-    heart.style.animation = "pop 0.4s forwards";
-    setTimeout(() => heart.remove(), 400);
+    heart.remove();
+
+    // show next letter
+    const spans = panel9Sentence.querySelectorAll("span");
+    spans[caughtLetters].classList.add("show");
+
+    caughtLetters++;
+    if (caughtLetters >= sentence.length) stopPanel9Hearts();
   };
 
   heart.addEventListener("click", tapHandler);
@@ -532,22 +551,24 @@ function createFallingHeart() {
 
   panel9Container.appendChild(heart);
 
-  // Auto remove after reaching bottom
   setTimeout(() => {
     if (heart.parentElement) heart.remove();
   }, duration);
 }
 
+// Interval to spawn hearts
 let panel9Interval;
 
 function startPanel9Hearts() {
+  caughtLetters = 0;
+  panel9Sentence.querySelectorAll("span").forEach(span => span.classList.remove("show"));
   panel9Interval = setInterval(createFallingHeart, 500);
 }
 
 function stopPanel9Hearts() {
   clearInterval(panel9Interval);
-  panel9Container.innerHTML = "";
 }
+
 
 
 
