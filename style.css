@@ -572,6 +572,55 @@ h1#forVernice{
   pointer-events: none;
 }
 
+/* Panel 9 sentence */
+#panel9Sentence {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 800;
+  color: #ff1a75;
+  text-align: center;
+  pointer-events: none; /* letters themselves are not clickable */
+}
+
+#panel9Sentence span {
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: inline-block;
+}
+
+#panel9Sentence span.show {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Falling heart letters */
+.falling-heart {
+  position: absolute;
+  top: -50px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
+  color: #ff4d88;
+  text-shadow: 0 0 6px #ffb6c1;
+}
+
+/* Example of smooth leaf-like fall animation */
+@keyframes fallPanel9 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+
 .falling-heart {
   position: absolute;
   font-size: 2rem; /* base size, will scale randomly */
