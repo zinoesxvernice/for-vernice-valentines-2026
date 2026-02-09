@@ -494,6 +494,53 @@ h1#forVernice{
   cursor: pointer;
 }
 
+#panel8 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #ffe0f0, #ffd1dc);
+  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+}
+
+.promise-container {
+  max-width: 80%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.promise-text {
+  font-size: 1.8rem;
+  color: #ff3399;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  transition: all 0.6s ease-out;
+}
+
+.promise-text.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.click-hint {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  color: #ff66b3;
+  animation: bounce 1.2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+
+
 /* soft float animation */
 @keyframes floaty {
   0%, 100% {
