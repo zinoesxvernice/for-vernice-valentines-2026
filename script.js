@@ -494,8 +494,7 @@ function resetPromisePanel() {
   showPromise(0);
 }
 
-
-/* Panel 9: Falling Hearts - Mobile Friendly */
+/* Panel 9: Falling Hearts */
 const panel9Container = document.querySelector(".hearts-container-panel9");
 
 function createFallingHeart() {
@@ -503,7 +502,7 @@ function createFallingHeart() {
   heart.classList.add("falling-heart");
   heart.textContent = "💖";
 
-  // random horizontal start position
+  // random horizontal start
   heart.style.left = Math.random() * 90 + "vw";
 
   // random size
@@ -514,39 +513,25 @@ function createFallingHeart() {
   const duration = 5000 + Math.random() * 3000; // 5–8s
   heart.style.animation = `fallPanel9 ${duration}ms linear forwards`;
 
-  // allow tap/click
-  heart.style.pointerEvents = "auto";
-
+  // tap / click to pop
   const tapHandler = () => {
     heart.style.animation = "pop 0.4s forwards";
     setTimeout(() => heart.remove(), 400);
   };
 
   heart.addEventListener("click", tapHandler);
-  heart.addEventListener("touchstart", tapHandler); // mobile support
+  heart.addEventListener("touchstart", tapHandler);
 
   panel9Container.appendChild(heart);
 
-  // auto-remove after animation
+  // remove automatically after reaching bottom
   setTimeout(() => {
     if (heart.parentElement) heart.remove();
   }, duration);
 }
 
-
-  heart.addEventListener("click", tapHandler);
-  heart.addEventListener("touchstart", tapHandler); // mobile support
-
-  panel9Container.appendChild(heart);
-
-  // auto-remove after reaching bottom
-  setTimeout(() => {
-    if (heart.parentElement) heart.remove();
-  }, duration);
-}
-
-// continuously spawn hearts
 let panel9Interval;
+
 function startPanel9Hearts() {
   panel9Interval = setInterval(createFallingHeart, 500);
 }
@@ -555,23 +540,6 @@ function stopPanel9Hearts() {
   clearInterval(panel9Interval);
   panel9Container.innerHTML = "";
 }
-
-// hook into panel navigation
-function showPanel(i) {
-  panels[current].classList.add("hidden");
-  current = i;
-  panels[current].classList.remove("hidden");
-
-  if (current > 0) {
-    navLeft.classList.add("visible");
-    navRight.classList.add("visible");
-  } else {
-    navLeft.classList.remove("visible");
-    navRight.classList.remove("visible");
-  }
-
-}
-
 
 
 
