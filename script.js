@@ -465,6 +465,7 @@ const promises = [
   "I promise to protect your heart.",
   "I promise to love you on your best and worst days.",
   "I promise you will never be alone.",
+  "I promise I won't be like the stupid boy I was",
   "I promise you… my future. 💍"
 ];
 
