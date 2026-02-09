@@ -497,14 +497,15 @@ h1#forVernice{
 /* Panel 8: Promise text styling */
 #panel8 {
   display: flex;
-  flex-direction: column; /* stack vertically */
-  justify-content: center; /* center vertically */
-  align-items: center;     /* center horizontally */
-  height: 100vh;           /* full viewport height */
+  flex-direction: column;   /* stack promise + hint vertically */
+  justify-content: center;  /* vertical centering */
+  align-items: center;      /* horizontal centering */
+  height: 100vh;            /* full viewport height */
+  width: 100%;              /* full width */
   position: relative;
   background: transparent;
-  overflow: hidden;
   text-align: center;
+  overflow: hidden;
 }
 
 .promise-text {
@@ -512,10 +513,10 @@ h1#forVernice{
   color: #ff66b2;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   line-height: 1.4;
+  max-width: 80%;
   opacity: 0;
   transform: scale(0.8);
   transition: transform 0.5s ease, opacity 0.5s ease;
-  max-width: 80%;
 }
 
 .promise-text.show {
@@ -524,10 +525,10 @@ h1#forVernice{
 }
 
 .click-hint {
-  font-family: 'Baloo 2', cursive; /* keep your cute font */
+  font-family: 'Baloo 2', cursive;
   color: #fff0f5;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
-  margin-top: 20px;       /* spacing below promise text */
+  margin-top: 20px;      /* space below promise text */
   cursor: pointer;
   opacity: 0.9;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -537,6 +538,7 @@ h1#forVernice{
   opacity: 1;
   transform: scale(1.05);
 }
+
 
 
 
