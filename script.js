@@ -33,6 +33,7 @@ function showPanel(i) {
   current = i;
   panels[current].classList.remove("hidden");
 
+  // Navigation arrows
   if (current > 0) {
     navLeft.classList.add("visible");
     navRight.classList.add("visible");
@@ -41,13 +42,19 @@ function showPanel(i) {
     navRight.classList.remove("visible");
   }
 
+  // Panel-specific logic
   if (current === 1 && !countdownStarted) startCountdown();
   if (current === 2 && !messageCountStarted) startMessageCounter();
   if (current === 3) setTimeout(positionTimeline, 50);
   if (current === 4) startPanel5Counters();
   if (current === 7) resetPromisePanel();
-  if (current === 8) { startPanel9Hearts(); } else { stopPanel9Hearts(); }
+  if (current === 8) { // Panel 9
+    startPanel9Hearts();
+  } else {
+    stopPanel9Hearts();
+  }
 }
+
 
 function nextPanel() {
   if (current < panels.length - 1) showPanel(current + 1);
@@ -495,6 +502,7 @@ function resetPromisePanel() {
 }
 
 /* Panel 9: Falling Hearts */
+/* Panel 9: Falling Hearts */
 const panel9Container = document.querySelector(".hearts-container-panel9");
 
 function createFallingHeart() {
@@ -502,18 +510,18 @@ function createFallingHeart() {
   heart.classList.add("falling-heart");
   heart.textContent = "💖";
 
-  // random horizontal start
+  // Random horizontal position
   heart.style.left = Math.random() * 90 + "vw";
 
-  // random size
+  // Random size
   const size = 18 + Math.random() * 22; // 18–40px
   heart.style.fontSize = size + "px";
 
-  // random duration for natural fall
+  // Random fall duration
   const duration = 5000 + Math.random() * 3000; // 5–8s
   heart.style.animation = `fallPanel9 ${duration}ms linear forwards`;
 
-  // tap / click to pop
+  // Tap / click to pop
   const tapHandler = () => {
     heart.style.animation = "pop 0.4s forwards";
     setTimeout(() => heart.remove(), 400);
@@ -524,7 +532,7 @@ function createFallingHeart() {
 
   panel9Container.appendChild(heart);
 
-  // remove automatically after reaching bottom
+  // Auto remove after reaching bottom
   setTimeout(() => {
     if (heart.parentElement) heart.remove();
   }, duration);
@@ -540,7 +548,6 @@ function stopPanel9Hearts() {
   clearInterval(panel9Interval);
   panel9Container.innerHTML = "";
 }
-
 
 
 
