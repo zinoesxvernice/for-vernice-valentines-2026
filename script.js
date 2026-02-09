@@ -5,7 +5,8 @@ const panels = [
   document.getElementById("panel4"),
   document.getElementById("panel5"),
   document.getElementById("panel6"),
-  document.getElementById("panel7")
+  document.getElementById("panel7"),
+  document.getElementById("panel8")
 ];
 
 let current = 0;
@@ -453,6 +454,57 @@ window.addEventListener("resize", () => {
 
 
 
+const promiseText = document.getElementById("promiseText");
+
+const promises = [
+  "I promise to always choose you.",
+  "I promise to listen, even when it’s hard.",
+  "I promise to grow instead of running away.",
+  "I promise to be honest with you.",
+  "I promise to protect your heart.",
+  "I promise to love you on your best and worst days.",
+  "I promise you will never be alone.",
+  "I promise I won't be lustful as I was before.",
+  "I promise I will respect you, your friends, and your family.",
+  "I promise I won't have wandering eyes.",
+  "I promise I won't have other girls.",
+  "I promise I will communicate with you.",
+  "I promise I won't cuss during arguments.",
+  "I promise I will prioritize you.",
+  "I promise I won't give other girls my attention.",
+  "I promise I have matured.",
+  "I promise I am not that ignorant guy anymore.",
+  "I promise I will love you forever.",
+  "I promise I will talk it out instead of getting angry.",
+  "my baby?",
+  "I promise I won't be like the stupid boy I was",
+  "I promise you… my future. 💍"
+];
+
+let promiseIndex = 0;
+
+// Show a promise with cute animation
+function showPromise(index) {
+  promiseText.classList.remove("show");
+  setTimeout(() => {
+    promiseText.textContent = promises[index];
+    promiseText.classList.add("show");
+  }, 200);
+}
+
+// Click anywhere on the panel to show next promise
+document.getElementById("panel8").addEventListener("click", () => {
+  if (promiseIndex < promises.length - 1) {
+    promiseIndex++;
+    showPromise(promiseIndex);
+  }
+});
+
+// Reset when entering panel
+function resetPromisePanel() {
+  promiseIndex = 0;
+  showPromise(0);
+}
 
 
 
