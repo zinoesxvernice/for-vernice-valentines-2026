@@ -497,42 +497,37 @@ h1#forVernice{
 /* Panel 8: Promise text styling */
 #panel8 {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  flex-direction: column; /* stack vertically */
+  justify-content: center; /* center vertically */
+  align-items: center;     /* center horizontally */
+  height: 100vh;           /* full viewport height */
   position: relative;
-  background: transparent; /* remove any white box */
+  background: transparent;
   overflow: hidden;
+  text-align: center;
 }
 
 .promise-text {
-  position: fixed;      /* position relative to viewport */
-  top: 50%;             /* vertical center */
-  left: 50%;            /* horizontal center */
-  transform: translate(-50%, -50%) scale(0.8);
-  max-width: 80%;
-  text-align: center;
-  color: #ff66b2;
   font-family: 'Baloo 2', cursive;
-  font-size: 2rem;
+  color: #ff66b2;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   line-height: 1.4;
   opacity: 0;
+  transform: scale(0.8);
   transition: transform 0.5s ease, opacity 0.5s ease;
-  z-index: 100;
+  max-width: 80%;
+}
+
+.promise-text.show {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .click-hint {
-  font-family: 'Baloo 2', cursive;  /* keep your font */
+  font-family: 'Baloo 2', cursive; /* keep your cute font */
   color: #fff0f5;
-  font-size: clamp(1rem, 3vw, 1.5rem); /* responsive size */
-  text-align: center;
-  
-  /* Centering */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: 20px;       /* spacing below promise text */
   cursor: pointer;
   opacity: 0.9;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -540,14 +535,9 @@ h1#forVernice{
 
 .click-hint:hover {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: scale(1.05);
 }
 
-
-.promise-text.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
 
 
 @keyframes bounce {
