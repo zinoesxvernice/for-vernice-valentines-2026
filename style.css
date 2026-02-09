@@ -521,7 +521,7 @@ h1#forVernice{
   z-index: 100;
 }
 
-.tap-next {
+.click-hint {
   font-family: 'Baloo 2', cursive;   /* keep your font */
   color: #fff0f5;                    /* soft white/pinkish */
   font-size: 1.5rem;                 /* adjust as needed */
