@@ -483,7 +483,6 @@ const promises = [
 
 let promiseIndex = 0;
 
-// Show a promise with cute animation
 function showPromise(index) {
   promiseText.classList.remove("show");
   setTimeout(() => {
@@ -492,7 +491,7 @@ function showPromise(index) {
   }, 200);
 }
 
-// Click anywhere on the panel to show next promise
+// Tap/click anywhere on panel to advance
 document.getElementById("panel8").addEventListener("click", () => {
   if (promiseIndex < promises.length - 1) {
     promiseIndex++;
@@ -505,6 +504,9 @@ function resetPromisePanel() {
   promiseIndex = 0;
   showPromise(0);
 }
+
+// Initialize first promise
+resetPromisePanel();
 
 
 
