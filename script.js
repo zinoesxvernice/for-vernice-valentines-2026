@@ -45,6 +45,7 @@ function showPanel(i) {
   if (current === 3) setTimeout(positionTimeline, 50);
   if (current === 4) startPanel5Counters();
   if (current === 7) resetPromisePanel();
+  if (current === 8) { startPanel9Hearts(); } else { stopPanel9Hearts(); }
 }
 
 function nextPanel() {
@@ -493,6 +494,82 @@ function resetPromisePanel() {
 }
 
 
+/* Panel 9: Falling Hearts - Mobile Friendly */
+const panel9Container = document.querySelector(".hearts-container-panel9");
+
+function createFallingHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("falling-heart");
+  heart.textContent = "💖";
+
+  // random horizontal start position
+  heart.style.left = Math.random() * 90 + "vw";
+
+  // random size
+  const size = 18 + Math.random() * 22; // 18–40px
+  heart.style.fontSize = size + "px";
+
+  // random duration for natural fall
+  const duration = 5000 + Math.random() * 3000; // 5–8s
+  heart.style.animation = `fallPanel9 ${duration}ms linear forwards`;
+
+  // allow tap/click
+  heart.style.pointerEvents = "auto";
+
+  const tapHandler = () => {
+    heart.style.animation = "pop 0.4s forwards";
+    setTimeout(() => heart.remove(), 400);
+  };
+
+  heart.addEventListener("click", tapHandler);
+  heart.addEventListener("touchstart", tapHandler); // mobile support
+
+  panel9Container.appendChild(heart);
+
+  // auto-remove after animation
+  setTimeout(() => {
+    if (heart.parentElement) heart.remove();
+  }, duration);
+}
+
+
+  heart.addEventListener("click", tapHandler);
+  heart.addEventListener("touchstart", tapHandler); // mobile support
+
+  panel9Container.appendChild(heart);
+
+  // auto-remove after reaching bottom
+  setTimeout(() => {
+    if (heart.parentElement) heart.remove();
+  }, duration);
+}
+
+// continuously spawn hearts
+let panel9Interval;
+function startPanel9Hearts() {
+  panel9Interval = setInterval(createFallingHeart, 500);
+}
+
+function stopPanel9Hearts() {
+  clearInterval(panel9Interval);
+  panel9Container.innerHTML = "";
+}
+
+// hook into panel navigation
+function showPanel(i) {
+  panels[current].classList.add("hidden");
+  current = i;
+  panels[current].classList.remove("hidden");
+
+  if (current > 0) {
+    navLeft.classList.add("visible");
+    navRight.classList.add("visible");
+  } else {
+    navLeft.classList.remove("visible");
+    navRight.classList.remove("visible");
+  }
+
+}
 
 
 
