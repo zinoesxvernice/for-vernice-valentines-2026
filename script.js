@@ -44,6 +44,7 @@ function showPanel(i) {
   if (current === 2 && !messageCountStarted) startMessageCounter();
   if (current === 3) setTimeout(positionTimeline, 50);
   if (current === 4) startPanel5Counters();
+  if (current === 7) resetPromisePanel();
 }
 
 function nextPanel() {
