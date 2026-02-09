@@ -553,6 +553,13 @@ h1#forVernice{
   padding: 15px;         /* adjust padding to fit smaller size */
 }
 
+/* Timeline Event Modal Adjustments */
+#eventModal .modal-window {
+  max-width: 300px !important;      /* smaller width */
+  max-height: 400px !important;     /* smaller height */
+  overflow-y: auto !important;      /* make content scrollable */
+  padding: 15px !important;         /* adjust padding */
+}
 
 
 
